@@ -36,3 +36,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+forge-installer-patched.jar.log
