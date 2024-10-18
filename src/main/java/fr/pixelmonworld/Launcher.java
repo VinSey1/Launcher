@@ -2,6 +2,7 @@ package fr.pixelmonworld;
 
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.json.CurseFileInfo;
+import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
@@ -22,6 +23,7 @@ public class Launcher {
 
     private static final String MINECRAFT_VERSION = "1.16.5";
     private static final String FORGE_VERSION = "36.2.39";
+    public static final String MODPACKS_URL = "https://nacou.pixelmonworld.fr/modpack";
 
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
@@ -45,20 +47,9 @@ public class Launcher {
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder().withName(MINECRAFT_VERSION).build();
         UpdaterOptions updaterOptions = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
-        Collection<CurseFileInfo> curseFileInfos = new ArrayList<>();
-        // Biomes O' Plenty 1.16.5-13.1.0.482
-        curseFileInfos.add(new CurseFileInfo(220318, 3407189));
-        // CustomNPCs-1.16.5.20220515
-        curseFileInfos.add(new CurseFileInfo(221826, 3791072));
-        // journeymap-1.16.5-5.8.5p6
-        curseFileInfos.add(new CurseFileInfo(32274, 4012858));
-        // NBTEdit-0.10.0
-        curseFileInfos.add(new CurseFileInfo(247580, 3062106));
-        // Pixelmon-1.16.5-9.1.3-universal
-        curseFileInfos.add(new CurseFileInfo(389487, 4395992));
-
         AbstractForgeVersion modLoaderVersion = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-                .withCurseMods(curseFileInfos)
+                .withMods(MODPACKS_URL)
+                .withFileDeleter(new ModFileDeleter(true))
                 .withForgeVersion(FORGE_VERSION)
                 .build();
 
