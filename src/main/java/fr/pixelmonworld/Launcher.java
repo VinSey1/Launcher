@@ -1,8 +1,6 @@
 package fr.pixelmonworld;
 
 import fr.flowarg.flowupdater.FlowUpdater;
-import fr.flowarg.flowupdater.download.json.CurseFileInfo;
-import fr.flowarg.flowupdater.download.json.MCP;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
@@ -16,9 +14,8 @@ import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Launcher {
@@ -43,12 +40,12 @@ public class Launcher {
         MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
         MicrosoftAuthResult result;
 
-        String refresh_token = Frame.getSaver().get("refresh_token");
+        String refresh_token = MainFrame.getSaver().get("refresh_token");
         if (refresh_token != null && !refresh_token.isEmpty()) {
             result = microsoftAuthenticator.loginWithRefreshToken(refresh_token);
         } else {
             result = microsoftAuthenticator.loginWithWebview();
-            Frame.getSaver().set("refresh_token", result.getRefreshToken());
+            MainFrame.getSaver().set("refresh_token", result.getRefreshToken());
         }
         authInfos = new AuthInfos(
                 result.getProfile().getName(),
@@ -65,7 +62,7 @@ public class Launcher {
         UpdaterOptions updaterOptions = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
         AbstractForgeVersion modLoaderVersion = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-                .withMods(MODPACKS_URL)
+                .withMods(new URL(MODPACKS_URL))
                 .withFileDeleter(new ModFileDeleter(true))
                 .withForgeVersion(FORGE_VERSION)
                 .build();
@@ -81,7 +78,7 @@ public class Launcher {
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
-        noFramework.getAdditionalVmArgs().addAll(List.of(Frame.getInstance().getPanel().getRamSelector().getRamArguments()));
+//        noFramework.getAdditionalVmArgs().addAll(List.of(MainFrame.getInstance().getPanel().getRamSelector().getRamArguments()));
         noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
     }
 

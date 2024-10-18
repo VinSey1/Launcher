@@ -3,34 +3,34 @@ package fr.pixelmonworld;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
-public class Frame extends JFrame {
+import static fr.pixelmonworld.utils.ImagesSelector.getImage;
 
-    private static Frame instance;
+public class MainFrame extends JFrame {
+
+    private static MainFrame instance;
     private static File ramFile = new File(String.valueOf(Launcher.getPath()), "ram.txt");
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
     private static Saver saver = new Saver(saverFile);
 
-    private Panel panel;
+    private LauncherPanel launcherPanel;
 
-    public Frame() throws IOException {
+    public MainFrame() throws IOException {
         instance = this;
 
         this.setTitle("Launcher PixelmonWorld");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1920, 1290);
         this.setUndecorated(true);
+        this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
         this.setIconImage(getImage("icon.png"));
 
-        this.setContentPane(panel = new Panel());
+        this.setContentPane(launcherPanel = new LauncherPanel());
 
         WindowMover mover = new WindowMover(this);
         this.addMouseListener(mover);
@@ -50,25 +50,11 @@ public class Frame extends JFrame {
             saverFile.createNewFile();
         }
 
-        instance = new Frame();
+        instance = new MainFrame();
     }
 
-    public static Image getImage(String fichier) throws IOException {
-        InputStream inputStream = Frame.getInstance().getClass().getClassLoader().getResourceAsStream(fichier);
-        return inputStream != null ? ImageIO.read(inputStream ) : null;
-    }
-
-    public static BufferedImage getBufferedImage(String fichier) throws IOException {
-        InputStream inputStream = Frame.getInstance().getClass().getClassLoader().getResourceAsStream(fichier);
-        return inputStream != null ? ImageIO.read(inputStream ) : null;
-    }
-
-    public static Frame getInstance() {
+    public static MainFrame getInstance() {
         return instance;
-    }
-
-    public Panel getPanel() {
-        return panel;
     }
 
     public static File getRamFile() {
