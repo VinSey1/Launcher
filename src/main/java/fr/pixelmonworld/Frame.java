@@ -1,17 +1,22 @@
 package fr.pixelmonworld;
 
+import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Frame extends JFrame {
 
     private static Frame instance;
+    private static File ramFile = new File(String.valueOf(Launcher.getPath()), "ram.txt");
+    private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
+    private static Saver saver = new Saver(saverFile);
 
     private Panel panel;
 
@@ -37,6 +42,14 @@ public class Frame extends JFrame {
     public static void main(String[] args) throws IOException {
         Launcher.getCrashFile().mkdirs();
 
+        if (!ramFile.exists()) {
+            ramFile.createNewFile();
+        }
+
+        if (!saverFile.exists()) {
+            saverFile.createNewFile();
+        }
+
         instance = new Frame();
     }
 
@@ -56,5 +69,13 @@ public class Frame extends JFrame {
 
     public Panel getPanel() {
         return panel;
+    }
+
+    public static File getRamFile() {
+        return ramFile;
+    }
+
+    public static Saver getSaver() {
+        return saver;
     }
 }

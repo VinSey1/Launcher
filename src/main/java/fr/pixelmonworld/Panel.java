@@ -1,6 +1,7 @@
 package fr.pixelmonworld;
 
 import fr.pixelmonworld.utils.MicrosoftThread;
+import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
@@ -9,14 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static fr.pixelmonworld.Frame.getBufferedImage;
-import static fr.pixelmonworld.Frame.getImage;
+import static fr.pixelmonworld.Frame.*;
 
 public class Panel extends JPanel implements SwingerEventListener {
 
     private Image background = getImage("Launcher Background.png");
     private STexturedButton play = new STexturedButton(getBufferedImage("Bouton Discord.png"), getBufferedImage("Bouton Discord.png"));
     private STexturedButton microsoft = new STexturedButton(getBufferedImage("Bouton Update Java.png"), getBufferedImage("Bouton Update Java.png"));
+    private STexturedButton settings = new STexturedButton(getBufferedImage("Barre de RAM.png"), getBufferedImage("Barre de RAM.png"));
+    private RamSelector ramSelector = new RamSelector(getRamFile());
 
     public Panel() throws IOException {
         this.setLayout(null);
@@ -30,6 +32,11 @@ public class Panel extends JPanel implements SwingerEventListener {
         microsoft.setLocation(400, 400);
         microsoft.addEventListener(this);
         this.add(microsoft);
+
+        settings.setBounds(100, 100);
+        settings.setLocation(800, 800);
+        settings.addEventListener(this);
+        this.add(settings);
     }
 
     @Override
@@ -45,6 +52,8 @@ public class Panel extends JPanel implements SwingerEventListener {
             Thread t = new Thread(new MicrosoftThread());
             t.start();
         } else if (swingerEvent.getSource() == play) {
+            ramSelector.save();
+
             try {
                 Launcher.update();
             } catch (Exception e) {
@@ -55,6 +64,12 @@ public class Panel extends JPanel implements SwingerEventListener {
             } catch (Exception e) {
                 Launcher.getReporter().catchError(e, "Impossible de lancer le launcher.");
             }
+        } else if (swingerEvent.getSource() == settings) {
+            ramSelector.display();
         }
+    }
+
+    public RamSelector getRamSelector() {
+        return ramSelector;
     }
 }

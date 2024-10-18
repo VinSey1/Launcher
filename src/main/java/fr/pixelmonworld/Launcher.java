@@ -2,6 +2,7 @@ package fr.pixelmonworld;
 
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.json.CurseFileInfo;
+import fr.flowarg.flowupdater.download.json.MCP;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Launcher {
 
@@ -38,13 +40,28 @@ public class Launcher {
     private static AuthInfos authInfos;
 
     public static void auth() throws MicrosoftAuthenticationException {
-        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-        MicrosoftAuthResult result = authenticator.loginWithWebview();
-        authInfos = new AuthInfos(result.getProfile().getName(), result.getAccessToken(), result.getProfile().getId());
+        MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
+        MicrosoftAuthResult result;
+
+        String refresh_token = Frame.getSaver().get("refresh_token");
+        if (refresh_token != null && !refresh_token.isEmpty()) {
+            result = microsoftAuthenticator.loginWithRefreshToken(refresh_token);
+        } else {
+            result = microsoftAuthenticator.loginWithWebview();
+            Frame.getSaver().set("refresh_token", result.getRefreshToken());
+        }
+        authInfos = new AuthInfos(
+                result.getProfile().getName(),
+                result.getAccessToken(),
+                result.getProfile().getId()
+        );
     }
 
     public static void update() throws Exception {
-        VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder().withName(MINECRAFT_VERSION).build();
+        VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
+                .withName(MINECRAFT_VERSION)
+                .build();
+
         UpdaterOptions updaterOptions = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
         AbstractForgeVersion modLoaderVersion = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
@@ -53,7 +70,8 @@ public class Launcher {
                 .withForgeVersion(FORGE_VERSION)
                 .build();
 
-        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withVanillaVersion(vanillaVersion)
+        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder()
+                .withVanillaVersion(vanillaVersion)
                 .withUpdaterOptions(updaterOptions)
                 .withModLoaderVersion(modLoaderVersion)
                 .build();
@@ -63,6 +81,7 @@ public class Launcher {
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
+        noFramework.getAdditionalVmArgs().addAll(List.of(Frame.getInstance().getPanel().getRamSelector().getRamArguments()));
         noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
     }
 
@@ -72,5 +91,9 @@ public class Launcher {
 
     public static File getCrashFile() {
         return crashFile;
+    }
+
+    public static Path getPath() {
+        return path;
     }
 }
