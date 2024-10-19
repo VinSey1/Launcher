@@ -1,6 +1,6 @@
 package fr.pixelmonworld.panels.buttons;
 
-import fr.pixelmonworld.domain.LauncherButton;
+import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.net.URI;
 
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
-public class TikTokButton extends LauncherButton {
+public class TikTokButton extends DefaultLauncherButton {
 
     public TikTokButton(int parentWidth, int y) throws IOException {
         super(parentWidth, y, getBufferedImage("tiktok_button.png"));

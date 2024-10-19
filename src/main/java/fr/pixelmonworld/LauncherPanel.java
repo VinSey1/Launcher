@@ -1,6 +1,7 @@
 package fr.pixelmonworld;
 
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
+import fr.pixelmonworld.panels.connexion.ConnexionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,10 @@ public class LauncherPanel extends JPanel {
         JPanel buttonsPanel = new ButtonsPanel(483, 702, 1408, 249);
         this.add(buttonsPanel);
 
+        JPanel connexionPanel = new ConnexionPanel(483, 271, 1408, 976, this);
+        this.add(connexionPanel);
+
+
         // Ajout du background
         JLabel background = new JLabel(new ImageIcon(backgroundImage));
         background.setBounds(0, 0, 1920, 1290);
@@ -43,27 +48,4 @@ public class LauncherPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(null, 0, 0, this.getWidth(), this.getHeight(), this);
     }
-
-//    @Override
-//    public void onEvent(SwingerEvent swingerEvent) {
-//        if (swingerEvent.getSource() == microsoft) {
-//            Thread t = new Thread(new MicrosoftThread());
-//            t.start();
-//        } else if (swingerEvent.getSource() == play) {
-//            ramSelector.save();
-//
-//            try {
-//                Launcher.update();
-//            } catch (Exception e) {
-//                Launcher.getReporter().catchError(e, "Impossible de mettre à jour le launcher.");
-//            }
-//            try {
-//                Launcher.launch();
-//            } catch (Exception e) {
-//                Launcher.getReporter().catchError(e, "Impossible de lancer le launcher.");
-//            }
-//        } else if (swingerEvent.getSource() == settings) {
-//            ramSelector.display();
-//        }
-//    }
 }

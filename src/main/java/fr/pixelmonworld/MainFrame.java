@@ -15,6 +15,7 @@ public class MainFrame extends JFrame {
     private static MainFrame instance;
     private static File ramFile = new File(String.valueOf(Launcher.getPath()), "ram.txt");
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
+    private static File serversFile =  new File(String.valueOf(Launcher.getPath()), "servers.dat");
     private static Saver saver = new Saver(saverFile);
 
     private LauncherPanel launcherPanel;

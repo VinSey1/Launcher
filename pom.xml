@@ -57,6 +57,7 @@
 
     <!-- Permet de faire fonctionner les dépendances -->
     <repositories>
+        <!-- Lié au launcher -->
         <repository>
             <id>litarvan</id>
             <url>https://litarvan.github.io/maven</url>

@@ -1,15 +1,25 @@
 package fr.pixelmonworld.utils;
 
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.pixelmonworld.Launcher;
+import fr.pixelmonworld.panels.connexion.ConnexionButton;
+
+import java.io.IOException;
 
 public class MicrosoftThread implements Runnable {
+
+    ConnexionButton parent;
+
+    public MicrosoftThread(ConnexionButton parent) {
+        this.parent = parent;
+    }
+
     @Override
     public void run() {
+        Launcher.auth();
         try {
-            Launcher.auth();
-        } catch (MicrosoftAuthenticationException e) {
-            Launcher.getReporter().catchError(e, "Impossible de se connecter.");
+            parent.update();
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
         }
     }
 }

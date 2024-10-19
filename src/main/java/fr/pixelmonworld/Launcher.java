@@ -14,9 +14,9 @@ import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 
 import java.io.File;
-import java.net.URL;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class Launcher {
 
@@ -36,25 +36,46 @@ public class Launcher {
     private static CrashReporter reporter = new CrashReporter(String.valueOf(crashFile), path);
     private static AuthInfos authInfos;
 
-    public static void auth() throws MicrosoftAuthenticationException {
+    public static boolean defaultAuth() {
         MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
         MicrosoftAuthResult result;
 
         String refresh_token = MainFrame.getSaver().get("refresh_token");
         if (refresh_token != null && !refresh_token.isEmpty()) {
-            result = microsoftAuthenticator.loginWithRefreshToken(refresh_token);
-        } else {
-            result = microsoftAuthenticator.loginWithWebview();
-            MainFrame.getSaver().set("refresh_token", result.getRefreshToken());
+            try {
+                result = microsoftAuthenticator.loginWithRefreshToken(refresh_token);
+                authInfos = new AuthInfos(
+                        result.getProfile().getName(),
+                        result.getAccessToken(),
+                        result.getProfile().getId()
+                );
+            } catch (MicrosoftAuthenticationException e) {
+                MainFrame.getSaver().set("refresh_token", null);
+                getReporter().catchError(e, "Impossible de se connecter à Microsoft automatiquement. Relancez le launcher.");
+            }
+            return true;
         }
-        authInfos = new AuthInfos(
-                result.getProfile().getName(),
-                result.getAccessToken(),
-                result.getProfile().getId()
-        );
+        return false;
     }
 
-    public static void update() throws Exception {
+    public static void auth() {
+        MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
+        MicrosoftAuthResult result;
+
+        try {
+            result = microsoftAuthenticator.loginWithWebview();
+            MainFrame.getSaver().set("refresh_token", result.getRefreshToken());
+            authInfos = new AuthInfos(
+                    result.getProfile().getName(),
+                    result.getAccessToken(),
+                    result.getProfile().getId()
+            );
+        } catch (MicrosoftAuthenticationException e) {
+            getReporter().catchError(e, "Impossible de se connecter à Microsoft.");
+        }
+    }
+
+    public static void update() {
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                 .withName(MINECRAFT_VERSION)
                 .build();
@@ -62,7 +83,7 @@ public class Launcher {
         UpdaterOptions updaterOptions = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
         AbstractForgeVersion modLoaderVersion = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-                .withMods(new URL(MODPACKS_URL))
+                .withMods(MODPACKS_URL)
                 .withFileDeleter(new ModFileDeleter(true))
                 .withForgeVersion(FORGE_VERSION)
                 .build();
@@ -73,13 +94,26 @@ public class Launcher {
                 .withModLoaderVersion(modLoaderVersion)
                 .build();
 
-        flowUpdater.update(path);
+        try {
+            flowUpdater.update(path);
+        } catch (Exception e) {
+            try {
+                Files.delete(path);
+            } catch (IOException e1) {
+                getReporter().catchError(e1, "Impossible de supprimer le dossier " + path + ".");
+            }
+            getReporter().catchError(e, "Impossible de mettre à jour Minecraft.");
+        }
     }
 
-    public static void launch() throws Exception {
+    public static void launch() {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
 //        noFramework.getAdditionalVmArgs().addAll(List.of(MainFrame.getInstance().getPanel().getRamSelector().getRamArguments()));
-        noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
+        try {
+            noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
+        } catch (Exception e) {
+            getReporter().catchError(e, "Impossible de lancer Minecraft.");
+        }
     }
 
     public static CrashReporter getReporter() {
@@ -92,5 +126,9 @@ public class Launcher {
 
     public static Path getPath() {
         return path;
+    }
+
+    public static void erreurInterne(Exception e) {
+        getReporter().catchError(e, "Erreur interne du launcher.");
     }
 }

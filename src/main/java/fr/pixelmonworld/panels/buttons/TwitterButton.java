@@ -1,6 +1,6 @@
 package fr.pixelmonworld.panels.buttons;
 
-import fr.pixelmonworld.domain.LauncherButton;
+import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.net.URI;
 
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
-public class TwitterButton extends LauncherButton {
+public class TwitterButton extends DefaultLauncherButton {
     public TwitterButton(int parentWidth, int y) throws IOException {
         super(parentWidth, y, getBufferedImage("twitter_button.png"));
         this.setBounds(this.getX() + this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
