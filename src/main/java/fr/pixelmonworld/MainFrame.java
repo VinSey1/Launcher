@@ -1,7 +1,6 @@
 package fr.pixelmonworld;
 
 import fr.pixelmonworld.panels.main.MainPanel;
-import fr.pixelmonworld.utils.FileUtils;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
 
@@ -11,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static fr.pixelmonworld.utils.ResourcesUtils.getFile;
 import static fr.pixelmonworld.utils.ResourcesUtils.getImage;
 
 /**
@@ -23,10 +21,6 @@ public class MainFrame extends JFrame {
     private static MainFrame instance;
     // Fichier de sauvegarde des options (ram + token d'authentification Microsoft)
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
-    // Fichier contenant la liste des serveurs
-    private static File serversFile =  new File(String.valueOf(Launcher.getPath()), "servers.dat");
-    // Zip du texturepack du serveur
-    private static File resourcepackFile =  new File(String.valueOf(Launcher.getPath()), "\\resourcepacks\\PixelmonWorld.zip");
     // Objet permettant de sauvegarder les options dans le fichier
     private static Saver saver = new Saver(saverFile);
 
@@ -37,18 +31,6 @@ public class MainFrame extends JFrame {
      */
     public MainFrame() throws IOException, URISyntaxException {
         instance = this;
-
-        // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
-        File serversFileFromResource = getFile("servers.dat");
-        FileUtils.copyFile(serversFileFromResource, serversFile);
-
-        // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
-        if (!resourcepackFile.exists()) {
-            resourcepackFile.getParentFile().mkdirs();
-            resourcepackFile.createNewFile();
-            File resourcePackFromResource = getFile("resourcepack.zip");
-            FileUtils.copyFile(resourcePackFromResource, resourcepackFile);
-        }
 
         // Définit les éléments basique de l'application (taille, titre, icône...)
         this.setTitle("Launcher PixelmonWorld");

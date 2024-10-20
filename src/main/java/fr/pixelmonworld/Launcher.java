@@ -13,6 +13,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.TypeMessage;
 import fr.pixelmonworld.panels.main.InfosPanel;
 import fr.pixelmonworld.panels.main.MainPanel;
+import fr.pixelmonworld.utils.FileUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 
@@ -23,6 +24,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static fr.pixelmonworld.utils.ResourcesUtils.getFile;
 
 /**
  * Coeur technique de l'application.
@@ -59,6 +62,10 @@ public class Launcher {
     private static InfosPanel infosPanel;
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
+    // Fichier contenant la liste des serveurs
+    private static File serversFile =  new File(String.valueOf(path), "servers.dat");
+    // Zip du texturepack du serveur
+    private static File resourcepackFile =  new File(String.valueOf(path), "\\resourcepacks\\PixelmonWorld.zip");
 
     /**
      * Permet d'ajouter de la ram jusqu'à 16 et la sauvegarder.
@@ -182,6 +189,18 @@ public class Launcher {
                 .build();
 
         try {
+            // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
+            File serversFileFromResource = getFile("servers.dat");
+            FileUtils.copyFile(serversFileFromResource, serversFile);
+
+            // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
+            if (!resourcepackFile.exists()) {
+                resourcepackFile.getParentFile().mkdirs();
+                resourcepackFile.createNewFile();
+                File resourcePackFromResource = getFile("resourcepack.zip");
+                FileUtils.copyFile(resourcePackFromResource, resourcepackFile);
+            }
+
             flowUpdater.update(path);
         } catch (Exception e) {
             try {
