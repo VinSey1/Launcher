@@ -38,7 +38,7 @@ public class Launcher {
     // IP du serveur
     private static final String SERVER_NAME = "play.pixelmonworld.fr";
     // Port du serveur
-    private static final String SERVER_PORT = "25561";
+    private static final String SERVER_PORT = "25564";
     // Informations globales sur Minecraft
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
