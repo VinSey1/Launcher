@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels;
+package fr.pixelmonworld.panels.main;
 
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.TypeMessage;

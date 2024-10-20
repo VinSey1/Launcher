@@ -11,7 +11,8 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.TypeMessage;
-import fr.pixelmonworld.panels.InfosPanel;
+import fr.pixelmonworld.panels.main.InfosPanel;
+import fr.pixelmonworld.panels.main.MainPanel;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 
@@ -21,12 +22,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Launcher {
 
     private static final String MINECRAFT_VERSION = "1.16.5";
     private static final String FORGE_VERSION = "36.2.39";
     public static final String MODPACKS_URL = "https://nacou.pixelmonworld.fr/modpack";
+    private static final String SERVER_NAME = "play.pixelmonworld.fr";
+    private static final String SERVER_PORT = "25561";
 
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
@@ -38,7 +42,7 @@ public class Launcher {
     private static File crashFile = new File(String.valueOf(path), "crashed");
     private static CrashReporter reporter = new CrashReporter(String.valueOf(crashFile), path);
     private static AuthInfos authInfos;
-    private static LauncherPanel launcherPanel;
+    private static MainPanel mainPanel;
     private static InfosPanel infosPanel;
     private static Integer ram;
 
@@ -154,6 +158,8 @@ public class Launcher {
     public static void launch() {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
         noFramework.getAdditionalVmArgs().addAll(getRamVmArg());
+        noFramework.getAdditionalArgs().addAll(List.of("--server", SERVER_NAME));
+        noFramework.getAdditionalArgs().addAll(List.of("--port", SERVER_PORT));
         try {
             noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
         } catch (Exception e) {
@@ -177,18 +183,18 @@ public class Launcher {
         getReporter().catchError(e, "Erreur interne du launcher.");
     }
 
-    public static void setLauncherPanel(LauncherPanel launcherPanel) {
-        Launcher.launcherPanel = launcherPanel;
+    public static void setLauncherPanel(MainPanel mainPanel) {
+        Launcher.mainPanel = mainPanel;
     }
 
     public static void showDialog(TypeMessage message) throws IOException {
 //        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-        launcherPanel.add(infosPanel = new InfosPanel(launcherPanel, 600, 400, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
-        launcherPanel.repaint();
+        mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
+        mainPanel.repaint();
     }
 
     private static void closeDialog() {
-        launcherPanel.remove(infosPanel);
-        launcherPanel.repaint();
+        mainPanel.remove(infosPanel);
+        mainPanel.repaint();
     }
 }

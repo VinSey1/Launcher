@@ -27,13 +27,6 @@ public class DefaultLauncherPanel extends JPanel {
         return result;
     }
 
-    protected JLabel genererLabel(String message) {
-        JLabel result = new JLabel(message);
-        result.setOpaque(true);
-        result.setBackground(Color.GREEN);
-        return result;
-    }
-
     @Override
     public void repaint() {
         super.repaint();

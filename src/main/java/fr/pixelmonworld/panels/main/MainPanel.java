@@ -1,5 +1,6 @@
-package fr.pixelmonworld;
+package fr.pixelmonworld.panels.main;
 
+import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
 import fr.pixelmonworld.panels.connexion.ConnexionPanel;
 import fr.pixelmonworld.panels.ram.RamPanel;
@@ -12,31 +13,33 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 import static fr.pixelmonworld.utils.ImagesSelector.getRandomRenderImage;
 
-public class LauncherPanel extends JPanel {
+public class MainPanel extends JPanel {
 
     private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("background.png")));
     private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("server_logo.png")));
     private ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
+    private ImageIcon closeButtonIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("close_button.png")));
 
-    public LauncherPanel() throws IOException {
+
+    public MainPanel(int width, int height) throws IOException {
         this.setLayout(null);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+        this.setSize(width, height);
 
         Launcher.setLauncherPanel(this);
 
         // Ajout du logo
         JLabel logo = new JLabel(logoIcon);
-        logo.setBounds(560, 0, logoIcon.getIconWidth(), logoIcon.getIconHeight());
+        logo.setBounds(width / 2 - logoIcon.getIconWidth() / 2, 0, logoIcon.getIconWidth(), logoIcon.getIconHeight());
         this.add(logo);
 
-        JPanel buttonsPanel = new ButtonsPanel(this, 483, 702, 1408, 249);
-        this.add(buttonsPanel);
+        this.add(new ButtonsPanel(this, 483, 702, 1408, 249));
 
-        JPanel connexionPanel = new ConnexionPanel(this, 483, 271, 1408, 976);
-        this.add(connexionPanel);
+        this.add(new CloseButton(this, 220));
 
-        JPanel ramPanel = new RamPanel(this, 954, 165, 257, 1100);
-        this.add(ramPanel);
+        this.add(new ConnexionPanel(this, 483, 271, 1408, 976));
+
+        this.add(new RamPanel(this, 954, 165, 257, 1100));
 
         // Ajout du background
         JLabel background = new JLabel(backgroundIcon);
