@@ -5,25 +5,27 @@ import fr.pixelmonworld.panels.connexion.ConnexionPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 import static fr.pixelmonworld.utils.ImagesSelector.getRandomRenderImage;
 
 public class LauncherPanel extends JPanel {
 
-    private BufferedImage backgroundImage = getBufferedImage("background.png");
-    private BufferedImage logoImage = getBufferedImage("server_logo.png");
-    private BufferedImage renderImage = getRandomRenderImage();
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("background.png")));
+    private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("server_logo.png")));
+    private ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
 
     public LauncherPanel() throws IOException {
         this.setLayout(null);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
 
+        Launcher.setLauncherPanel(this);
+
         // Ajout du logo
-        JLabel logo = new JLabel(new ImageIcon(logoImage));
-        logo.setBounds(560, 0, 831, 477);
+        JLabel logo = new JLabel(logoIcon);
+        logo.setBounds(560, 0, logoIcon.getIconWidth(), logoIcon.getIconHeight());
         this.add(logo);
 
         JPanel buttonsPanel = new ButtonsPanel(483, 702, 1408, 249);
@@ -32,14 +34,13 @@ public class LauncherPanel extends JPanel {
         JPanel connexionPanel = new ConnexionPanel(483, 271, 1408, 976, this);
         this.add(connexionPanel);
 
-
         // Ajout du background
-        JLabel background = new JLabel(new ImageIcon(backgroundImage));
-        background.setBounds(0, 0, 1920, 1290);
+        JLabel background = new JLabel(backgroundIcon);
+        background.setBounds(0, 0, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
         this.add(background);
 
-        JLabel render = new JLabel(new ImageIcon(renderImage));
-        render.setBounds(-81, 215, 1783, 1080);
+        JLabel render = new JLabel(renderIcon);
+        render.setBounds(-81, 215, renderIcon.getIconWidth(), renderIcon.getIconHeight());
         this.add(render);
     }
 

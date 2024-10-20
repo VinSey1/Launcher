@@ -3,6 +3,7 @@ package fr.pixelmonworld.panels.connexion;
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.pixelmonworld.utils.MicrosoftThread;
+import fr.pixelmonworld.utils.MinecraftThread;
 import fr.theshark34.swinger.event.SwingerEvent;
 
 import java.io.IOException;
@@ -29,8 +30,8 @@ public class ConnexionButton extends DefaultLauncherButton {
             Thread t = new Thread(new MicrosoftThread(this));
             t.start();
         } else {
-            Launcher.update();
-            Launcher.launch();
+            Thread t = new Thread(new MinecraftThread());
+            t.start();
         }
     }
 

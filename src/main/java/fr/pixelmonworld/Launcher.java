@@ -10,6 +10,8 @@ import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
+import fr.pixelmonworld.domain.TypeMessage;
+import fr.pixelmonworld.panels.InfosPanel;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 
@@ -35,6 +37,8 @@ public class Launcher {
 
     private static CrashReporter reporter = new CrashReporter(String.valueOf(crashFile), path);
     private static AuthInfos authInfos;
+    private static LauncherPanel launcherPanel;
+    private static InfosPanel infosPanel;
 
     public static boolean defaultAuth() {
         MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
@@ -76,6 +80,11 @@ public class Launcher {
     }
 
     public static void update() {
+        try {
+            showDialog(TypeMessage.UPDATE_MINECRAFT);
+        } catch (IOException e) {
+            erreurInterne(e);
+        }
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                 .withName(MINECRAFT_VERSION)
                 .build();
@@ -104,6 +113,7 @@ public class Launcher {
             }
             getReporter().catchError(e, "Impossible de mettre à jour Minecraft.");
         }
+        closeDialog();
     }
 
     public static void launch() {
@@ -130,5 +140,20 @@ public class Launcher {
 
     public static void erreurInterne(Exception e) {
         getReporter().catchError(e, "Erreur interne du launcher.");
+    }
+
+    public static void setLauncherPanel(LauncherPanel launcherPanel) {
+        Launcher.launcherPanel = launcherPanel;
+    }
+
+    public static void showDialog(TypeMessage message) throws IOException {
+//        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+        launcherPanel.add(infosPanel = new InfosPanel(605, 405, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
+        launcherPanel.repaint();
+    }
+
+    private static void closeDialog() {
+        launcherPanel.remove(infosPanel);
+        launcherPanel.repaint();
     }
 }
