@@ -11,28 +11,44 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static fr.pixelmonworld.utils.ImagesSelector.getImage;
+import static fr.pixelmonworld.utils.ResourcesUtils.getFile;
+import static fr.pixelmonworld.utils.ResourcesUtils.getImage;
 
+/**
+ * Coeur de l'application graphique.
+ */
 public class MainFrame extends JFrame {
 
+    // Instance de l'application (singleton)
     private static MainFrame instance;
-    private static File ramFile = new File(String.valueOf(Launcher.getPath()), "ram.txt");
+    // Fichier de sauvegarde des options (ram + token d'authentification Microsoft)
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
+    // Fichier contenant la liste des serveurs
     private static File serversFile =  new File(String.valueOf(Launcher.getPath()), "servers.dat");
+    // Zip du texturepack du serveur
     private static File resourcepackFile =  new File(String.valueOf(Launcher.getPath()), "\\resourcepacks\\PixelmonWorld.zip");
+    // Objet permettant de sauvegarder les options dans le fichier
     private static Saver saver = new Saver(saverFile);
 
+    /**
+     * Constructeur par défaut.
+     * @throws IOException Problème lors d'une mise à jour graphique.
+     * @throws URISyntaxException Problème lors de la récupération d'un fichier.
+     */
     public MainFrame() throws IOException, URISyntaxException {
         instance = this;
 
-        File serversFileFromResource = new File(getInstance().getClass().getClassLoader().getResource("servers.dat").toURI());
+        // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
+        File serversFileFromResource = getFile("servers.dat");
         FileUtils.copyFile(serversFileFromResource, serversFile);
 
+        // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
         if (!resourcepackFile.exists()) {
-            File resourcePackFromResource = new File(getInstance().getClass().getClassLoader().getResource("resourcepack.zip").toURI());
+            File resourcePackFromResource = getFile("resourcepack.zip");
             FileUtils.copyFile(resourcePackFromResource, resourcepackFile);
         }
 
+        // Définit les éléments basique de l'application (taille, titre, icône...)
         this.setTitle("Launcher PixelmonWorld");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1920, 1290);
@@ -41,22 +57,29 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setIconImage(getImage("icon.png"));
 
+        // Permet d'ajouter le panneau principal à l'application
         this.setContentPane(new MainPanel(this.getWidth(), this.getHeight()));
 
+        // Permet à l'utilisateur de pouvoir bouger la fenêtre
         WindowMover mover = new WindowMover(this);
         this.addMouseListener(mover);
         this.addMouseMotionListener(mover);
 
+        // Affiche l'application
         this.setVisible(true);
     }
 
+    /**
+     * Classe de lancement de l'application.
+     * @param args Arguments de l'application.
+     * @throws IOException Problème lors d'une mise à jour graphique.
+     * @throws URISyntaxException Problème lors de la récupération d'un fichier.
+     */
     public static void main(String[] args) throws IOException, URISyntaxException {
+        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
         Launcher.getCrashFile().mkdirs();
 
-        if (!ramFile.exists()) {
-            ramFile.createNewFile();
-        }
-
+        // Permet de créer le fichier de sauvegarde s'il n'existe pas
         if (!saverFile.exists()) {
             saverFile.createNewFile();
         }

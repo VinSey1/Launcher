@@ -7,14 +7,27 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 
-import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
+import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Bouton pour lancer l'application Discord.
+ */
 public class DiscordButton extends DefaultLauncherButton {
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param y Les coordonnées Y du bouton.
+     * @throws IOException Problème lors d'une mise à jour graphique.
+     */
     public DiscordButton(Component parent, int y) throws IOException {
         super(parent, y, getBufferedImage("discord_button.png"));
     }
 
+    /**
+     * Permet d'accéder à Discord quand le bouton est appuyé.
+     * @param swingerEvent L'événement à traiter.
+     */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {

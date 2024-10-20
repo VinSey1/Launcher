@@ -7,16 +7,31 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
+import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Panneau permettant d'afficher l'ensemble des boutons d'accès aux médias.
+ */
 public class ButtonsPanel extends DefaultLauncherPanel {
 
-    private BufferedImage errorTextImage = getBufferedImage("error_text.png");
+    // Logo d'erreur
     private BufferedImage errorLogoImage = getBufferedImage("error_logo.png");
-
-    private BufferedImage discordTextImage = getBufferedImage("discord_text.png");
+    // Image contenant le texte "Erreur de lancement ?"
+    private BufferedImage errorTextImage = getBufferedImage("error_text.png");
+    // Logo de discord
     private BufferedImage discordLogoImage = getBufferedImage("discord_logo.png");
+    // Image contenant le texte "Rejoins-nous !"
+    private BufferedImage discordTextImage = getBufferedImage("discord_text.png");
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param width La largeur du panneau.
+     * @param height La hauteur du panneau.
+     * @param x Les coordonnées X du panneau.
+     * @param y Les coordonnées Y du panneau.
+     * @throws IOException Problème lors d'une mise à jour graphique.
+     */
     public ButtonsPanel(Component parent, int width, int height, int x, int y) throws IOException {
         super(parent, width, height, x, y);
 
@@ -38,9 +53,9 @@ public class ButtonsPanel extends DefaultLauncherPanel {
         // Ajout du bouton Discord
         this.add(new DiscordButton(this, 535));
 
+        // Ajout des boutons Média
         this.add(new TikTokButton(this, 635));
         this.add(new YoutubeButton(this, 635));
         this.add(new TwitterButton(this, 635));
     }
-
 }
