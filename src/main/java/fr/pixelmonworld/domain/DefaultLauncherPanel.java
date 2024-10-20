@@ -4,10 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DefaultLauncherPanel extends JPanel {
-    public DefaultLauncherPanel(int width, int height, int x, int y) {
+
+    Component parent;
+
+    public DefaultLauncherPanel(Component parent, int width, int height, int x, int y) {
         this.setLayout(null);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setBounds(x, y, width, height);
+
+        this.parent = parent;
     }
 
     @Override
@@ -27,5 +32,11 @@ public class DefaultLauncherPanel extends JPanel {
         result.setOpaque(true);
         result.setBackground(Color.GREEN);
         return result;
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
+        if (this.parent != null) this.parent.repaint();
     }
 }

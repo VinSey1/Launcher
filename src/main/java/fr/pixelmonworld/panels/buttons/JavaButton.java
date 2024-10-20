@@ -11,8 +11,8 @@ import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
 public class JavaButton extends DefaultLauncherButton {
 
-    public JavaButton(int parentWidth, int y) throws IOException {
-        super(parentWidth, y, getBufferedImage("java_button.png"));
+    public JavaButton(Component parent, int y) throws IOException {
+        super(parent, y, getBufferedImage("java_button.png"));
     }
 
     @Override

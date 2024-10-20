@@ -11,8 +11,8 @@ import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
 public class TikTokButton extends DefaultLauncherButton {
 
-    public TikTokButton(int parentWidth, int y) throws IOException {
-        super(parentWidth, y, getBufferedImage("tiktok_button.png"));
+    public TikTokButton(Component parent, int y) throws IOException {
+        super(parent, y, getBufferedImage("tiktok_button.png"));
         this.setBounds(this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
     }
 

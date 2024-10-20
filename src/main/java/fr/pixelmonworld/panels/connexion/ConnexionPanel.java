@@ -1,27 +1,18 @@
 package fr.pixelmonworld.panels.connexion;
 
-import fr.pixelmonworld.LauncherPanel;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class ConnexionPanel extends DefaultLauncherPanel {
 
     ConnexionButton connexionButton;
-    LauncherPanel parent;
 
-    public ConnexionPanel(int width, int height, int x, int y, LauncherPanel parent) throws IOException {
-        super(width, height, x, y);
-
-        this.parent = parent;
+    public ConnexionPanel(Component parent, int width, int height, int x, int y) throws IOException {
+        super(parent, width, height, x, y);
 
         // Ajout du bouton de connexion
-        this.add(connexionButton = new ConnexionButton(this.getWidth(), this.getHeight() / 2, this));
-    }
-
-    @Override
-    public void repaint() {
-        super.repaint();
-        if (this.parent != null) this.parent.repaint();
+        this.add(connexionButton = new ConnexionButton(this, this.getHeight() / 2));
     }
 }

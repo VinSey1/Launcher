@@ -17,8 +17,8 @@ public class InfosPanel extends DefaultLauncherPanel {
     private BufferedImage defaultTextImage = getBufferedImage("discord_logo.png");
     private final ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("infos_panel_background.png")));
 
-    public InfosPanel(int width, int height, int x, int y, TypeMessage message) throws IOException {
-        super(width, height, x - width / 2, y - height / 2);
+    public InfosPanel(Component parent, int width, int height, int x, int y, TypeMessage message) throws IOException {
+        super(parent, width, height, x - width / 2, y - height / 2);
         this.setLayout(new BorderLayout());
 
 //

@@ -10,8 +10,8 @@ import java.net.URI;
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
 public class YoutubeButton extends DefaultLauncherButton {
-    public YoutubeButton(int parentWidth, int y) throws IOException {
-        super(parentWidth, y, getBufferedImage("youtube_button.png"));
+    public YoutubeButton(Component parent, int y) throws IOException {
+        super(parent, y, getBufferedImage("youtube_button.png"));
     }
 
     @Override

@@ -29,13 +29,13 @@ public class LauncherPanel extends JPanel {
         logo.setBounds(560, 0, logoIcon.getIconWidth(), logoIcon.getIconHeight());
         this.add(logo);
 
-        JPanel buttonsPanel = new ButtonsPanel(483, 702, 1408, 249);
+        JPanel buttonsPanel = new ButtonsPanel(this, 483, 702, 1408, 249);
         this.add(buttonsPanel);
 
-        JPanel connexionPanel = new ConnexionPanel(483, 271, 1408, 976, this);
+        JPanel connexionPanel = new ConnexionPanel(this, 483, 271, 1408, 976);
         this.add(connexionPanel);
 
-        JPanel ramPanel = new RamPanel(954, 165, 257, 1100);
+        JPanel ramPanel = new RamPanel(this, 954, 165, 257, 1100);
         this.add(ramPanel);
 
         // Ajout du background

@@ -11,8 +11,8 @@ import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
 public class DiscordButton extends DefaultLauncherButton {
 
-    public DiscordButton(int parentWidth, int y) throws IOException {
-        super(parentWidth, y, getBufferedImage("discord_button.png"));
+    public DiscordButton(Component parent, int y) throws IOException {
+        super(parent, y, getBufferedImage("discord_button.png"));
     }
 
     @Override

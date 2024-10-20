@@ -36,7 +36,6 @@ public class Launcher {
 
     private static Path path = gameInfos.getGameDir();
     private static File crashFile = new File(String.valueOf(path), "crashed");
-
     private static CrashReporter reporter = new CrashReporter(String.valueOf(crashFile), path);
     private static AuthInfos authInfos;
     private static LauncherPanel launcherPanel;
@@ -184,7 +183,7 @@ public class Launcher {
 
     public static void showDialog(TypeMessage message) throws IOException {
 //        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-        launcherPanel.add(infosPanel = new InfosPanel(600, 400, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
+        launcherPanel.add(infosPanel = new InfosPanel(launcherPanel, 600, 400, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
         launcherPanel.repaint();
     }
 

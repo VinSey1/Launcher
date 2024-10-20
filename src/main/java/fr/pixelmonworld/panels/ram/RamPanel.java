@@ -19,8 +19,8 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
     private STexturedButton plus;
     private JLabel background;
 
-    public RamPanel(int width, int height, int x, int y) throws IOException {
-        super(width, height, x, y);
+    public RamPanel(Component parent, int width, int height, int x, int y) throws IOException {
+        super(parent, width, height, x, y);
 
         moins = new STexturedButton(getBufferedImage("fill.png"), getBufferedImage("fill.png"));
         moins.setBounds(400, 20, 40, 40);

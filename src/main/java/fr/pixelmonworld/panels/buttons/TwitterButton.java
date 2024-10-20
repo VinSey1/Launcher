@@ -10,8 +10,8 @@ import java.net.URI;
 import static fr.pixelmonworld.utils.ImagesSelector.getBufferedImage;
 
 public class TwitterButton extends DefaultLauncherButton {
-    public TwitterButton(int parentWidth, int y) throws IOException {
-        super(parentWidth, y, getBufferedImage("twitter_button.png"));
+    public TwitterButton(Component parent, int y) throws IOException {
+        super(parent, y, getBufferedImage("twitter_button.png"));
         this.setBounds(this.getX() + this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
     }
 

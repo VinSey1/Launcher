@@ -9,9 +9,12 @@ import java.awt.image.BufferedImage;
 
 public class DefaultLauncherButton extends STexturedButton implements SwingerEventListener {
 
-    public DefaultLauncherButton(int parentWidth, int y, BufferedImage texture) {
+    Component parent;
+
+    public DefaultLauncherButton(Component parent, int y, BufferedImage texture) {
         super(texture, texture);
-        this.setBounds(parentWidth / 2 - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
+        this.parent = parent;
+        this.setBounds(parent.getWidth() / 2 - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
         this.addEventListener(this);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
@@ -23,5 +26,11 @@ public class DefaultLauncherButton extends STexturedButton implements SwingerEve
     public void setTexture(Image texture) {
         super.setTexture(texture);
         super.setTextureHover(texture);
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
+        if (this.parent != null) this.parent.repaint();
     }
 }
