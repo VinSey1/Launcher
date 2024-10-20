@@ -1,6 +1,5 @@
 package fr.pixelmonworld.panels.connexion;
 
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.pixelmonworld.LauncherPanel;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 

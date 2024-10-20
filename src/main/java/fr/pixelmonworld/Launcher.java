@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Launcher {
 
@@ -39,6 +41,40 @@ public class Launcher {
     private static AuthInfos authInfos;
     private static LauncherPanel launcherPanel;
     private static InfosPanel infosPanel;
+    private static Integer ram;
+
+    public static void addRam() {
+        if (ram < 16) {
+            ram++;
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
+        }
+    }
+
+    public static void removeRam() {
+        if (ram > 2) {
+            ram--;
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
+        }
+    }
+
+    public static int getRam() {
+        if (ram == null) {
+            String savedRam = MainFrame.getSaver().get("ram");
+            if (savedRam != null && !savedRam.isEmpty()) {
+                ram = Integer.valueOf(savedRam);
+            } else {
+                ram = 2;
+            }
+        }
+        return ram;
+    }
+
+    private static Collection<String> getRamVmArg() {
+        Collection<String> vmArgs = new ArrayList<>();
+        vmArgs.add("-Xmx" + ram * 1024 + "M");
+        vmArgs.add("-Xms" + ram * 1024 + "M");
+        return vmArgs;
+    }
 
     public static boolean defaultAuth() {
         MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
@@ -118,7 +154,7 @@ public class Launcher {
 
     public static void launch() {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
-//        noFramework.getAdditionalVmArgs().addAll(List.of(MainFrame.getInstance().getPanel().getRamSelector().getRamArguments()));
+        noFramework.getAdditionalVmArgs().addAll(getRamVmArg());
         try {
             noFramework.launch(MINECRAFT_VERSION, FORGE_VERSION, NoFramework.ModLoader.FORGE);
         } catch (Exception e) {
@@ -148,7 +184,7 @@ public class Launcher {
 
     public static void showDialog(TypeMessage message) throws IOException {
 //        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-        launcherPanel.add(infosPanel = new InfosPanel(605, 405, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
+        launcherPanel.add(infosPanel = new InfosPanel(600, 400, launcherPanel.getWidth() / 2, launcherPanel.getHeight() / 2, message), 0);
         launcherPanel.repaint();
     }
 

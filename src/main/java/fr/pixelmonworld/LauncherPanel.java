@@ -2,6 +2,7 @@ package fr.pixelmonworld;
 
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
 import fr.pixelmonworld.panels.connexion.ConnexionPanel;
+import fr.pixelmonworld.panels.ram.RamPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,9 @@ public class LauncherPanel extends JPanel {
 
         JPanel connexionPanel = new ConnexionPanel(483, 271, 1408, 976, this);
         this.add(connexionPanel);
+
+        JPanel ramPanel = new RamPanel(954, 165, 257, 1100);
+        this.add(ramPanel);
 
         // Ajout du background
         JLabel background = new JLabel(backgroundIcon);

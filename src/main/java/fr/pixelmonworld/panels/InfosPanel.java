@@ -37,11 +37,5 @@ public class InfosPanel extends DefaultLauncherPanel {
         JLabel background = new JLabel(backgroundIcon);
         background.setBounds(0, 0, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
         this.add(background);
-
-        JLabel test1 = new JLabel("tezotsdfsdfze", JLabel.CENTER);
-        test1.setBackground(Color.GREEN);
-        this.add(test1, BorderLayout.CENTER, 0);
-
-        this.setVisible(true);
     }
 }
