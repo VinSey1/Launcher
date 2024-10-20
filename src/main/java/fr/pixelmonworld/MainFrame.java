@@ -44,6 +44,8 @@ public class MainFrame extends JFrame {
 
         // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
         if (!resourcepackFile.exists()) {
+            resourcepackFile.getParentFile().mkdirs();
+            resourcepackFile.createNewFile();
             File resourcePackFromResource = getFile("resourcepack.zip");
             FileUtils.copyFile(resourcePackFromResource, resourcepackFile);
         }
