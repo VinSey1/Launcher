@@ -258,7 +258,6 @@ public class Launcher {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public static void showDialog(TypeMessage message) throws IOException {
-//        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
         mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
         mainPanel.repaint();
     }
