@@ -1,5 +1,6 @@
 package fr.pixelmonworld.panels.buttons;
 
+import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 
@@ -32,8 +33,8 @@ public class YoutubeButton extends DefaultLauncherButton {
     public void onEvent(SwingerEvent swingerEvent) {
         try {
             Desktop.getDesktop().browse(URI.create("https://www.youtube.com/c/PixelmonWorldFR"));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
         }
     }
 }

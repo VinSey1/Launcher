@@ -1,5 +1,6 @@
 package fr.pixelmonworld.panels.buttons;
 
+import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 
@@ -32,8 +33,8 @@ public class DiscordButton extends DefaultLauncherButton {
     public void onEvent(SwingerEvent swingerEvent) {
         try {
             Desktop.getDesktop().browse(URI.create("https://discord.gg/cu4XET2"));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
         }
     }
 }

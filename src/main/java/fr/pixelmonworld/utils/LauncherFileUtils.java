@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Utilitaire concernant les fichiers.
  */
-public class FileUtils {
+public class LauncherFileUtils {
 
     /**
      * Permet de copier le contenu d'un fichier vers un autre.

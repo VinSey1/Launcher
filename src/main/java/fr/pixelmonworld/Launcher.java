@@ -13,13 +13,14 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.TypeMessage;
 import fr.pixelmonworld.panels.main.InfosPanel;
 import fr.pixelmonworld.panels.main.MainPanel;
-import fr.pixelmonworld.utils.FileUtils;
+import fr.pixelmonworld.utils.LauncherFileUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -142,6 +143,33 @@ public class Launcher {
     }
 
     /**
+     * Permet d'initialiser les différents fichiers qui proviennent des ressources et qui seront utilisés dans le launcher.
+     */
+    // TODO Ne marche pas en .exe avec la récupération via les ressources, voir pour récupérer depuis le site
+    public static void initFiles() {
+        try {
+            showDialog(TypeMessage.RECUPERATION_FICHIERS);
+            // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
+            File serversFileFromResource = getFile("servers.dat");
+            if (!serversFile.exists()) {
+                serversFile.createNewFile();
+            }
+            LauncherFileUtils.copyFile(serversFileFromResource, serversFile);
+
+            // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
+            if (!resourcepackFile.exists()) {
+                resourcepackFile.getParentFile().mkdirs();
+                resourcepackFile.createNewFile();
+                File resourcePackFromResource = getFile("resourcepack.zip");
+                LauncherFileUtils.copyFile(resourcePackFromResource, resourcepackFile);
+            }
+            closeDialog();
+        } catch (URISyntaxException | IOException e) {
+            erreurInterne(e);
+        }
+    }
+
+    /**
      * Permet de se connecter à Microsoft via une fenêtre et de sauvegarder le token.
      */
     public static void auth() {
@@ -189,26 +217,14 @@ public class Launcher {
                 .build();
 
         try {
-            // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
-            File serversFileFromResource = getFile("servers.dat");
-            FileUtils.copyFile(serversFileFromResource, serversFile);
-
-            // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
-            if (!resourcepackFile.exists()) {
-                resourcepackFile.getParentFile().mkdirs();
-                resourcepackFile.createNewFile();
-                File resourcePackFromResource = getFile("resourcepack.zip");
-                FileUtils.copyFile(resourcePackFromResource, resourcepackFile);
-            }
-
             flowUpdater.update(path);
         } catch (Exception e) {
             try {
-                Files.delete(path);
+                FileUtils.cleanDirectory(path.toFile());
             } catch (IOException e1) {
                 getReporter().catchError(e1, "Impossible de supprimer le dossier " + path + ".");
             }
-            getReporter().catchError(e, "Impossible de mettre à jour Minecraft.");
+            getReporter().catchError(e, "Impossible de mettre à jour Minecraft. Relancez le Launcher.");
         }
         closeDialog();
     }

@@ -1,5 +1,6 @@
 package fr.pixelmonworld.panels.buttons;
 
+import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 
@@ -33,8 +34,8 @@ public class TwitterButton extends DefaultLauncherButton {
     public void onEvent(SwingerEvent swingerEvent) {
         try {
             Desktop.getDesktop().browse(URI.create("https://twitter.com/PixelmonWorldFR"));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
         }
     }
 }

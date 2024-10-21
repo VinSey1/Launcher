@@ -27,9 +27,8 @@ public class MainFrame extends JFrame {
     /**
      * Constructeur par défaut.
      * @throws IOException Problème lors d'une mise à jour graphique.
-     * @throws URISyntaxException Problème lors de la récupération d'un fichier.
      */
-    public MainFrame() throws IOException, URISyntaxException {
+    public MainFrame() throws IOException {
         instance = this;
 
         // Définit les éléments basique de l'application (taille, titre, icône...)

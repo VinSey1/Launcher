@@ -19,6 +19,9 @@ public class ConnexionButton extends DefaultLauncherButton {
     // Est-ce que l'utilisateur est connecté à Microsoft ?
     boolean microsoftAuth;
 
+    // Est-ce que l'event du bouton est déjà en cours d'exécution ?
+    boolean isClicked;
+
     /**
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
@@ -30,18 +33,15 @@ public class ConnexionButton extends DefaultLauncherButton {
         // Vérification de la connexion par défaut
         microsoftAuth = Launcher.defaultAuth();
         // Si l'utilisateur est déjà connecté, on affiche le bouton de connexion à Minecraft
-        if (microsoftAuth) {
-            this.setTexture(getBufferedImage("minecraft_button.png"));
-        }
+        this.setTexture();
     }
 
     /**
      * Permet de mettre à jour le bouton en lui signalant que l'utilisateur est désormais connecté à Microsoft.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public void updateAuthStatus() throws IOException {
+    public void updateAuthStatus() {
         this.microsoftAuth = true;
-        this.setTexture(getBufferedImage("minecraft_button.png"));
+        this.setTexture();
     }
 
     /**
@@ -50,12 +50,51 @@ public class ConnexionButton extends DefaultLauncherButton {
      */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
-        Thread t;
-        if (!microsoftAuth) {
-            t = new Thread(new MicrosoftThread(this));
-        } else {
-            t = new Thread(new MinecraftThread());
+        if (!isClicked) {
+            setClicked(true);
+            Thread t;
+            if (!microsoftAuth) {
+                t = new Thread(new MicrosoftThread(this));
+            } else {
+                Launcher.initFiles();
+                t = new Thread(new MinecraftThread(this));
+            }
+            t.start();
         }
-        t.start();
+    }
+
+    /**
+     * Permet de définir si le bouton a été cliqué ou non.
+     * @param clicked Oui si le bouton a été cliqué.
+     */
+    public void setClicked(boolean clicked) {
+        try {
+            isClicked = clicked;
+            if (isClicked) {
+                this.setTexture(getBufferedImage("disabled_button.png"));
+                this.setCursor(Cursor.getDefaultCursor());
+            } else {
+                this.setTexture();
+            }
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
+        }
+
+    }
+
+    /**
+     * Permet de mettre à jour l'image en fonction de si c'est une connexion Microsoft ou une connexion Minecraft.
+     */
+    private void setTexture() {
+        try {
+            if (microsoftAuth) {
+                this.setTexture(getBufferedImage("microsoft_button.png"));
+            } else {
+                this.setTexture(getBufferedImage("minecraft_button.png"));
+            }
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        } catch (IOException e) {
+            Launcher.erreurInterne(e);
+        }
     }
 }

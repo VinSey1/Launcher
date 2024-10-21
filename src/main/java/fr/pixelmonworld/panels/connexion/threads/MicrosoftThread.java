@@ -3,8 +3,6 @@ package fr.pixelmonworld.panels.connexion.threads;
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.panels.connexion.ConnexionButton;
 
-import java.io.IOException;
-
 /**
  * Thread permettant de se connecter à Microsoft.
  */
@@ -27,10 +25,7 @@ public class MicrosoftThread implements Runnable {
     @Override
     public void run() {
         Launcher.auth();
-        try {
-            parent.updateAuthStatus();
-        } catch (IOException e) {
-            Launcher.erreurInterne(e);
-        }
+        parent.updateAuthStatus();
+        parent.setClicked(false);
     }
 }
