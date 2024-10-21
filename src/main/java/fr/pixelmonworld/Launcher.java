@@ -20,13 +20,10 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static fr.pixelmonworld.utils.ResourcesUtils.getFile;
 
 /**
  * Coeur technique de l'application.
@@ -150,21 +147,20 @@ public class Launcher {
         try {
             showDialog(TypeMessage.RECUPERATION_FICHIERS);
             // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
-            File serversFileFromResource = getFile("servers.dat");
             if (!serversFile.exists()) {
                 serversFile.createNewFile();
             }
-            LauncherFileUtils.copyFile(serversFileFromResource, serversFile);
-
+            File serversFileFromSite = LauncherFileUtils.getFileFromSite(serversFile);
+//            LauncherFileUtils.copyFile(serversFileFromSite, serversFile);
             // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
             if (!resourcepackFile.exists()) {
                 resourcepackFile.getParentFile().mkdirs();
                 resourcepackFile.createNewFile();
-                File resourcePackFromResource = getFile("resourcepack.zip");
-                LauncherFileUtils.copyFile(resourcePackFromResource, resourcepackFile);
             }
+            File resourcepackFromSite = LauncherFileUtils.getFileFromSite(resourcepackFile);
+//            LauncherFileUtils.copyFile(resourcepackFromSite, resourcepackFile);
             closeDialog();
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             erreurInterne(e);
         }
     }
