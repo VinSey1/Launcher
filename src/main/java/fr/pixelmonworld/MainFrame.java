@@ -61,6 +61,7 @@ public class MainFrame extends JFrame {
     public static void main(String[] args) throws IOException, URISyntaxException {
         // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
         Launcher.getCrashFile().mkdirs();
+        Launcher.initDiscord();
 
         // Permet de créer le fichier de sauvegarde s'il n'existe pas
         if (!saverFile.exists()) {

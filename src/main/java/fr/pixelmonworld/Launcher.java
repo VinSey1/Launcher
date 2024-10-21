@@ -16,6 +16,9 @@ import fr.pixelmonworld.panels.main.MainPanel;
 import fr.pixelmonworld.utils.LauncherFileUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -40,6 +43,7 @@ public class Launcher {
     private static final String SERVER_NAME = "play.pixelmonworld.fr";
     // Port du serveur
     private static final String SERVER_PORT = "25564";
+    public static final String DISCORD_APPLICATION_ID = "1297976065121325076";
     // Informations globales sur Minecraft
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
@@ -163,6 +167,28 @@ public class Launcher {
         } catch (IOException e) {
             erreurInterne(e);
         }
+    }
+
+    /**
+     * Permet d'initialiser Discord Rich Presence.
+     */
+    public static void initDiscord() {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+            DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder(SERVER_NAME);
+            DiscordRPC.discordUpdatePresence(presence.build());
+        }).build();
+        DiscordRPC.discordInitialize(DISCORD_APPLICATION_ID, handlers, false);
+        DiscordRPC.discordRegister(DISCORD_APPLICATION_ID, "");
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                DiscordRPC.discordRunCallbacks();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "RPC-Callback-Handler").start();
     }
 
     /**

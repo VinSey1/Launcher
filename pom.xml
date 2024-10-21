@@ -58,6 +58,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.12.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.Vatuu</groupId>
+            <artifactId>discord-rpc</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
 
     <!-- Permet de faire fonctionner les dépendances -->
@@ -66,6 +71,10 @@
         <repository>
             <id>litarvan</id>
             <url>https://litarvan.github.io/maven</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 </project>
