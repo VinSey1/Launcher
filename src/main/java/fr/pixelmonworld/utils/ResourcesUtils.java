@@ -16,6 +16,8 @@ import java.util.Random;
  */
 public class ResourcesUtils {
 
+    private static int lastRandomImage = Integer.MAX_VALUE;
+
     /**
      * Permet de récupérer une image depuis le dossier de ressources.
      * @param fichier Le fichier à récupérer.
@@ -45,8 +47,12 @@ public class ResourcesUtils {
      */
     public static BufferedImage getRandomRenderImage() throws IOException {
         Random random = new Random();
-        int number = random.nextInt(14 - 1 + 1) + 1;
-        return getBufferedImage("render_" + number + ".jpg");
+        int number;
+        do {
+            number = random.nextInt(14 - 1 + 1) + 1;
+        } while (number == lastRandomImage);
+        lastRandomImage = number;
+        return getBufferedImage("render_" + lastRandomImage + ".jpg");
     }
 
     /**

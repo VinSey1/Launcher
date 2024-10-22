@@ -2,9 +2,11 @@ package fr.pixelmonworld.panels.main;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
+import fr.pixelmonworld.domain.RenderJLabel;
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
 import fr.pixelmonworld.panels.connexion.ConnexionPanel;
 import fr.pixelmonworld.panels.ram.RamPanel;
+import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -23,7 +25,11 @@ public class MainPanel extends DefaultLauncherPanel {
     // Icône du launcher
     private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("server_logo.png")));
     // Image ingame du serveur
-    private ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
+    private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("fill.png")));
+    // JLabel contenant le premier render ingame du serveur
+    private RenderJLabel render;
+    // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
+    private RenderJLabel render2;
 
     /**
      * Constructeur par défaut.
@@ -60,8 +66,56 @@ public class MainPanel extends DefaultLauncherPanel {
         this.add(background);
 
         // Ajout du screen ingame
-        JLabel render = new JLabel(renderIcon);
-        render.setBounds(-81, 215, renderIcon.getIconWidth(), renderIcon.getIconHeight());
+        render = new RenderJLabel(new ImageIcon(getRandomRenderImage()));
+        render.setBounds(-81, 215, render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
+        render.setVisible(true);
         this.add(render);
+
+        // Ajout du screen ingame
+        render2 = new RenderJLabel(fill);
+        render2.setBounds(-81, 215, render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
+        render2.setVisible(false);
+        this.add(render2);
+
+        // Permet de changer le render toutes les 10 secondes
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(10000);
+                    updateRender();
+                } catch (Exception e) {
+                    Launcher.erreurInterne(e);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Permet de mettre à jour le screen ingame avec un effet de fade.
+     * @throws IOException Problème lors d'une mise à jour graphique.
+     */
+    public void updateRender() throws IOException {
+        // Récupère une nouvelle image aléatoire (différente de la précédente)
+        ImageIcon newIcon = new ImageIcon(getRandomRenderImage());
+        // Définit quel render afficher et lequel cacher
+        RenderJLabel renderToShow;
+        RenderJLabel renderToHide;
+        if (render.isVisible()) {
+            renderToShow = render2;
+            renderToHide = render;
+        } else {
+            renderToShow = render;
+            renderToHide = render2;
+        }
+        // Animation de fade
+        renderToShow.setOpacity(0f);
+        renderToShow.setIcon(newIcon);
+        renderToShow.setVisible(true);
+        Timeline.builder(renderToShow)
+                .addPropertyToInterpolate("opacity", 0.0f, 1.0f)
+                .setDuration(2000)
+                .play();
+        renderToHide.setVisible(false);
+        renderToHide.setIcon(fill);
     }
 }

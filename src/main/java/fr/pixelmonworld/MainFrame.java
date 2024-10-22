@@ -3,6 +3,7 @@ package fr.pixelmonworld;
 import fr.pixelmonworld.panels.main.MainPanel;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
+import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,8 +49,17 @@ public class MainFrame extends JFrame {
         this.addMouseListener(mover);
         this.addMouseMotionListener(mover);
 
+        // Permet de définir l'opacité de l'application
+        this.setOpacity(0);
+
         // Affiche l'application
         this.setVisible(true);
+
+        // Permet de faire apparaître l'application avec un fadeIn
+        Timeline.builder(this)
+                .addPropertyToInterpolate("opacity", 0.0f, 1.0f)
+                .setDuration(70)
+                .play();
     }
 
     /**

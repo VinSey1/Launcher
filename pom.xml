@@ -63,6 +63,11 @@
             <artifactId>discord-rpc</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.pushing-pixels</groupId>
+            <artifactId>radiance-animation</artifactId>
+            <version>7.5.0</version>
+        </dependency>
     </dependencies>
 
     <!-- Permet de faire fonctionner les dépendances -->

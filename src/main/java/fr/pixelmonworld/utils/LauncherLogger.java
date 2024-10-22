@@ -5,6 +5,7 @@ import fr.pixelmonworld.panels.main.InfosPanel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Classe qui étend la classe "Logger" pour gérer les logs du lanceur.
@@ -38,7 +39,7 @@ public class LauncherLogger extends Logger {
      */
     @Override
     public void message(boolean err, String toWrite) {
-        String date = String.format("[%s] ", (new SimpleDateFormat("hh:mm:ss")).format(new Date()));
+        String date = String.format("[%s] ", (new SimpleDateFormat("HH:mm:ss", Locale.getDefault())).format(new Date()));
         String msg = date + " " + toWrite;
         if (err) {
             System.out.println(EnumLogColor.RED + msg + EnumLogColor.RESET);
