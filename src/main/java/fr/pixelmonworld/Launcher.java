@@ -3,9 +3,9 @@ package fr.pixelmonworld;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
-import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
-import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import fr.flowarg.flowupdater.versions.forge.ForgeVersion;
+import fr.flowarg.flowupdater.versions.forge.ForgeVersionBuilder;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
@@ -14,6 +14,7 @@ import fr.pixelmonworld.domain.TypeMessage;
 import fr.pixelmonworld.panels.main.InfosPanel;
 import fr.pixelmonworld.panels.main.MainPanel;
 import fr.pixelmonworld.utils.LauncherFileUtils;
+import fr.pixelmonworld.utils.LauncherLogger;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 import net.arikia.dev.drpc.DiscordEventHandlers;
@@ -226,16 +227,19 @@ public class Launcher {
 
         UpdaterOptions updaterOptions = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
-        AbstractForgeVersion modLoaderVersion = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
+        ForgeVersion modLoaderVersion = new ForgeVersionBuilder()
                 .withMods(MODPACKS_URL)
                 .withFileDeleter(new ModFileDeleter(true))
-                .withForgeVersion(FORGE_VERSION)
+                .withForgeVersion(MINECRAFT_VERSION + "-" + FORGE_VERSION)
                 .build();
+
+        LauncherLogger logger = new LauncherLogger(infosPanel);
 
         FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder()
                 .withVanillaVersion(vanillaVersion)
                 .withUpdaterOptions(updaterOptions)
                 .withModLoaderVersion(modLoaderVersion)
+                .withLogger(logger)
                 .build();
 
         try {

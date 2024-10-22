@@ -62,6 +62,22 @@ public class DefaultLauncherPanel extends JPanel {
     }
 
     /**
+     * Permet de générer un texte centré horizontalement de manière dynamique.
+     * @param y L'axe Y sur lequel afficher le texte.
+     * @param message Le texte à afficher.
+     * @return Le JLabel contenant le texte à afficher.
+     */
+    protected JLabel genererTexte(int y, String message, int fontSize) {
+        JLabel result = new JLabel(message);
+        result.setBounds(0, y - 50 / 2, this.getWidth(), fontSize + 2);
+        result.setHorizontalAlignment(SwingConstants.CENTER);
+        result.setVerticalAlignment(SwingConstants.CENTER);
+        result.setForeground(Color.WHITE);
+        result.setFont(new Font(result.getFont().getName(), result.getFont().getStyle(), fontSize));
+        return result;
+    }
+
+    /**
      * Permet d'afficher le composant avec JavaFX.
      */
     @Override
