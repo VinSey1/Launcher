@@ -32,16 +32,6 @@ public class LauncherFileUtils {
         }
     }
 
-    // TODO A faire
-    public static File getFileFromSite(File fichier) {
-//        switch (fichier.getName()) {
-//            case "servers.dat":
-//                return new File("https://pixelmonworld.fr/launcher/servers.dat");
-//        }
-//        String fichierName = fichier.getName();
-        return fichier;
-    }
-
     /**
      * Permet de calculer le SHA-1 d'un fichier.
      * @param file Le fichier à traiter.

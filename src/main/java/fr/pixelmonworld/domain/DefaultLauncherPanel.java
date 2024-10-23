@@ -50,6 +50,15 @@ public class DefaultLauncherPanel extends JPanel {
     }
 
     /**
+     * Constructeur par défaut permettant de définir la taille du panneau ainsi que son parent.
+     * @param width La largeur du panneau.
+     * @param height La hauteur du panneau.
+     */
+    public DefaultLauncherPanel(Component parent, int width, int height) {
+        this(parent, width, height, 0, 0);
+    }
+
+    /**
      * Permet de générer une image centrée horizontalement de manière dynamique.
      * @param y L'axe Y sur lequel afficher l'image.
      * @param image L'image à afficher.
@@ -94,5 +103,9 @@ public class DefaultLauncherPanel extends JPanel {
     public void repaint() {
         super.repaint();
         if (this.parent != null) this.parent.repaint();
+    }
+
+    public void repaintAlone() {
+        super.repaint();
     }
 }

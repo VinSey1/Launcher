@@ -13,8 +13,8 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.TypeMessage;
 import fr.pixelmonworld.panels.main.InfosPanel;
 import fr.pixelmonworld.panels.main.MainPanel;
-import fr.pixelmonworld.utils.LauncherFileUtils;
 import fr.pixelmonworld.utils.LauncherLogger;
+import fr.pixelmonworld.utils.SiteUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 import net.arikia.dev.drpc.DiscordEventHandlers;
@@ -155,14 +155,14 @@ public class Launcher {
             if (!serversFile.exists()) {
                 serversFile.createNewFile();
             }
-            File serversFileFromSite = LauncherFileUtils.getFileFromSite(serversFile);
+            File serversFileFromSite = SiteUtils.getFileFromSite(serversFile);
 //            LauncherFileUtils.copyFile(serversFileFromSite, serversFile);
             // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
             if (!resourcepackFile.exists()) {
                 resourcepackFile.getParentFile().mkdirs();
                 resourcepackFile.createNewFile();
             }
-            File resourcepackFromSite = LauncherFileUtils.getFileFromSite(resourcepackFile);
+            File resourcepackFromSite = SiteUtils.getFileFromSite(resourcepackFile);
 //            LauncherFileUtils.copyFile(resourcepackFromSite, resourcepackFile);
             closeDialog();
         } catch (IOException e) {

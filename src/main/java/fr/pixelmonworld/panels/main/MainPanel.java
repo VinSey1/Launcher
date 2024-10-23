@@ -5,6 +5,7 @@ import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.RenderJLabel;
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
 import fr.pixelmonworld.panels.connexion.ConnexionPanel;
+import fr.pixelmonworld.panels.news.NewsPanel;
 import fr.pixelmonworld.panels.ram.RamPanel;
 import org.pushingpixels.radiance.animation.api.Timeline;
 
@@ -60,13 +61,15 @@ public class MainPanel extends DefaultLauncherPanel {
         // Ajout du bouton de fermeture
         this.add(new CloseButton(this, 220));
 
+        render = new RenderJLabel(new ImageIcon(getRandomRenderImage()));
+        this.add(new NewsPanel(this, render.getIcon().getIconWidth(), render.getIcon().getIconHeight()));
+
         // Ajout de la structure de la fenêtre
         JLabel background = new JLabel(backgroundIcon);
         background.setBounds(0, 0, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
         this.add(background);
 
         // Ajout du screen ingame
-        render = new RenderJLabel(new ImageIcon(getRandomRenderImage()));
         render.setBounds(-81, 215, render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
         render.setVisible(true);
         this.add(render);
