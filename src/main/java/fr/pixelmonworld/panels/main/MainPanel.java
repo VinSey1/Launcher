@@ -1,6 +1,7 @@
 package fr.pixelmonworld.panels.main;
 
 import fr.pixelmonworld.Launcher;
+import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.RenderJLabel;
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
@@ -85,7 +86,11 @@ public class MainPanel extends DefaultLauncherPanel {
 
         ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
 
-        this.add(newsAlert = new NewsAlert(this, 40, 255));
+        // Ajout de l'alerte de news
+        newsAlert = new NewsAlert(this, 40, 255);
+        String isNews = MainFrame.getSaver().get("news");
+        newsAlert.setVisible(isNews != null && isNews.equals("true"));
+        this.add(newsAlert);
         this.add(new NewsPanel(this, renderIcon.getIconWidth(), renderIcon.getIconHeight(), newsAlert.getX(), newsAlert.getY()));
 
         // Ajout du panel avec l'ensemble des boutons

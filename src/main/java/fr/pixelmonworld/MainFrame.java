@@ -69,14 +69,14 @@ public class MainFrame extends JFrame {
      * @throws URISyntaxException Problème lors de la récupération d'un fichier.
      */
     public static void main(String[] args) throws IOException, URISyntaxException {
-        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
-        Launcher.getCrashFile().mkdirs();
-        Launcher.initDiscord();
-
         // Permet de créer le fichier de sauvegarde s'il n'existe pas
         if (!saverFile.exists()) {
             saverFile.createNewFile();
         }
+
+        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas et d'initialiser l'ensemble
+        // des fichiers nécessaires au launcher
+        Launcher.init();
 
         instance = new MainFrame();
     }

@@ -167,6 +167,16 @@ public class Launcher {
         }
     }
 
+    public static void init() {
+        crashFile.mkdirs();
+        Launcher.initDiscord();
+        Launcher.getFilesFromSite();
+    }
+
+    private static void getFilesFromSite() {
+        MainFrame.getSaver().set("news", "true");
+    }
+
     /**
      * Permet d'initialiser Discord Rich Presence.
      */
@@ -295,16 +305,13 @@ public class Launcher {
     }
 
     public static void removeNewsAlert() {
-        mainPanel.remove(mainPanel.getNewsAlert());
+        mainPanel.getNewsAlert().setVisible(false);
+        MainFrame.getSaver().set("news", "false");
         mainPanel.repaint();
     }
 
     public static CrashReporter getReporter() {
         return reporter;
-    }
-
-    public static File getCrashFile() {
-        return crashFile;
     }
 
     public static Path getPath() {
