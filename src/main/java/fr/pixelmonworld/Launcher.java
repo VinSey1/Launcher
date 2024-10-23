@@ -10,8 +10,6 @@ import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
-import fr.pixelmonworld.panels.main.InfosPanel;
-import fr.pixelmonworld.panels.main.LoadingScreen;
 import fr.pixelmonworld.panels.main.MainPanel;
 import fr.pixelmonworld.utils.LauncherLogger;
 import fr.pixelmonworld.utils.SiteUtils;
@@ -61,9 +59,7 @@ public class Launcher {
     private static AuthInfos authInfos;
     // Le panneau principal de l'application
     private static MainPanel mainPanel;
-    // Le pop-up d'information de l'application
-    private static InfosPanel infosPanel;
-    private static LoadingScreen loadingScreen;
+
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
     // Fichier contenant la liste des serveurs
@@ -234,7 +230,7 @@ public class Launcher {
                 .withForgeVersion(MINECRAFT_VERSION + "-" + FORGE_VERSION)
                 .build();
 
-        LauncherLogger logger = new LauncherLogger(loadingScreen);
+        LauncherLogger logger = new LauncherLogger(mainPanel);
 
         FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder()
                 .withVanillaVersion(vanillaVersion)
@@ -285,7 +281,7 @@ public class Launcher {
      */
     public static void showLoadingScreen() throws IOException {
 //        mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
-        mainPanel.add(loadingScreen = new LoadingScreen(mainPanel), 0);
+        mainPanel.setLoading(true);
         mainPanel.repaint();
     }
 
@@ -294,7 +290,7 @@ public class Launcher {
      */
     private static void closeLoadingScreen() {
 //        mainPanel.remove(infosPanel);
-        mainPanel.remove(loadingScreen);
+        mainPanel.setLoading(false);
         mainPanel.repaint();
     }
 

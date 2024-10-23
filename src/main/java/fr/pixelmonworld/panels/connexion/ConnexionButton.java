@@ -29,7 +29,7 @@ public class ConnexionButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public ConnexionButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("microsoft_button.png"));
+        super(parent, y, getBufferedImage("buttons/microsoft/microsoft_button.png"));
         // Vérification de la connexion par défaut
         microsoftAuth = Launcher.defaultAuth();
         // Si l'utilisateur est déjà connecté, on affiche le bouton de connexion à Minecraft
@@ -71,7 +71,7 @@ public class ConnexionButton extends DefaultLauncherButton {
         try {
             isClicked = clicked;
             if (isClicked) {
-                this.setTexture(getBufferedImage("disabled_button.png"));
+                this.setTexture(getBufferedImage("buttons/microsoft/disabled_button.png"));
                 this.setCursor(Cursor.getDefaultCursor());
             } else {
                 this.setTexture();
@@ -88,9 +88,9 @@ public class ConnexionButton extends DefaultLauncherButton {
     private void setTexture() {
         try {
             if (microsoftAuth) {
-                this.setTexture(getBufferedImage("microsoft_button.png"));
+                this.setTexture(getBufferedImage("buttons/microsoft/microsoft_button.png"));
             } else {
-                this.setTexture(getBufferedImage("minecraft_button.png"));
+                this.setTexture(getBufferedImage("buttons/minecraft/minecraft_button.png"));
             }
             this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         } catch (IOException e) {

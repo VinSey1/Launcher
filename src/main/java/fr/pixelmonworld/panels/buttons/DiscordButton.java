@@ -22,7 +22,7 @@ public class DiscordButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public DiscordButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("discord_button.png"));
+        super(parent, y, getBufferedImage("buttons/discord/discord_button.png"));
     }
 
     /**

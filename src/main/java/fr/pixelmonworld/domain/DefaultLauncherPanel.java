@@ -66,8 +66,19 @@ public class DefaultLauncherPanel extends JPanel {
      * @return Le JLabel contenant l'image à afficher.
      */
     protected JLabel genererImage(int y, ImageIcon image) {
+        return genererImage(this.getWidth() / 2, y, image);
+    }
+
+    /**
+     * Permet de générer une image.
+     * @param x L'axe X sur lequel afficher l'image.
+     * @param y L'axe Y sur lequel afficher l'image.
+     * @param image L'image à afficher.
+     * @return Le JLabel contenant l'image à afficher.
+     */
+    protected JLabel genererImage(int x, int y, ImageIcon image) {
         JLabel result = new JLabel(image);
-        result.setBounds(this.getWidth() / 2 - image.getIconWidth() / 2, y - image.getIconHeight() / 2, image.getIconWidth(), image.getIconHeight());
+        result.setBounds(x - image.getIconWidth() / 2, y - image.getIconHeight() / 2, image.getIconWidth(), image.getIconHeight());
         return result;
     }
 

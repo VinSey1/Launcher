@@ -22,7 +22,7 @@ public class JavaButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public JavaButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("java_button.png"));
+        super(parent, y, getBufferedImage("buttons/error/error_button.png"));
     }
 
     /**

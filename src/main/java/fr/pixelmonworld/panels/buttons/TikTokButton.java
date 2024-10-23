@@ -22,7 +22,7 @@ public class TikTokButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public TikTokButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("tiktok_button.png"));
+        super(parent, y, getBufferedImage("buttons/medias/tiktok_button.png"));
         this.setBounds(this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
     }
 

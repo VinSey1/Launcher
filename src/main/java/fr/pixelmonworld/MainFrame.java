@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
         this.setUndecorated(true);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
-        this.setIconImage(getImage("icon.png"));
+        this.setIconImage(getImage("other/icon.png"));
 
         // Permet d'ajouter le panneau principal à l'application
         this.setContentPane(new MainPanel(this.getWidth(), this.getHeight()));

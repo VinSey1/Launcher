@@ -14,8 +14,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.Objects;
 
-import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
-import static fr.pixelmonworld.utils.ResourcesUtils.getRandomRenderImage;
+import static fr.pixelmonworld.utils.ResourcesUtils.*;
 
 /**
  * Panneau principal de l'application servant de parent pour le reste des éléments spécifiques.
@@ -23,11 +22,11 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getRandomRenderImage;
 public class MainPanel extends DefaultLauncherPanel {
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/background.png")));
     // Icône du launcher
-    private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("server_logo.png")));
+    private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/server_logo.png")));
     // Image ingame du serveur
-    private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("fill.png")));
+    private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/fill.png")));
     // JLabel contenant le premier render ingame du serveur
     private RenderJLabel render;
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
@@ -39,6 +38,16 @@ public class MainPanel extends DefaultLauncherPanel {
 
     // Alerte de news
     private NewsAlert newsAlert;
+
+    public void setLoading(boolean isLoading) {
+        this.loadingGif.setVisible(isLoading);
+        this.logsLabel.setVisible(isLoading);
+        this.greyFilter.setVisible(isLoading);
+    }
+
+    private JLabel greyFilter;
+    private JLabel logsLabel;
+    private JLabel loadingGif;
 
     /**
      * Constructeur par défaut.
@@ -52,6 +61,22 @@ public class MainPanel extends DefaultLauncherPanel {
 
         // Permet l'affichage de la fenêtre d'information
         Launcher.setLauncherPanel(this);
+
+        ImageIcon loadingGifIcon = new ImageIcon(getResource("other/loading.gif"));
+        loadingGif = genererImage(height/ 2 - loadingGifIcon.getIconHeight(), loadingGifIcon);
+        loadingGif.setDoubleBuffered(true);
+        loadingGif.setVisible(false);
+        this.add(loadingGif);
+
+        // Ajout d'un JLabel visible
+        logsLabel = genererTexte(height / 2, "", 20);
+        logsLabel.setVisible(false);
+        this.add(logsLabel);
+
+        greyFilter = new JLabel(new ImageIcon(Objects.requireNonNull(getBufferedImage("other/grey_filter.png"))));
+        greyFilter.setBounds(0, 0, width, height);
+        greyFilter.setVisible(false);
+        this.add(greyFilter);
 
         // Ajout du logo
         JLabel logo = new JLabel(logoIcon);
@@ -134,5 +159,14 @@ public class MainPanel extends DefaultLauncherPanel {
                 .play();
         renderToHide.setVisible(false);
         renderToHide.setIcon(fill);
+    }
+
+    /**
+     * Permet de mettre à jour le texte affiché par le JLabel visible.
+     *
+     * @param newText Le nouveau texte à afficher.
+     */
+    public void updateLog(String newText) {
+        logsLabel.setText(newText);
     }
 }

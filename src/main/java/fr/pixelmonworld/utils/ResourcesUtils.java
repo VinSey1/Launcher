@@ -50,7 +50,7 @@ public class ResourcesUtils {
             number = random.nextInt(14 - 1 + 1) + 1;
         } while (number == lastRandomImage);
         lastRandomImage = number;
-        return getBufferedImage("render_" + lastRandomImage + ".jpg");
+        return getBufferedImage("renders/render_" + lastRandomImage + ".jpg");
     }
 
     /**

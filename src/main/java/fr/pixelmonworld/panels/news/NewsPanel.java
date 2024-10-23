@@ -35,7 +35,7 @@ public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListe
         if (news.isPresent()) {
             this.news = news.get();
 
-            BufferedImage newsButtonImage = getBufferedImage("news_button.png");
+            BufferedImage newsButtonImage = getBufferedImage("news/news_button.png");
             newsButton = new STexturedButton(newsButtonImage, newsButtonImage);
             newsButton.setBounds(x, y, newsButtonImage.getWidth(), newsButtonImage.getHeight());
             newsButton.addEventListener(this);

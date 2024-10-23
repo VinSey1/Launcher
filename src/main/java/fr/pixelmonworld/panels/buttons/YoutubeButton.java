@@ -22,7 +22,7 @@ public class YoutubeButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public YoutubeButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("youtube_button.png"));
+        super(parent, y, getBufferedImage("buttons/medias/youtube_button.png"));
     }
 
     /**

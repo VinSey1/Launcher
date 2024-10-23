@@ -15,13 +15,13 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 public class ButtonsPanel extends DefaultLauncherPanel {
 
     // Logo d'erreur
-    private BufferedImage errorLogoImage = getBufferedImage("error_logo.png");
+    private BufferedImage errorLogoImage = getBufferedImage("buttons/error/error_logo.png");
     // Image contenant le texte "Erreur de lancement ?"
-    private BufferedImage errorTextImage = getBufferedImage("error_text.png");
+    private BufferedImage errorTextImage = getBufferedImage("buttons/error/error_text.png");
     // Logo de discord
-    private BufferedImage discordLogoImage = getBufferedImage("discord_logo.png");
+    private BufferedImage discordLogoImage = getBufferedImage("buttons/discord/discord_logo.png");
     // Image contenant le texte "Rejoins-nous !"
-    private BufferedImage discordTextImage = getBufferedImage("discord_text.png");
+    private BufferedImage discordTextImage = getBufferedImage("buttons/discord/discord_text.png");
 
     /**
      * Constructeur par défaut.

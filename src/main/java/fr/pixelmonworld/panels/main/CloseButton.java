@@ -20,7 +20,7 @@ public class CloseButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public CloseButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("close_button.png"));
+        super(parent, y, getBufferedImage("buttons/close_button.png"));
         this.setBounds(parent.getWidth() - this.getWidth() - 10, y);
     }
 

@@ -15,7 +15,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
  */
 public class InfosPanel extends DefaultLauncherPanel {
 
-    private final ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("infos_panel_background.png")));
+    private final ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/infos_panel_background.png")));
     private JLabel logsLabel;
 
     public InfosPanel(Component parent, int width, int height, int x, int y, TypeMessage message) throws IOException {

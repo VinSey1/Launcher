@@ -10,7 +10,7 @@ public class NewsAlert extends JLabel {
     Component parent;
 
     public NewsAlert(Component parent, int x, int y) {
-        super(new ImageIcon(getResource("news_alert.gif")));
+        super(new ImageIcon(getResource("news/news_alert.gif")));
         this.parent = parent;
         this.setBounds(x, y, this.getIcon().getIconWidth(), this.getIcon().getIconHeight());
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

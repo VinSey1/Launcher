@@ -22,7 +22,7 @@ public class TwitterButton extends DefaultLauncherButton {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public TwitterButton(Component parent, int y) throws IOException {
-        super(parent, y, getBufferedImage("twitter_button.png"));
+        super(parent, y, getBufferedImage("buttons/medias/twitter_button.png"));
         this.setBounds(this.getX() + this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
     }
 
