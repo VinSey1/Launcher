@@ -5,6 +5,7 @@ import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.RenderJLabel;
 import fr.pixelmonworld.panels.buttons.ButtonsPanel;
 import fr.pixelmonworld.panels.connexion.ConnexionPanel;
+import fr.pixelmonworld.panels.news.NewsAlert;
 import fr.pixelmonworld.panels.news.NewsPanel;
 import fr.pixelmonworld.panels.ram.RamPanel;
 import org.pushingpixels.radiance.animation.api.Timeline;
@@ -32,9 +33,17 @@ public class MainPanel extends DefaultLauncherPanel {
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
     private RenderJLabel render2;
 
+    public NewsAlert getNewsAlert() {
+        return newsAlert;
+    }
+
+    // Alerte de news
+    private NewsAlert newsAlert;
+
     /**
      * Constructeur par défaut.
-     * @param width La largeur du panneau.
+     *
+     * @param width  La largeur du panneau.
      * @param height La hauteur du panneau.
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
@@ -49,6 +58,11 @@ public class MainPanel extends DefaultLauncherPanel {
         logo.setBounds(width / 2 - logoIcon.getIconWidth() / 2, 0, logoIcon.getIconWidth(), logoIcon.getIconHeight());
         this.add(logo);
 
+        ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
+
+        this.add(newsAlert = new NewsAlert(this, 40, 255));
+        this.add(new NewsPanel(this, renderIcon.getIconWidth(), renderIcon.getIconHeight(), newsAlert.getX(), newsAlert.getY()));
+
         // Ajout du panel avec l'ensemble des boutons
         this.add(new ButtonsPanel(this, 483, 702, 1408, 249));
 
@@ -61,8 +75,7 @@ public class MainPanel extends DefaultLauncherPanel {
         // Ajout du bouton de fermeture
         this.add(new CloseButton(this, 220));
 
-        render = new RenderJLabel(new ImageIcon(getRandomRenderImage()));
-        this.add(new NewsPanel(this, render.getIcon().getIconWidth(), render.getIcon().getIconHeight()));
+        render = new RenderJLabel(renderIcon);
 
         // Ajout de la structure de la fenêtre
         JLabel background = new JLabel(backgroundIcon);
@@ -95,6 +108,7 @@ public class MainPanel extends DefaultLauncherPanel {
 
     /**
      * Permet de mettre à jour le screen ingame avec un effet de fade.
+     *
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public void updateRender() throws IOException {

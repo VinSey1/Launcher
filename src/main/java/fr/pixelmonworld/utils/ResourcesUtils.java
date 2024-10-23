@@ -5,10 +5,9 @@ import fr.pixelmonworld.MainFrame;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Random;
 
 /**
@@ -25,7 +24,7 @@ public class ResourcesUtils {
      * @throws IOException Problème lors de la récupération du fichier.
      */
     public static Image getImage(String fichier) throws IOException {
-        InputStream inputStream = MainFrame.getInstance().getClass().getClassLoader().getResourceAsStream(fichier);
+        InputStream inputStream = getResource(fichier).openStream();
         return inputStream != null ? ImageIO.read(inputStream ) : null;
     }
 
@@ -36,8 +35,7 @@ public class ResourcesUtils {
      * @throws IOException Problème lors de la récupération du fichier.
      */
     public static BufferedImage getBufferedImage(String fichier) throws IOException {
-        InputStream inputStream = MainFrame.getInstance().getClass().getClassLoader().getResourceAsStream(fichier);
-        return inputStream != null ? ImageIO.read(inputStream ) : null;
+        return (BufferedImage) getImage(fichier);
     }
 
     /**
@@ -58,9 +56,8 @@ public class ResourcesUtils {
     /**
      * Permet de récupérer un fichier dans le dossier de ressources.
      * @return Fichier récupéré depuis les ressources.
-     * @throws IOException Problème lors de la récupération du fichier.
      */
-    public static File getFile(String file) throws URISyntaxException {
-        return new File(MainFrame.getInstance().getClass().getClassLoader().getResource(file).toURI());
+    public static URL getResource(String file) {
+        return MainFrame.getInstance().getClass().getClassLoader().getResource(file);
     }
 }

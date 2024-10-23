@@ -10,8 +10,8 @@ import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
-import fr.pixelmonworld.domain.TypeMessage;
 import fr.pixelmonworld.panels.main.InfosPanel;
+import fr.pixelmonworld.panels.main.LoadingScreen;
 import fr.pixelmonworld.panels.main.MainPanel;
 import fr.pixelmonworld.utils.LauncherLogger;
 import fr.pixelmonworld.utils.SiteUtils;
@@ -63,6 +63,7 @@ public class Launcher {
     private static MainPanel mainPanel;
     // Le pop-up d'information de l'application
     private static InfosPanel infosPanel;
+    private static LoadingScreen loadingScreen;
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
     // Fichier contenant la liste des serveurs
@@ -150,7 +151,7 @@ public class Launcher {
     // TODO Ne marche pas en .exe avec la récupération via les ressources, voir pour récupérer depuis le site
     public static void initFiles() {
         try {
-            showDialog(TypeMessage.RECUPERATION_FICHIERS);
+            showLoadingScreen();
             // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
             if (!serversFile.exists()) {
                 serversFile.createNewFile();
@@ -164,7 +165,7 @@ public class Launcher {
             }
             File resourcepackFromSite = SiteUtils.getFileFromSite(resourcepackFile);
 //            LauncherFileUtils.copyFile(resourcepackFromSite, resourcepackFile);
-            closeDialog();
+            closeLoadingScreen();
         } catch (IOException e) {
             erreurInterne(e);
         }
@@ -217,7 +218,7 @@ public class Launcher {
      */
     public static void update() {
         try {
-            showDialog(TypeMessage.UPDATE_MINECRAFT);
+            showLoadingScreen();
         } catch (IOException e) {
             erreurInterne(e);
         }
@@ -233,7 +234,7 @@ public class Launcher {
                 .withForgeVersion(MINECRAFT_VERSION + "-" + FORGE_VERSION)
                 .build();
 
-        LauncherLogger logger = new LauncherLogger(infosPanel);
+        LauncherLogger logger = new LauncherLogger(loadingScreen);
 
         FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder()
                 .withVanillaVersion(vanillaVersion)
@@ -252,7 +253,7 @@ public class Launcher {
             }
             getReporter().catchError(e, "Impossible de mettre à jour Minecraft. Relancez le Launcher.");
         }
-        closeDialog();
+        closeLoadingScreen();
     }
 
     /**
@@ -280,19 +281,25 @@ public class Launcher {
 
     /**
      * Permet d'afficher le pop-up d'information avec le message correspondant.
-     * @param message Message à afficher.
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public static void showDialog(TypeMessage message) throws IOException {
-        mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
+    public static void showLoadingScreen() throws IOException {
+//        mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
+        mainPanel.add(loadingScreen = new LoadingScreen(mainPanel), 0);
         mainPanel.repaint();
     }
 
     /**
      * Permet de fermer le pop-up d'information.
      */
-    private static void closeDialog() {
-        mainPanel.remove(infosPanel);
+    private static void closeLoadingScreen() {
+//        mainPanel.remove(infosPanel);
+        mainPanel.remove(loadingScreen);
+        mainPanel.repaint();
+    }
+
+    public static void removeNewsAlert() {
+        mainPanel.remove(mainPanel.getNewsAlert());
         mainPanel.repaint();
     }
 
