@@ -22,6 +22,7 @@ public class DefaultLauncherPanel extends JPanel {
         // Permet de pouvoir placer les éléments en X, Y
         this.setLayout(null);
         this.setDoubleBuffered(true);
+        this.setOpaque(true);
         // Permet d'avoir un fond transparent
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         // Permet de définir la taille de l'application et son emplacement en X, Y

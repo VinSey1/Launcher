@@ -22,20 +22,9 @@ public class DefaultLauncherButton extends STexturedButton implements SwingerEve
      * @param image L'image à afficher.
      */
     public DefaultLauncherButton(Component parent, int y, BufferedImage image) {
-        this(parent, parent.getWidth() / 2, y, image);
-    }
-
-    /**
-     * Constructeur par défaut permettant de créer un bouton.
-     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
-     * @param x L'axe X sur lequel afficher l'image.
-     * @param y L'axe Y sur lequel afficher l'image.
-     * @param image L'image à afficher.
-     */
-    public DefaultLauncherButton(Component parent, int x, int y, BufferedImage image) {
         super(image, image);
         this.parent = parent;
-        this.setBounds(x - image.getWidth() / 2, y - image.getHeight() / 2, image.getWidth(), image.getHeight());
+        this.setBounds((parent.getWidth() - image.getWidth()) / 2, y - image.getHeight() / 2, image.getWidth(), image.getHeight());
         this.addEventListener(this);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }

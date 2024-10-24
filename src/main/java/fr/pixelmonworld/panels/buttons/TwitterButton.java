@@ -23,7 +23,7 @@ public class TwitterButton extends DefaultLauncherButton {
      */
     public TwitterButton(Component parent, int y) throws IOException {
         super(parent, y, getBufferedImage("buttons/medias/twitter_button.png"));
-        this.setBounds(this.getX() + this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
+        this.setBounds(parent.getWidth() - this.getWidth() - 20, this.getY(), this.getWidth(), this.getHeight());
     }
 
     /**

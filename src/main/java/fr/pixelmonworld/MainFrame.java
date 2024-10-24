@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
         // Définit les éléments basique de l'application (taille, titre, icône...)
         this.setTitle("Launcher PixelmonWorld");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(1920, 1290);
+        this.setSize(1600, 1075);
         this.setUndecorated(true);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);

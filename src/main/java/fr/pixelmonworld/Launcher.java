@@ -132,8 +132,8 @@ public class Launcher {
                         result.getAccessToken(),
                         result.getProfile().getId()
                 );
-            } catch (MicrosoftAuthenticationException e) {
-                MainFrame.getSaver().set("refresh_token", null);
+            } catch (Exception e) {
+                MainFrame.getSaver().set("refresh_token", "");
                 getReporter().catchError(e, "Impossible de se connecter à Microsoft automatiquement. Relancez le launcher.");
             }
             return true;

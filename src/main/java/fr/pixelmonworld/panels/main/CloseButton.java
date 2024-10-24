@@ -21,7 +21,9 @@ public class CloseButton extends DefaultLauncherButton {
      */
     public CloseButton(Component parent, int y) throws IOException {
         super(parent, y, getBufferedImage("buttons/close_button.png"));
-        this.setBounds(parent.getWidth() - this.getWidth() - 10, y);
+        this.setBounds(parent.getWidth() - this.getWidth(), y);
+        this.setBackground(new Color(1.0f,1.0f,1.0f,1.0f));
+        this.setOpaque(true);
     }
 
     /**

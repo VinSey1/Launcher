@@ -23,7 +23,7 @@ public class TikTokButton extends DefaultLauncherButton {
      */
     public TikTokButton(Component parent, int y) throws IOException {
         super(parent, y, getBufferedImage("buttons/medias/tiktok_button.png"));
-        this.setBounds(this.getX() / 2, this.getY(), this.getWidth(), this.getHeight());
+        this.setBounds(20, this.getY(), this.getWidth(), this.getHeight());
     }
 
     /**
@@ -33,7 +33,7 @@ public class TikTokButton extends DefaultLauncherButton {
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {
-            Desktop.getDesktop().browse(URI.create("https://www.java.com/fr/download/manual.jsp"));
+            Desktop.getDesktop().browse(URI.create("https://www.tiktok.com/@PixelmonWorldFR"));
         } catch (IOException e) {
             Launcher.erreurInterne(e);
         }
