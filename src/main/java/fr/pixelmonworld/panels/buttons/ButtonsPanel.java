@@ -5,7 +5,6 @@ import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
@@ -30,9 +29,8 @@ public class ButtonsPanel extends DefaultLauncherPanel {
      * @param height La hauteur du panneau.
      * @param x Les coordonnées X du panneau.
      * @param y Les coordonnées Y du panneau.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public ButtonsPanel(Component parent, int width, int height, int x, int y) throws IOException {
+    public ButtonsPanel(Component parent, int width, int height, int x, int y) {
         super(parent, width, height, x, y);
 
         int currentY = 60;

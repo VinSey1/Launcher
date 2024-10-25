@@ -95,7 +95,6 @@ public class DefaultLauncherPanel extends JPanel {
         result.setHorizontalAlignment(SwingConstants.CENTER);
         result.setVerticalAlignment(SwingConstants.CENTER);
         result.setForeground(Color.WHITE);
-        result.setFont(new Font(result.getFont().getName(), result.getFont().getStyle(), fontSize));
         return result;
     }
 

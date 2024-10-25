@@ -19,9 +19,8 @@ public class DiscordButton extends DefaultLauncherButton {
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y Les coordonnées Y du bouton.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public DiscordButton(Component parent, int y) throws IOException {
+    public DiscordButton(Component parent, int y) {
         super(parent, y, getBufferedImage("buttons/discord/discord_button.png"));
     }
 

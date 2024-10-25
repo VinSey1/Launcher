@@ -8,7 +8,6 @@ import fr.theshark34.swinger.textured.STexturedButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
@@ -32,9 +31,8 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
      * @param height La hauteur du panneau.
      * @param x Les coordonnées X du panneau.
      * @param y Les coordonnées Y du panneau.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public RamPanel(Component parent, int width, int height, int x, int y) throws IOException {
+    public RamPanel(Component parent, int width, int height, int x, int y) {
         super(parent, width, height, x, y);
 
         // Bouton permettant de baisser la ram
@@ -59,9 +57,8 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
 
     /**
      * Permet d'actualiser l'affichage pour que la flèche suive la ram définie par l'utilisateur.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    private void genererBackground() throws IOException {
+    private void genererBackground() {
         // Permet de récupérer le background associé à l'endroit de la flèche attendu
         ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("ram/ram_" + Launcher.getRam() + ".png")));
         background = new JLabel(backgroundIcon);
@@ -82,11 +79,7 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
         if (swingerEvent.getSource() == moins) {
             Launcher.removeRam();
         }
-        try {
-            this.remove(background);
-            genererBackground();
-        } catch (IOException e) {
-            Launcher.erreurInterne(e);
-        }
+        this.remove(background);
+        genererBackground();
     }
 }

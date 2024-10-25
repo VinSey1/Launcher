@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getImage;
 
@@ -27,9 +26,8 @@ public class MainFrame extends JFrame {
 
     /**
      * Constructeur par défaut.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public MainFrame() throws IOException {
+    public MainFrame() {
         instance = this;
 
         // Définit les éléments basique de l'application (taille, titre, icône...)
@@ -66,17 +64,17 @@ public class MainFrame extends JFrame {
      * Classe de lancement de l'application.
      * @param args Arguments de l'application.
      * @throws IOException Problème lors d'une mise à jour graphique.
-     * @throws URISyntaxException Problème lors de la récupération d'un fichier.
      */
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException {
         // Permet de créer le fichier de sauvegarde s'il n'existe pas
         if (!saverFile.exists()) {
             saverFile.createNewFile();
         }
 
-        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas et d'initialiser l'ensemble
-        // des fichiers nécessaires au launcher
-        Launcher.init();
+        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
+        Launcher.getCrashFile().mkdirs();
+        // Permet de mettre en place le Discord Rich Presence
+        Launcher.initDiscord();
 
         instance = new MainFrame();
     }

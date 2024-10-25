@@ -1,7 +1,7 @@
 package fr.pixelmonworld.utils;
 
 import fr.flowarg.flowlogger.Logger;
-import fr.pixelmonworld.panels.main.MainPanel;
+import fr.pixelmonworld.panels.main.LauncherPanel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,15 +12,15 @@ import java.util.Locale;
  * Cette classe permet de mettre à jour dynamiquement le panneau d'information avec les messages de log de l'updater.
  */
 public class LauncherLogger extends Logger {
-    private final MainPanel mainPanel;
+    private final LauncherPanel launcherPanel;
 
     /**
      * Constructeur par défaut.
-     * @param mainPanel Le panneau d'informations à mettre à jour avec les messages de log.
+     * @param launcherPanel Le panneau d'informations à mettre à jour avec les messages de log.
      */
-    public LauncherLogger(MainPanel mainPanel) {
+    public LauncherLogger(LauncherPanel launcherPanel) {
         super("", null);
-        this.mainPanel = mainPanel;
+        this.launcherPanel = launcherPanel;
     }
 
     /**
@@ -29,7 +29,7 @@ public class LauncherLogger extends Logger {
      */
     @Override
     public void writeToTheLogFile(String toLog) {
-        mainPanel.updateLog(toLog);
+        launcherPanel.updateLog(toLog);
     }
 
     /**
