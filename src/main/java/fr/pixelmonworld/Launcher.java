@@ -11,8 +11,9 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.News;
-import fr.pixelmonworld.panels.main.LauncherPanel;
-import fr.pixelmonworld.panels.main.PreLauncherPanel;
+import fr.pixelmonworld.panels.launcher.LauncherPanel;
+import fr.pixelmonworld.panels.prelauncher.PreLauncherPanel;
+import fr.pixelmonworld.utils.LauncherCrashReporter;
 import fr.pixelmonworld.utils.LauncherLogger;
 import fr.pixelmonworld.utils.SiteUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
@@ -29,7 +30,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Coeur technique de l'application.
@@ -63,9 +63,9 @@ public class Launcher {
     }
 
     // Fichier de crash de l'application
-    private static File crashFile = new File(String.valueOf(path), "crashed");
+    private static File crashFile = new File(String.valueOf(path), "crashs");
     // Objet permettant de log les erreurs
-    private static CrashReporter reporter = new CrashReporter(String.valueOf(crashFile), path);
+    private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
     // Auth Microsoft
     private static AuthInfos authInfos;
     // Le prélauncher de l'application
@@ -80,7 +80,6 @@ public class Launcher {
     // Zip du texturepack du serveur
     private static File resourcepackFile =  new File(String.valueOf(path), "\\resourcepacks\\PixelmonWorld.zip");
 
-    private static final Properties properties = new Properties();
 
     /**
      * Permet d'ajouter de la ram jusqu'à 16 et la sauvegarder.
@@ -222,7 +221,7 @@ public class Launcher {
                 });
             }
             preLauncherPanel.updateTextAndValue("Vérification des news...", 95);
-            File newsFileFromAssets = new File(String.valueOf(path), "\\assets\\news.obj");
+            File newsFileFromAssets = new File(String.valueOf(path), "\\assets\\news");
             Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
             if (!newsFileFromAssets.exists()) {
                 preLauncherPanel.updateTextAndValue("Récupération des news...", 98);
@@ -230,6 +229,7 @@ public class Launcher {
                 ObjectOutputStream oos = new ObjectOutputStream(newsFile);
                 oos.writeObject(newsFromSite);
                 oos.close();
+                MainFrame.getSaver().set("news", "true");
             } else {
                 FileInputStream newsFile = new FileInputStream(newsFileFromAssets);
                 ObjectInputStream ois = new ObjectInputStream(newsFile);
@@ -365,9 +365,7 @@ public class Launcher {
      * @throws IOException Problème lors d'une mise à jour graphique.
      */
     public static void showLoadingScreen() throws IOException {
-//        mainPanel.add(infosPanel = new InfosPanel(mainPanel, 600, 400, mainPanel.getWidth() / 2, mainPanel.getHeight() / 2, message), 0);
         launcherPanel.setLoading(true);
-        launcherPanel.repaint();
     }
 
     /**

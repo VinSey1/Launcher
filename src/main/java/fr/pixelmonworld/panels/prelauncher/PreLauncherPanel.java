@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.main;
+package fr.pixelmonworld.panels.prelauncher;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
@@ -15,7 +15,6 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
  */
 public class PreLauncherPanel extends DefaultLauncherPanel {
 
-//    private final ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/infos_panel_background.png")));
     private JLabel text;
     private JProgressBar progressBar;
 
@@ -27,21 +26,20 @@ public class PreLauncherPanel extends DefaultLauncherPanel {
         Font robotoBlack = null;
         Font robotoBold = null;
         try {
-            robotoBlack = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-black.ttf"));
-            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Bold.ttf"));
+            robotoBlack = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Black.ttf")).deriveFont(50f);
+            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Bold.ttf")).deriveFont(12f);
         } catch (FontFormatException | IOException e) {
             Launcher.erreurInterne(e);
         }
 
         // Ajout d'un Titre
         JLabel titre = genererTexte(this.getHeight() / 5, "PW", 50);
-        titre.setFont(robotoBlack.deriveFont(50f));
+        titre.setFont(robotoBlack);
         this.add(titre);
-
 
         // Ajout d'un JLabel visible
         text = genererTexte(this.getHeight() - this.getHeight() / 10, "", 10);
-        text.setFont(robotoBold.deriveFont(12f));
+        text.setFont(robotoBold);
         this.add(text);
 
         // Ajout de la barre de progression
@@ -55,15 +53,11 @@ public class PreLauncherPanel extends DefaultLauncherPanel {
 
         this.add(progressBar);
 
-        ImageIcon preLauncherGifIcon = new ImageIcon(getResource("other/prelauncher_loading2.gif"));
+        ImageIcon preLauncherGifIcon = new ImageIcon(getResource("other/prelauncher_loading.gif"));
         JLabel preLauncherGif = genererImage(this.getHeight() - 120, preLauncherGifIcon);
         preLauncherGif.setDoubleBuffered(true);
         this.add(preLauncherGif, 0);
 
-//        // Ajout du background
-//        JLabel background = new JLabel(backgroundIcon);
-//        background.setBounds(0, 0, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
-//        this.add(background);
         this.setOpaque(true);
         this.setBackground(new Color(23, 22, 23));
 

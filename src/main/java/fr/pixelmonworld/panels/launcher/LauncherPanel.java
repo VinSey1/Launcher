@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.main;
+package fr.pixelmonworld.panels.launcher;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.MainFrame;
@@ -13,10 +13,10 @@ import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
-import static fr.pixelmonworld.utils.ResourcesUtils.*;
+import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
+import static fr.pixelmonworld.utils.ResourcesUtils.getRandomRenderImage;
 
 public class LauncherPanel extends DefaultLauncherPanel {
 
@@ -32,10 +32,12 @@ public class LauncherPanel extends DefaultLauncherPanel {
     private RenderJLabel render2;
     // Alerte de news
     private NewsAlert newsAlert;
-    private JLabel greyFilter;
+    private UpdatePanel updatePanel;
+    private boolean isLoading;
 
     public void setLoading(boolean isLoading) {
-        this.greyFilter.setVisible(isLoading);
+        this.isLoading = isLoading;
+        this.updatePanel.setVisible(isLoading);
     }
 
 
@@ -47,11 +49,6 @@ public class LauncherPanel extends DefaultLauncherPanel {
         super(parent, parent.getWidth(), parent.getHeight());
 
         Launcher.setLauncherPanel(this);
-
-        greyFilter = new JLabel(new ImageIcon(Objects.requireNonNull(getBufferedImage("other/grey_filter.png"))));
-        greyFilter.setBounds(0, 0, this.getWidth(), this.getHeight());
-        greyFilter.setVisible(false);
-        this.add(greyFilter);
 
         // Ajout du logo
         JLabel logo = new JLabel(logoIcon);
@@ -67,6 +64,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
         this.add(newsAlert);
         this.add(new NewsPanel(this, renderIcon.getIconWidth(), renderIcon.getIconHeight(), newsAlert.getX(), newsAlert.getY()));
 
+        this.add(updatePanel = new UpdatePanel(this, 300, 200));
+        updatePanel.setVisible(false);
 
         // Ajout du panel avec l'ensemble des boutons
         this.add(new ButtonsPanel(this, 402, 585, 1174, 206));
@@ -106,7 +105,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Thread.sleep(10000);
-                    updateRender();
+                    if (!isLoading) updateRender();
                 } catch (Exception e) {
                     Launcher.erreurInterne(e);
                 }
@@ -117,9 +116,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
     /**
      * Permet de mettre à jour le screen ingame avec un effet de fade.
      *
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public void updateRender() throws IOException {
+    public void updateRender() {
         // Récupère une nouvelle image aléatoire (différente de la précédente)
         ImageIcon newIcon = new ImageIcon(getRandomRenderImage());
         // Définit quel render afficher et lequel cacher
@@ -149,7 +147,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
      *
      * @param newText Le nouveau texte à afficher.
      */
-    public void updateLog(String newText) {
-//        logsLabel.setText(newText);
+    public void updateLog(String newText, int i) {
+        updatePanel.updateTextAndValue(newText, i);
     }
 }

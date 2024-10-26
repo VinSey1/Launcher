@@ -1,6 +1,6 @@
 package fr.pixelmonworld;
 
-import fr.pixelmonworld.panels.main.MainPanel;
+import fr.pixelmonworld.panels.MainPanel;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
 import org.pushingpixels.radiance.animation.api.Timeline;

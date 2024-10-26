@@ -25,7 +25,7 @@ public class MinecraftThread implements Runnable {
     @Override
     public void run() {
         Launcher.update();
-        Launcher.launch();
+//        Launcher.launch();
         parent.setClicked(false);
     }
 }

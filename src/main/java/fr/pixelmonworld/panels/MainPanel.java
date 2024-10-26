@@ -1,6 +1,8 @@
-package fr.pixelmonworld.panels.main;
+package fr.pixelmonworld.panels;
 
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
+import fr.pixelmonworld.panels.launcher.LauncherPanel;
+import fr.pixelmonworld.panels.prelauncher.PreLauncherPanel;
 
 /**
  * Panneau principal de l'application servant de parent pour le reste des éléments spécifiques.

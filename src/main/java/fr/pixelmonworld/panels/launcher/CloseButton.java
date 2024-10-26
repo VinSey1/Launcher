@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.main;
+package fr.pixelmonworld.panels.launcher;
 
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.theshark34.swinger.event.SwingerEvent;

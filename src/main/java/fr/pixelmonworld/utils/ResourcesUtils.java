@@ -69,11 +69,6 @@ public class ResourcesUtils {
      * @return Fichier récupéré depuis les ressources.
      */
     public static InputStream getResourceAsStream(String file) {
-        try {
-            return getResource(file).openStream();
-        } catch (IOException e) {
-            Launcher.erreurInterne(e);
-            return null;
-        }
+        return MainFrame.getInstance().getClass().getClassLoader().getResourceAsStream(file);
     }
 }
