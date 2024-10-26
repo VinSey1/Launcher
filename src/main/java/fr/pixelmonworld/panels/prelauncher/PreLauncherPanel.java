@@ -38,7 +38,7 @@ public class PreLauncherPanel extends DefaultLauncherPanel {
         this.add(titre);
 
         // Ajout d'un JLabel visible
-        text = genererTexte(this.getHeight() - this.getHeight() / 10, "", 10);
+        text = genererTexte(this.getHeight() - this.getHeight() / 10, "", 12);
         text.setFont(robotoBold);
         this.add(text);
 

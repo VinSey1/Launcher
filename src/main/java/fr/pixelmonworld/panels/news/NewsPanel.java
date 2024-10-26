@@ -1,6 +1,7 @@
 package fr.pixelmonworld.panels.news;
 
 import fr.pixelmonworld.Launcher;
+import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.utils.SiteUtils;
@@ -16,30 +17,32 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListener {
 
-    private News news;
+    private Collection<News> news;
     private STexturedButton newsButton;
     private boolean clicked;
+    private ShowNewsPanel showNewsPanel;
 
     /**
      * Constructeur par défaut.
-     * @param width La largeur du panneau.
-     * @param height La hauteur du panneau.
      */
-    public NewsPanel(Component parent, int width, int height, int x, int y) {
-        super(parent, width, height);
+    public NewsPanel(Component parent) {
+        super(parent, parent.getWidth(), parent.getHeight());
 
-        Collection<News> news = SiteUtils.getNewsFromSite();
+        news = SiteUtils.getNewsFromSite();
 
-        if (news.size() > 0) {
-//            this.news = news.get();
-
-            BufferedImage newsButtonImage = getBufferedImage("news/news_button.png");
-            newsButton = new STexturedButton(newsButtonImage, newsButtonImage);
-            newsButton.setBounds(x, y, newsButtonImage.getWidth(), newsButtonImage.getHeight());
-            newsButton.addEventListener(this);
-            newsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            this.add(newsButton);
+        if (news.isEmpty()) {
+            MainFrame.getSaver().set("news", "false");
         }
+
+        BufferedImage newsButtonImage = getBufferedImage("news/news_button.png");
+        newsButton = new STexturedButton(newsButtonImage, newsButtonImage);
+        newsButton.setBounds(40, 220, newsButtonImage.getWidth(), newsButtonImage.getHeight());
+        newsButton.addEventListener(this);
+        newsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        this.add(newsButton);
+
+        this.add(showNewsPanel = new ShowNewsPanel(parent, 500, 200, news));
+        showNewsPanel.setVisible(false);
     }
 
     @Override
@@ -48,6 +51,6 @@ public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListe
             this.clicked = true;
             Launcher.removeNewsAlert();
         }
-        System.out.println("News : " + news);
+        showNewsPanel.setVisible(!showNewsPanel.isVisible());
     }
 }

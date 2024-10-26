@@ -241,7 +241,7 @@ public class Launcher {
                     oos.writeObject(newsFromSite);
                     oos.close();
                     MainFrame.getSaver().set("news", "true");
-                } else {
+                } else if (MainFrame.getSaver().get("news") == null || !MainFrame.getSaver().get("news").equals("true")) {
                     MainFrame.getSaver().set("news", "false");
                 }
             }
@@ -379,8 +379,7 @@ public class Launcher {
 
     public static void removeNewsAlert() {
         launcherPanel.getNewsAlert().setVisible(false);
-        MainFrame.getSaver().set("news", "false");
-        launcherPanel.repaint();
+        MainFrame.getSaver().set("news", "clicked");
     }
 
     public static CrashReporter getReporter() {

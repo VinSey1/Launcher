@@ -62,7 +62,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
         String isNews = MainFrame.getSaver().get("news");
         newsAlert.setVisible(isNews != null && isNews.equals("true"));
         this.add(newsAlert);
-        this.add(new NewsPanel(this, renderIcon.getIconWidth(), renderIcon.getIconHeight(), newsAlert.getX(), newsAlert.getY()));
+        this.add(new NewsPanel(this));
 
         this.add(updatePanel = new UpdatePanel(this, 300, 200));
         updatePanel.setVisible(false);

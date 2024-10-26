@@ -3,6 +3,7 @@ package fr.pixelmonworld.domain;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class News implements Serializable {
     private String title;
@@ -44,5 +45,9 @@ public class News implements Serializable {
         return title.equals(news.title) &&
                 url.equals(news.url) &&
                 date.equals(news.date);
+    }
+
+    public String toMessage() {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/YY")) + " - " + title;
     }
 }

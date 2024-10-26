@@ -38,7 +38,7 @@ public class UpdatePanel extends DefaultLauncherPanel {
         this.add(titre);
 
         // Ajout d'un JLabel visible
-        text = genererTexte((this.getHeight() - this.getHeight() / 8) - 10, "Ceci est un texte d'exemple un peu long", 10);
+        text = genererTexte((this.getHeight() - this.getHeight() / 8) - 10, "Ceci est un texte d'exemple un peu long", 12);
         text.setFont(robotoBold);
         this.add(text);
 
