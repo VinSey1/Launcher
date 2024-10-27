@@ -56,4 +56,16 @@ public class LauncherFileUtils {
         }
         return sb.toString();
     }
+
+    /**
+     * Permet de vérifier si un fichier correspond bien à un SHA-1 donné.
+     * @param file1 Le premier fichier à comparer.
+     * @param shaToCompare Le SHA-1 à comparer.
+     * @return Vrai si les fichiers sont identiques, faux sinon.
+     * @throws IOException Problème lors de la lecture des fichiers.
+     * @throws NoSuchAlgorithmException Problème lors de l'initialisation de l'algorithme de hachage.
+     */
+    public static boolean areFilesIdentical(File file1, String shaToCompare) throws IOException, NoSuchAlgorithmException {
+        return calculateSha1(file1).equals(shaToCompare);
+    }
 }

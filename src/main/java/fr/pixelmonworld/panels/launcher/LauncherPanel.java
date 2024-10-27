@@ -23,7 +23,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
     // Structure de la fenêtre
     private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/background.png")));
     // Icône du launcher
-    private ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/server_logo.png")));
+    private ImageIcon logoIcon = new ImageIcon(Launcher.getLogo());
     // Image ingame du serveur
     private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/fill.png")));
     // JLabel contenant le premier render ingame du serveur
@@ -39,7 +39,6 @@ public class LauncherPanel extends DefaultLauncherPanel {
         this.isLoading = isLoading;
         this.updatePanel.setVisible(isLoading);
     }
-
 
     public NewsAlert getNewsAlert() {
         return newsAlert;
@@ -119,7 +118,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
      */
     public void updateRender() {
         // Récupère une nouvelle image aléatoire (différente de la précédente)
-        ImageIcon newIcon = new ImageIcon(getRandomRenderImage());
+        ImageIcon newRenderIcon = new ImageIcon(getRandomRenderImage());
         // Définit quel render afficher et lequel cacher
         RenderJLabel renderToShow;
         RenderJLabel renderToHide;
@@ -132,7 +131,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
         }
         // Animation de fade
         renderToShow.setOpacity(0f);
-        renderToShow.setIcon(newIcon);
+        renderToShow.setIcon(newRenderIcon);
         renderToShow.setVisible(true);
         Timeline.builder(renderToShow)
                 .addPropertyToInterpolate("opacity", 0.0f, 1.0f)
@@ -144,7 +143,6 @@ public class LauncherPanel extends DefaultLauncherPanel {
 
     /**
      * Permet de mettre à jour le texte affiché par le JLabel visible.
-     *
      * @param newText Le nouveau texte à afficher.
      */
     public void updateLog(String newText, int i) {

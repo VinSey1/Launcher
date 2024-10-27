@@ -10,8 +10,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import static fr.pixelmonworld.utils.ResourcesUtils.getImage;
-
 /**
  * Coeur de l'application graphique.
  */
@@ -37,7 +35,7 @@ public class MainFrame extends JFrame {
         this.setUndecorated(true);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
-        this.setIconImage(getImage("other/icon.png"));
+        this.setIconImage(Launcher.getIcon());
 
         // Permet d'ajouter le panneau principal à l'application
         this.setContentPane(new MainPanel(this.getWidth(), this.getHeight()));

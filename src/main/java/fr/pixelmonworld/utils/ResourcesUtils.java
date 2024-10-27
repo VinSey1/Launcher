@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -46,14 +47,14 @@ public class ResourcesUtils {
      * @return BufferedImage récupérée depuis les ressources.
      */
     public static BufferedImage getRandomRenderImage() {
+        ArrayList<BufferedImage> renders = Launcher.getRenders();
         Random random = new Random();
         int number;
         do {
-            number = random.nextInt(14 - 1 + 1) + 1;
+            number = random.nextInt(renders.size());
         } while (number == lastRandomImage);
         lastRandomImage = number;
-//        return getBufferedImage("renders/render_" + lastRandomImage + ".jpg");
-        return getBufferedImage("renders/render_test.png");
+        return renders.get(number);
     }
 
     /**

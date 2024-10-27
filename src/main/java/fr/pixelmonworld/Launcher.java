@@ -24,7 +24,6 @@ import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -80,7 +79,23 @@ public class Launcher {
     // Fichier contenant la liste des serveurs
     private static File serversFile =  new File(String.valueOf(path), "servers.dat");
     // Zip du texturepack du serveur
-    private static File resourcepackFile =  new File(String.valueOf(path), "\\resourcepacks\\PixelmonWorld.zip");
+    private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
+
+    public static BufferedImage getLogo() {
+        return logo;
+    }
+
+    public static BufferedImage getIcon() {
+        return icon;
+    }
+
+    public static ArrayList<BufferedImage> getRenders() {
+        return renders;
+    }
+
+    private static BufferedImage logo;
+    private static BufferedImage icon;
+    private static ArrayList<BufferedImage> renders;
 
 
     /**
@@ -196,57 +211,41 @@ public class Launcher {
             }
             String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
             if (!versionFromSite.equals(LAUNCHER_VERSION)) {
-                try {
-                    Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
-                } catch (IOException e) {
-                    Launcher.erreurInterne(e);
-                }
+                Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
-            preLauncherPanel.updateTextAndValue("Vérification du logo...", 40);
-            File logoFromAssets = new File(String.valueOf(path), "\\assets\\logo.png");
-            if (!logoFromAssets.exists()) {
-                preLauncherPanel.updateTextAndValue("Récupération du logo...", 50);
-                BufferedImage logo = SiteUtils.getAssetFromSite("logo");
-                ImageIO.write(logo, "png", logoFromAssets);
+            preLauncherPanel.updateTextAndValue("Récupération du logo...", 50);
+            logo = SiteUtils.getAssetFromSite("server_logo");
+            if (logo == null) {
+                erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
-            preLauncherPanel.updateTextAndValue("Vérification de l'icône...", 60);
-            File iconFromAssets = new File(String.valueOf(path), "\\assets\\icon.png");
-            if (!iconFromAssets.exists()) {
-                preLauncherPanel.updateTextAndValue("Récupération de l'icône...", 70);
-                BufferedImage icon = SiteUtils.getAssetFromSite("icone");
-                ImageIO.write(icon, "png", iconFromAssets);
+            preLauncherPanel.updateTextAndValue("Récupération de l'icône...", 70);
+            icon = SiteUtils.getAssetFromSite("icon");
+            if (icon == null) {
+                erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
             }
-            preLauncherPanel.updateTextAndValue("Vérification des renders...", 80);
-            File renderFromAssets = new File(String.valueOf(path), "\\assets\\slides\\1.png");
-            if (!renderFromAssets.exists()) {
-                preLauncherPanel.updateTextAndValue("Récupération des renders...", 90);
-                Collection<BufferedImage> renders = SiteUtils.getRendersFromSite();
-                renders.stream().forEach(render -> {
-                    try {
-                        ImageIO.write(render, "png", renderFromAssets);
-                    } catch (IOException e) {
-                        erreurInterne(e);
-                    }
-                });
+            preLauncherPanel.updateTextAndValue("Récupération des renders...", 80);
+            renders = SiteUtils.getRendersFromSite();
+            if (renders.isEmpty()) {
+                erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
             }
             preLauncherPanel.updateTextAndValue("Vérification des news...", 95);
-            File newsFileFromAssets = new File(String.valueOf(path), "\\assets\\news");
+            File newsSaved = new File(path + "news");
             Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
-            if (!newsFileFromAssets.exists()) {
+            if (!newsSaved.exists()) {
                 preLauncherPanel.updateTextAndValue("Récupération des news...", 98);
-                FileOutputStream newsFile = new FileOutputStream(newsFileFromAssets);
+                FileOutputStream newsFile = new FileOutputStream(newsSaved);
                 ObjectOutputStream oos = new ObjectOutputStream(newsFile);
                 oos.writeObject(newsFromSite);
                 oos.close();
                 MainFrame.getSaver().set("news", "true");
             } else {
-                FileInputStream newsFile = new FileInputStream(newsFileFromAssets);
+                FileInputStream newsFile = new FileInputStream(newsSaved);
                 ObjectInputStream ois = new ObjectInputStream(newsFile);
                 Collection<News> newsFromAssets = (Collection<News>) ois.readObject();
                 ois.close();
                 if (!newsFromAssets.equals(newsFromSite)) {
-                    FileOutputStream newsFileUpdated = new FileOutputStream(newsFileFromAssets);
+                    FileOutputStream newsFileUpdated = new FileOutputStream(newsSaved);
                     ObjectOutputStream oos = new ObjectOutputStream(newsFileUpdated);
                     oos.writeObject(newsFromSite);
                     oos.close();
