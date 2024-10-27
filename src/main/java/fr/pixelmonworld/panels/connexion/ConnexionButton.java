@@ -54,7 +54,6 @@ public class ConnexionButton extends DefaultLauncherButton {
             if (!microsoftAuth) {
                 t = new Thread(new MicrosoftThread(this));
             } else {
-                Launcher.initFiles();
                 t = new Thread(new MinecraftThread(this));
             }
             t.start();

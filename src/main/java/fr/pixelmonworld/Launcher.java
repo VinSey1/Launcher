@@ -15,6 +15,7 @@ import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.panels.launcher.LauncherPanel;
 import fr.pixelmonworld.panels.prelauncher.PreLauncherPanel;
 import fr.pixelmonworld.utils.LauncherCrashReporter;
+import fr.pixelmonworld.utils.LauncherFileUtils;
 import fr.pixelmonworld.utils.LauncherLogger;
 import fr.pixelmonworld.utils.SiteUtils;
 import fr.theshark34.openlauncherlib.minecraft.*;
@@ -172,32 +173,6 @@ public class Launcher {
         return false;
     }
 
-    /**
-     * Permet d'initialiser les différents fichiers qui proviennent des ressources et qui seront utilisés dans le launcher.
-     */
-    // TODO Ne marche pas en .exe avec la récupération via les ressources, voir pour récupérer depuis le site
-    public static void initFiles() {
-        try {
-            showLoadingScreen();
-            // Permet de récupérer la liste des serveurs pour l'afficher dans Minecraft
-            if (!serversFile.exists()) {
-                serversFile.createNewFile();
-            }
-            File serversFileFromSite = SiteUtils.getFileFromSite(serversFile);
-//            LauncherFileUtils.copyFile(serversFileFromSite, serversFile);
-            // Permet de récupérer le texture pack du serveur s'il n'est pas présent dans les fichiers du jeu
-            if (!resourcepackFile.exists()) {
-                resourcepackFile.getParentFile().mkdirs();
-                resourcepackFile.createNewFile();
-            }
-            File resourcepackFromSite = SiteUtils.getFileFromSite(resourcepackFile);
-//            LauncherFileUtils.copyFile(resourcepackFromSite, resourcepackFile);
-            closeLoadingScreen();
-        } catch (IOException e) {
-            erreurInterne(e);
-        }
-    }
-
     public static void init() {
         Launcher.getFilesFromSite();
     }
@@ -335,6 +310,26 @@ public class Launcher {
 
         try {
             flowUpdater.update(path);
+
+            launcherPanel.updateLog("Récupération de la liste des serveurs...", 0);
+            JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
+            if (serversFileFromSite == null) {
+                erreurInterne(new Exception("Impossible de récupérer la liste des serveurs."));
+            }
+            if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
+                launcherPanel.updateLog("Téléchargement de la liste des serveurs...", 25);
+                FileUtils.copyURLToFile(new URI(serversFileFromSite.get("url").getAsString()).toURL(), serversFile);
+            }
+            launcherPanel.updateLog("Récupération du pack de textures...", 50);
+            JsonObject resourcepackFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("resourcepack.zip");
+            if (resourcepackFileFromSite == null) {
+                erreurInterne(new Exception("Impossible de récupérer le pack de textures."));
+            }
+            if (!resourcepackFile.exists() || !LauncherFileUtils.areFilesIdentical(resourcepackFile, resourcepackFileFromSite.get("sha1").getAsString())) {
+                resourcepackFile.mkdirs();
+                launcherPanel.updateLog("Téléchargement du pack de textures...", 75);
+                FileUtils.copyURLToFile(new URI(resourcepackFileFromSite.get("url").getAsString()).toURL(), resourcepackFile);
+            }
         } catch (Exception e) {
             try {
                 FileUtils.cleanDirectory(path.toFile());

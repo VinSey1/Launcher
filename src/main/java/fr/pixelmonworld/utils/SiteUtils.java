@@ -28,17 +28,6 @@ public class SiteUtils {
     private static JsonObject json;
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d'T'H:mm:ss'Z'", Locale.FRENCH);
 
-
-    // TODO A faire
-    public static File getFileFromSite(File fichier) {
-//        switch (fichier.getName()) {
-//            case "servers.dat":
-//                return new File("https://pixelmonworld.fr/launcher/servers.dat");
-//        }
-//        String fichierName = fichier.getName();
-        return fichier;
-    }
-
     public static BufferedImage getAssetFromSite(String fichier) {
         return getBufferedImage(File.separator + "other" + File.separator + fichier + ".png");
 /*        JsonObject jsonObject = getJsonFromSite();
