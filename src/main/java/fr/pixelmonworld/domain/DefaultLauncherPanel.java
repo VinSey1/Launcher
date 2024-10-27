@@ -116,8 +116,4 @@ public class DefaultLauncherPanel extends JPanel {
         super.repaint();
         if (this.parent != null) this.parent.repaint();
     }
-
-    public void repaintAlone() {
-        super.repaint();
-    }
 }

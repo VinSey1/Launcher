@@ -18,6 +18,9 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 import static fr.pixelmonworld.utils.ResourcesUtils.getRandomRenderImage;
 
+/**
+ * Panneau principal du launcher.
+ */
 public class LauncherPanel extends DefaultLauncherPanel {
 
     // Structure de la fenêtre
@@ -32,18 +35,32 @@ public class LauncherPanel extends DefaultLauncherPanel {
     private RenderJLabel render2;
     // Alerte de news
     private NewsAlert newsAlert;
+    // Panel de mise à jour
     private UpdatePanel updatePanel;
+    // Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background
     private boolean isLoading;
 
+    /**
+     * Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background.
+     * @param isLoading Le nouveau statut de chargement.
+     */
     public void setLoading(boolean isLoading) {
         this.isLoading = isLoading;
         this.updatePanel.setVisible(isLoading);
     }
 
+    /**
+     * Permet de récupérer l'alerte de news.
+     * @return L'alerte de news.
+     */
     public NewsAlert getNewsAlert() {
         return newsAlert;
     }
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     */
     public LauncherPanel(Component parent) {
         super(parent, parent.getWidth(), parent.getHeight());
 

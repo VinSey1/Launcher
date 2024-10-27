@@ -6,11 +6,26 @@ import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Permet de gérer les crashs du launcher. Etent la classe "CrashReporter" de OpenLauncherLib pour pouvoir gérer le tout
+ * de manière spécifique.
+ */
 public class LauncherCrashReporter extends CrashReporter {
+
+    /**
+     * Constructeur par défaut.
+     * @param name Le nom du fichier de log.
+     * @param dir Le dossier où écrire le fichier de log.
+     */
     public LauncherCrashReporter(String name, Path dir) {
         super(name, dir);
     }
 
+    /**
+     * Permet de gérer une erreur et de quitter le programme.
+     * @param e L'exception à gérer.
+     * @param message Le message à afficher.
+     */
     @Override
     public void catchError(Exception e, String message) {
         String msg;

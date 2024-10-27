@@ -39,6 +39,7 @@ import java.util.List;
  */
 public class Launcher {
 
+    // Version du launcher
     private static final String LAUNCHER_VERSION = "0.0.1";
     // Version de Minecraft
     private static final String MINECRAFT_VERSION = "1.16.5";
@@ -59,7 +60,7 @@ public class Launcher {
     );
     // Path de l'application (%APPDATA%/.PixelmonWorld/)
     private static Path path = gameInfos.getGameDir();
-
+    // Fichier de crash de l'application
     public static File getCrashFile() {
         return crashFile;
     }
@@ -81,70 +82,12 @@ public class Launcher {
     private static File serversFile =  new File(String.valueOf(path), "servers.dat");
     // Zip du texturepack du serveur
     private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
-
-    public static BufferedImage getLogo() {
-        return logo;
-    }
-
-    public static BufferedImage getIcon() {
-        return icon;
-    }
-
-    public static ArrayList<BufferedImage> getRenders() {
-        return renders;
-    }
-
+    // Logo du serveur
     private static BufferedImage logo;
+    // Icône du serveur
     private static BufferedImage icon;
+    // Renders du serveur
     private static ArrayList<BufferedImage> renders;
-
-
-    /**
-     * Permet d'ajouter de la ram jusqu'à 16 et la sauvegarder.
-     */
-    public static void addRam() {
-        if (ram < 16) {
-            ram++;
-            MainFrame.getSaver().set("ram", String.valueOf(ram));
-        }
-    }
-
-    /**
-     * Permet d'enlever de la ram jusqu'à 2 et la sauvegarder.
-     */
-    public static void removeRam() {
-        if (ram > 2) {
-            ram--;
-            MainFrame.getSaver().set("ram", String.valueOf(ram));
-        }
-    }
-
-    /**
-     * Permet de récupérer la ram actuelle. Si jamais il n'y en a pas de définie, la met à 2 et la sauvegarde.
-     * @return La ram actuelle allouée à Minecraft.
-     */
-    public static int getRam() {
-        if (ram == null) {
-            String savedRam = MainFrame.getSaver().get("ram");
-            if (savedRam != null && !savedRam.isEmpty()) {
-                ram = Integer.valueOf(savedRam);
-            } else {
-                ram = 2;
-            }
-        }
-        return ram;
-    }
-
-    /**
-     * Permet de récupérer les arguments de ram pour Minecraft.
-     * @return La liste des arguments permettant de définir la ram.
-     */
-    private static Collection<String> getRamVmArg() {
-        Collection<String> vmArgs = new ArrayList<>();
-        vmArgs.add("-Xmx" + ram * 1024 + "M");
-        vmArgs.add("-Xms" + ram * 1024 + "M");
-        return vmArgs;
-    }
 
     /**
      * Permet de se connecter automatiquement à Microsoft sans action utilisateur avec le token sauvegardé.
@@ -177,6 +120,9 @@ public class Launcher {
         Launcher.getFilesFromSite();
     }
 
+    /**
+     * Permet de récupérer les fichiers associés au lancement du launcher depuis le site (logo, icon, renders, news).
+     */
     private static void getFilesFromSite() {
         try {
             preLauncherPanel.updateTextAndValue("Vérification de la version du launcher...", 20);
@@ -279,14 +225,10 @@ public class Launcher {
     }
 
     /**
-     * Permet de mettre à jour Minecraft.
+     * Permet de mettre à jour Minecraft et de récupérer les fichiers associées au lancement (serveurs.dat, resourcepack.zip).
      */
     public static void update() {
-        try {
-            showLoadingScreen();
-        } catch (IOException e) {
-            erreurInterne(e);
-        }
+        launcherPanel.setLoading(true);
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                 .withName(MINECRAFT_VERSION)
                 .build();
@@ -338,7 +280,7 @@ public class Launcher {
             }
             getReporter().catchError(e, "Impossible de mettre à jour Minecraft. Relancez le Launcher.");
         }
-        closeLoadingScreen();
+        launcherPanel.setLoading(false);
     }
 
     /**
@@ -346,7 +288,7 @@ public class Launcher {
      */
     public static void launch() {
         NoFramework noFramework = new NoFramework(path, authInfos, GameFolder.FLOW_UPDATER);
-        noFramework.getAdditionalVmArgs().addAll(getRamVmArg());
+        noFramework.getAdditionalVmArgs().addAll(List.of("-Xmx" + ram * 1024 + "M", "-Xms" + ram * 1024 + "M"));
         noFramework.getAdditionalArgs().addAll(List.of("--server", SERVER_NAME));
         noFramework.getAdditionalArgs().addAll(List.of("--port", SERVER_PORT));
         try {
@@ -365,25 +307,47 @@ public class Launcher {
     }
 
     /**
-     * Permet d'afficher le pop-up d'information avec le message correspondant.
-     * @throws IOException Problème lors d'une mise à jour graphique.
+     * Permet de définir les news comme étant lues et de supprimer l'alerte graphique associée.
      */
-    public static void showLoadingScreen() throws IOException {
-        launcherPanel.setLoading(true);
-    }
-
-    /**
-     * Permet de fermer le pop-up d'information.
-     */
-    private static void closeLoadingScreen() {
-//        mainPanel.remove(infosPanel);
-        launcherPanel.setLoading(false);
-        launcherPanel.repaint();
-    }
-
     public static void removeNewsAlert() {
         launcherPanel.getNewsAlert().setVisible(false);
         MainFrame.getSaver().set("news", "clicked");
+    }
+
+    /**
+     * Permet de récupérer la ram actuelle. Si jamais il n'y en a pas de définie, la met à 2 et la sauvegarde.
+     * @return La ram actuelle allouée à Minecraft.
+     */
+    public static int getRam() {
+        if (ram == null) {
+            String savedRam = MainFrame.getSaver().get("ram");
+            if (savedRam != null && !savedRam.isEmpty()) {
+                ram = Integer.valueOf(savedRam);
+            } else {
+                ram = 2;
+            }
+        }
+        return ram;
+    }
+
+    /**
+     * Permet d'ajouter de la ram jusqu'à 16 et la sauvegarder.
+     */
+    public static void addRam() {
+        if (ram < 16) {
+            ram++;
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
+        }
+    }
+
+    /**
+     * Permet d'enlever de la ram jusqu'à 2 et la sauvegarder.
+     */
+    public static void removeRam() {
+        if (ram > 2) {
+            ram--;
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
+        }
     }
 
     public static CrashReporter getReporter() {
@@ -400,5 +364,17 @@ public class Launcher {
 
     public static void setPreLauncherPanel(PreLauncherPanel preLauncherPanel) {
         Launcher.preLauncherPanel = preLauncherPanel;
+    }
+
+    public static BufferedImage getLogo() {
+        return logo;
+    }
+
+    public static BufferedImage getIcon() {
+        return icon;
+    }
+
+    public static ArrayList<BufferedImage> getRenders() {
+        return renders;
     }
 }

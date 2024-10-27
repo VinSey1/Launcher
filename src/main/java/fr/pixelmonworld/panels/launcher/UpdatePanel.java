@@ -15,11 +15,21 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
  */
 public class UpdatePanel extends DefaultLauncherPanel {
 
+    // JLabel contenant le texte à afficher
     private JLabel text;
+    // Barre de progression de la mise à jour
     private JProgressBar progressBar;
+    // Valeur maximale de la barre de progression lorsqu'il y a des mods à installer
     private int maximumValueWithMods = 2658;
+    // Valeur maximale de la barre de progression lorsqu'il n'y a pas de mods à installer
     private int maximumValueWithoutMods = 10;
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param width La largeur du panneau.
+     * @param height La hauteur du panneau.
+     */
     public UpdatePanel(Component parent, int width, int height) {
         super(parent, width, height, (parent.getWidth() - width) / 2, (parent.getHeight() - height) / 2);
 
@@ -38,7 +48,7 @@ public class UpdatePanel extends DefaultLauncherPanel {
         this.add(titre);
 
         // Ajout d'un JLabel visible
-        text = genererTexte((this.getHeight() - this.getHeight() / 8) - 10, "Ceci est un texte d'exemple un peu long", 12);
+        text = genererTexte((this.getHeight() - this.getHeight() / 8) - 10, "", 12);
         text.setFont(robotoBold);
         this.add(text);
 

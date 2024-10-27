@@ -19,7 +19,7 @@ public class MainFrame extends JFrame {
     private static MainFrame instance;
     // Fichier de sauvegarde des options (ram + token d'authentification Microsoft)
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
-    // Objet permettant de sauvegarder les options dans le fichier
+    // Objet permettant de sauvegarder les options dans le fichier comme les news ou le token d'authentification Microsoft
     private static Saver saver = new Saver(saverFile);
 
     /**
@@ -77,10 +77,18 @@ public class MainFrame extends JFrame {
         instance = new MainFrame();
     }
 
+    /**
+     * Permet de récupérer l'instance de l'application.
+     * @return L'instance de l'application.
+     */
     public static MainFrame getInstance() {
         return instance;
     }
 
+    /**
+     * Permet de récupérer l'objet de sauvegarde des options.
+     * @return L'objet de sauvegarde des options.
+     */
     public static Saver getSaver() {
         return saver;
     }

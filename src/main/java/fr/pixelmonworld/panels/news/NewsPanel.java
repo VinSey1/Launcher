@@ -15,11 +15,18 @@ import java.util.Collection;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Panneau permettant d'afficher le bouton des actualités et permettre de les afficher.
+ */
 public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListener {
 
+    // Les actualités à afficher
     private Collection<News> news;
+    // Bouton permettant d'afficher les actualités
     private STexturedButton newsButton;
+    // Permet de savoir si le bouton a été cliqué²
     private boolean clicked;
+    // Panneau permettant d'afficher les actualités
     private ShowNewsPanel showNewsPanel;
 
     /**
@@ -45,6 +52,10 @@ public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListe
         showNewsPanel.setVisible(false);
     }
 
+    /**
+     * Permet de gérer l'événement du bouton et d'afficher ou non les news.
+     * @param swingerEvent L'événement du bouton.
+     */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         if (!clicked) {

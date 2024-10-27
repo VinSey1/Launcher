@@ -7,9 +7,7 @@ import fr.pixelmonworld.domain.News;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Locale;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
 
@@ -18,6 +16,13 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
  */
 public class ShowNewsPanel extends DefaultLauncherPanel {
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param width La largeur du panneau.
+     * @param height La hauteur du panneau.
+     * @param news Les actualités à afficher.
+     */
     public ShowNewsPanel(Component parent, int width, int height, Collection<News> news) {
         super(parent, width, height, (parent.getWidth() - width) / 2, (parent.getHeight() - height) / 2);
 

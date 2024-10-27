@@ -11,13 +11,21 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getResource;
 import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
 
 /**
- * Panneau permettant d'afficher des informations dans un pop-up.
+ * Panneau permettant d'afficher le pré-lancement du launcher.
  */
 public class PreLauncherPanel extends DefaultLauncherPanel {
 
+    // JLabel contenant le texte à afficher
     private JLabel text;
+    // Barre de progression du prélauncher
     private JProgressBar progressBar;
 
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param width La largeur du panneau.
+     * @param height La hauteur du panneau.
+     */
     public PreLauncherPanel(Component parent, int width, int height) {
         super(parent, width, height, (parent.getWidth() - width) / 2, (parent.getHeight() - height) / 2);
 

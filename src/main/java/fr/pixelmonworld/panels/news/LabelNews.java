@@ -12,7 +12,18 @@ import java.net.URISyntaxException;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
 
+/**
+ * Permet d'afficher une actualité.
+ */
 public class LabelNews extends JLabel {
+
+    /**
+     * Constructeur par défaut.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     * @param y Les coordonnées Y du panneau.
+     * @param fontSize La taille de la police.
+     * @param news L'actualité à afficher.
+     */
     public LabelNews(Component parent, int y, int fontSize, News news) throws IOException, FontFormatException {
         super(news.toMessage());
         this.setBounds((parent.getWidth() - (parent.getWidth() - 20)) / 2, y - 50 / 2, parent.getWidth() - 20, fontSize + 2);
