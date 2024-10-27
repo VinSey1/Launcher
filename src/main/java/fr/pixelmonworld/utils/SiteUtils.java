@@ -95,7 +95,7 @@ public class SiteUtils {
         JsonObject json = getJsonFromSite();
         JsonArray jsonArray = json.get("files").getAsJsonArray();
         for (JsonElement jsonObject : jsonArray) {
-            if (jsonObject.getAsJsonObject().get("name").getAsString().equals(s)) {
+            if (jsonObject.getAsJsonObject().get("name").getAsString().startsWith(s)) {
                 return jsonObject.getAsJsonObject();
             }
         }

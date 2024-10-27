@@ -1,5 +1,6 @@
 package fr.pixelmonworld;
 
+import com.google.gson.JsonObject;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
@@ -24,8 +25,10 @@ import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +39,7 @@ import java.util.List;
  */
 public class Launcher {
 
-    private static final String LAUNCHER_VERSION = "71ab1ef46ab017780b10f76496d776f087b9dbd4";
-
+    private static final String LAUNCHER_VERSION = "0.0.1";
     // Version de Minecraft
     private static final String MINECRAFT_VERSION = "1.16.5";
     // Version de Forge
@@ -188,10 +190,18 @@ public class Launcher {
     private static void getFilesFromSite() {
         try {
             preLauncherPanel.updateTextAndValue("Vérification de la version du launcher...", 20);
-            // A changer
-            String versionFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld.exe").get("sha1").getAsString();
-            if (versionFromSite != null && !versionFromSite.equals(LAUNCHER_VERSION)) {
-                erreurInterne(new Exception("La version du launcher n'est pas à jour. Veuillez le retélécharger sur le site."));
+            JsonObject launcherFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld");
+            if (launcherFromSite == null) {
+                erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
+            }
+            String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
+            if (!versionFromSite.equals(LAUNCHER_VERSION)) {
+                try {
+                    Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
+                } catch (IOException e) {
+                    Launcher.erreurInterne(e);
+                }
+                erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
             preLauncherPanel.updateTextAndValue("Vérification du logo...", 40);
             File logoFromAssets = new File(String.valueOf(path), "\\assets\\logo.png");
