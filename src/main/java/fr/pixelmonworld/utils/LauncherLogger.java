@@ -1,7 +1,7 @@
 package fr.pixelmonworld.utils;
 
 import fr.flowarg.flowlogger.Logger;
-import fr.pixelmonworld.panels.launcher.LauncherPanel;
+import fr.pixelmonworld.launcher.LauncherPanel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
