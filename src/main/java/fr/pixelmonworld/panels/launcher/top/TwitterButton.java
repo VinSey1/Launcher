@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.buttons;
+package fr.pixelmonworld.panels.launcher.top;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
@@ -11,27 +11,27 @@ import java.net.URI;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Bouton pour lancer l'application Discord.
+ * Bouton pour lancer l'application Twitter.
  */
-public class DiscordButton extends DefaultLauncherButton {
+public class TwitterButton extends DefaultLauncherButton {
 
     /**
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y Les coordonnées Y du bouton.
      */
-    public DiscordButton(Component parent, int y) {
-        super(parent, y, getBufferedImage("buttons/discord/discord_button.png"));
+    public TwitterButton(Component parent, int x, int y) {
+        super(parent, x, y, getBufferedImage("top_bar/twitter_button.png"));
     }
 
     /**
-     * Permet d'accéder à Discord quand le bouton est appuyé.
+     * Permet d'accéder à Twitter quand le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {
-            Desktop.getDesktop().browse(URI.create("https://discord.gg/cu4XET2"));
+            Desktop.getDesktop().browse(URI.create("https://twitter.com/PixelmonWorldFR"));
         } catch (IOException e) {
             Launcher.erreurInterne(e);
         }

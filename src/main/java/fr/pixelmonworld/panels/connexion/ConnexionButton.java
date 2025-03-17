@@ -15,8 +15,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
  */
 public class ConnexionButton extends DefaultLauncherButton {
 
-    // Est-ce que l'utilisateur est connecté à Microsoft ?
-    boolean microsoftAuth;
+    ConnexionPanel parent;
 
     // Est-ce que l'event du bouton est déjà en cours d'exécution ?
     boolean isClicked;
@@ -26,10 +25,11 @@ public class ConnexionButton extends DefaultLauncherButton {
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y Les coordonnées Y du panneau.
      */
-    public ConnexionButton(Component parent, int y) {
-        super(parent, y, getBufferedImage("buttons/microsoft/microsoft_button.png"));
+    public ConnexionButton(ConnexionPanel parent, int y) {
+        super(parent, y, getBufferedImage("connexion_panel/connect_button.png"));
+        this.parent = parent;
         // Vérification de la connexion par défaut
-        microsoftAuth = Launcher.defaultAuth();
+        parent.setMicrosoftAuth(Launcher.defaultAuth());
         // Si l'utilisateur est déjà connecté, on affiche le bouton de connexion à Minecraft
         this.setTexture();
     }
@@ -38,7 +38,7 @@ public class ConnexionButton extends DefaultLauncherButton {
      * Permet de mettre à jour le bouton en lui signalant que l'utilisateur est désormais connecté à Microsoft.
      */
     public void updateAuthStatus() {
-        this.microsoftAuth = true;
+        parent.setMicrosoftAuth(true);
         this.setTexture();
     }
 
@@ -51,7 +51,7 @@ public class ConnexionButton extends DefaultLauncherButton {
         if (!isClicked) {
             setClicked(true);
             Thread t;
-            if (!microsoftAuth) {
+            if (!parent.isMicrosoftAuth()) {
                 t = new Thread(new MicrosoftThread(this));
             } else {
                 t = new Thread(new MinecraftThread(this));
@@ -67,7 +67,11 @@ public class ConnexionButton extends DefaultLauncherButton {
     public void setClicked(boolean clicked) {
         isClicked = clicked;
         if (isClicked) {
-            this.setTexture(getBufferedImage("buttons/microsoft/disabled_button.png"));
+            if (parent.isMicrosoftAuth()) {
+                this.setTexture(getBufferedImage("connexion_panel/disabled_connect_button.png"));
+            } else {
+                this.setTexture(getBufferedImage("connexion_panel/disabled_play_button.png"));
+            }
             this.setCursor(Cursor.getDefaultCursor());
         } else {
             this.setTexture();
@@ -78,10 +82,10 @@ public class ConnexionButton extends DefaultLauncherButton {
      * Permet de mettre à jour l'image en fonction de si c'est une connexion Microsoft ou une connexion Minecraft.
      */
     private void setTexture() {
-        if (microsoftAuth) {
-            this.setTexture(getBufferedImage("buttons/microsoft/microsoft_button.png"));
+        if (parent.isMicrosoftAuth()) {
+            this.setTexture(getBufferedImage("connexion_panel/play_button.png"));
         } else {
-            this.setTexture(getBufferedImage("buttons/minecraft/minecraft_button.png"));
+            this.setTexture(getBufferedImage("connexion_panel/connect_button.png"));
         }
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }

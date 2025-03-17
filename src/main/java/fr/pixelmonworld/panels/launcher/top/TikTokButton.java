@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.buttons;
+package fr.pixelmonworld.panels.launcher.top;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
@@ -11,28 +11,27 @@ import java.net.URI;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Bouton pour lancer l'application Twitter.
+ * Bouton pour lancer l'application TikTok.
  */
-public class TwitterButton extends DefaultLauncherButton {
+public class TikTokButton extends DefaultLauncherButton {
 
     /**
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y Les coordonnées Y du bouton.
      */
-    public TwitterButton(Component parent, int y) {
-        super(parent, y, getBufferedImage("buttons/medias/twitter_button.png"));
-        this.setBounds(parent.getWidth() - this.getWidth() - 20, this.getY(), this.getWidth(), this.getHeight());
+    public TikTokButton(Component parent, int x, int y) {
+        super(parent, x, y, getBufferedImage("top_bar/tiktok_button.png"));
     }
 
     /**
-     * Permet d'accéder à Twitter quand le bouton est appuyé.
+     * Permet d'accéder à TikTok quand le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {
-            Desktop.getDesktop().browse(URI.create("https://twitter.com/PixelmonWorldFR"));
+            Desktop.getDesktop().browse(URI.create("https://www.tiktok.com/@PixelmonWorldFR"));
         } catch (IOException e) {
             Launcher.erreurInterne(e);
         }

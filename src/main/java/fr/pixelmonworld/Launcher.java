@@ -13,6 +13,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.panels.launcher.LauncherPanel;
+import fr.pixelmonworld.panels.launcher.top.TopPanel;
 import fr.pixelmonworld.panels.prelauncher.PreLauncherPanel;
 import fr.pixelmonworld.utils.LauncherCrashReporter;
 import fr.pixelmonworld.utils.LauncherFileUtils;
@@ -60,6 +61,7 @@ public class Launcher {
     );
     // Path de l'application (%APPDATA%/.PixelmonWorld/)
     private static Path path = gameInfos.getGameDir();
+
     // Fichier de crash de l'application
     public static File getCrashFile() {
         return crashFile;
@@ -71,11 +73,13 @@ public class Launcher {
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
     // Auth Microsoft
     private static AuthInfos authInfos;
+    // Fenêtre principale de l'application permettant de définir les éléments graphiques
+    private static MainFrame mainFrame;
     // Le prélauncher de l'application
     private static PreLauncherPanel preLauncherPanel;
     // Le panneau principal de l'application
     private static LauncherPanel launcherPanel;
-
+    private static TopPanel topPanel;
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
     // Fichier contenant la liste des serveurs
@@ -83,7 +87,7 @@ public class Launcher {
     // Zip du texturepack du serveur
     private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
     // Logo du serveur
-    private static BufferedImage logo;
+    private static BufferedImage connexionPanel;
     // Icône du serveur
     private static BufferedImage icon;
     // Renders du serveur
@@ -136,8 +140,8 @@ public class Launcher {
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
             preLauncherPanel.updateTextAndValue("Récupération du logo...", 50);
-            logo = SiteUtils.getAssetFromSite("server_logo");
-            if (logo == null) {
+            connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
+            if (connexionPanel == null) {
                 erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
             preLauncherPanel.updateTextAndValue("Récupération de l'icône...", 70);
@@ -145,13 +149,14 @@ public class Launcher {
             if (icon == null) {
                 erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
             }
+            mainFrame.setIconImage(Launcher.getIcon());
             preLauncherPanel.updateTextAndValue("Récupération des renders...", 80);
             renders = SiteUtils.getRendersFromSite();
             if (renders.isEmpty()) {
                 erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
             }
             preLauncherPanel.updateTextAndValue("Vérification des news...", 95);
-            File newsSaved = new File(path + "news");
+            File newsSaved = new File(String.valueOf(path), "news");
             Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
             if (!newsSaved.exists()) {
                 preLauncherPanel.updateTextAndValue("Récupération des news...", 98);
@@ -310,7 +315,7 @@ public class Launcher {
      * Permet de définir les news comme étant lues et de supprimer l'alerte graphique associée.
      */
     public static void removeNewsAlert() {
-        launcherPanel.getNewsAlert().setVisible(false);
+        topPanel.getNewsAlert().setVisible(false);
         MainFrame.getSaver().set("news", "clicked");
     }
 
@@ -362,12 +367,20 @@ public class Launcher {
         Launcher.launcherPanel = launcherPanel;
     }
 
+    public static void setTopPanel(TopPanel topPanel) {
+        Launcher.topPanel = topPanel;
+    }
+
     public static void setPreLauncherPanel(PreLauncherPanel preLauncherPanel) {
         Launcher.preLauncherPanel = preLauncherPanel;
     }
 
-    public static BufferedImage getLogo() {
-        return logo;
+    public static void setMainFrame(MainFrame mainFrame) {
+        Launcher.mainFrame = mainFrame;
+    }
+
+    public static BufferedImage getConnexionPanel() {
+        return connexionPanel;
     }
 
     public static BufferedImage getIcon() {

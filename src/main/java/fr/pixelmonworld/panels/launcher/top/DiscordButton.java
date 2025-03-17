@@ -1,4 +1,4 @@
-package fr.pixelmonworld.panels.buttons;
+package fr.pixelmonworld.panels.launcher.top;
 
 import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
@@ -11,27 +11,27 @@ import java.net.URI;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Bouton pour lancer l'application Youtube.
+ * Bouton pour lancer l'application Discord.
  */
-public class YoutubeButton extends DefaultLauncherButton {
+public class DiscordButton extends DefaultLauncherButton {
 
     /**
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y Les coordonnées Y du bouton.
      */
-    public YoutubeButton(Component parent, int y) {
-        super(parent, y, getBufferedImage("buttons/medias/youtube_button.png"));
+    public DiscordButton(Component parent, int x, int y) {
+        super(parent, x, y, getBufferedImage("top_bar/discord_button.png"));
     }
 
     /**
-     * Permet d'accéder à Youtube quand le bouton est appuyé.
+     * Permet d'accéder à Discord quand le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {
-            Desktop.getDesktop().browse(URI.create("https://www.youtube.com/c/PixelmonWorldFR"));
+            Desktop.getDesktop().browse(URI.create("https://discord.gg/cu4XET2"));
         } catch (IOException e) {
             Launcher.erreurInterne(e);
         }

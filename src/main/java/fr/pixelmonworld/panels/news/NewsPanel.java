@@ -41,9 +41,9 @@ public class NewsPanel extends DefaultLauncherPanel implements SwingerEventListe
             MainFrame.getSaver().set("news", "false");
         }
 
-        BufferedImage newsButtonImage = getBufferedImage("news/news_button.png");
+        BufferedImage newsButtonImage = getBufferedImage("top_bar/news_button.png");
         newsButton = new STexturedButton(newsButtonImage, newsButtonImage);
-        newsButton.setBounds(40, 220, newsButtonImage.getWidth(), newsButtonImage.getHeight());
+        newsButton.setBounds(1186, 12, newsButtonImage.getWidth(), newsButtonImage.getHeight());
         newsButton.addEventListener(this);
         newsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.add(newsButton);
