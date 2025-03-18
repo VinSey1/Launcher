@@ -14,6 +14,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.launcher.LauncherPanel;
+import fr.pixelmonworld.launcher.news_panel.NewsPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.prelauncher.PreLauncherPanel;
 import fr.theshark34.openlauncherlib.minecraft.*;
@@ -77,6 +78,7 @@ public class Launcher {
     // Le panneau principal de l'application
     private static LauncherPanel launcherPanel;
     private static TopPanel topPanel;
+    private static NewsPanel newsPanel;
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
     // Fichier contenant la liste des serveurs
@@ -391,5 +393,13 @@ public class Launcher {
 
     public static ArrayList<BufferedImage> getRenders() {
         return renders;
+    }
+
+    public static void showNews() {
+        newsPanel.setVisible(!newsPanel.isVisible());
+    }
+
+    public static void setNewsPanel(NewsPanel newsPanel) {
+        Launcher.newsPanel = newsPanel;
     }
 }

@@ -21,7 +21,7 @@ public class TikTokButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public TikTokButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_bar/tiktok_button.png"));
+        super(parent, x, y, getBufferedImage("top_panel/tiktok_button.png"));
     }
 
     /**

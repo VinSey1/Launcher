@@ -1,14 +1,19 @@
 package fr.pixelmonworld.launcher;
 
+import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
-import fr.pixelmonworld.domain.RenderJLabel;
+import fr.pixelmonworld.domain.News;
+import fr.pixelmonworld.domain.OpacityJLabel;
 import fr.pixelmonworld.launcher.connexion_panel.ConnexionPanel;
+import fr.pixelmonworld.launcher.news_panel.NewsPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.utils.Launcher;
+import fr.pixelmonworld.utils.SiteUtils;
 import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.Objects;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
@@ -19,12 +24,17 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getRandomRenderImage;
  */
 public class LauncherPanel extends DefaultLauncherPanel {
 
+    // Les actualités à afficher
+    private Collection<News> news;
+
+    private NewsPanel newsPanel;
+
     // Image transparente
     private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/fill.png")));
     // JLabel contenant le premier render ingame du serveur
-    private RenderJLabel render;
+    private OpacityJLabel render;
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
-    private RenderJLabel render2;
+    private OpacityJLabel render2;
     // Panel de mise à jour
     private UpdatePanel updatePanel;
     // Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background
@@ -48,8 +58,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
 
         Launcher.setLauncherPanel(this);
 
-        this.add(updatePanel = new UpdatePanel(this, 300, 200));
-        updatePanel.setVisible(false);
+//        this.add(updatePanel = new UpdatePanel(this, 300, 200));
+//        updatePanel.setVisible(false);
 
         this.add(new TopPanel(this));
 
@@ -59,8 +69,17 @@ public class LauncherPanel extends DefaultLauncherPanel {
 //        // Ajout du panel de ram
 //        this.add(new RamPanel(this, rendersWindow.width, 150, (int) rendersWindow.getX(), (int) (rendersWindow.getHeight() + rendersWindow.getY() - 150)));
 
+        news = SiteUtils.getNewsFromSite();
+
+        if (news.isEmpty()) {
+            MainFrame.getSaver().set("news", "false");
+        }
+
+        this.add(newsPanel = new NewsPanel(parent, 830, 70, news));
+        newsPanel.setVisible(false);
+
         ImageIcon renderIcon = new ImageIcon(getRandomRenderImage());
-        render = new RenderJLabel(renderIcon);
+        render = new OpacityJLabel(renderIcon);
 
         // Ajout du screen ingame
         render.setBounds(0, this.getHeight() - render.getIcon().getIconHeight(), render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
@@ -68,7 +87,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
         this.add(render);
 
         // Ajout du screen ingame 2
-        render2 = new RenderJLabel(fill);
+        render2 = new OpacityJLabel(fill);
         render2.setBounds(0, this.getHeight() - render.getIcon().getIconHeight(), render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
         render2.setVisible(false);
         this.add(render2);
@@ -94,8 +113,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
         // Récupère une nouvelle image aléatoire (différente de la précédente)
         ImageIcon newRenderIcon = new ImageIcon(getRandomRenderImage());
         // Définit quel render afficher et lequel cacher
-        RenderJLabel renderToShow;
-        RenderJLabel renderToHide;
+        OpacityJLabel renderToShow;
+        OpacityJLabel renderToHide;
         if (render.isVisible()) {
             renderToShow = render2;
             renderToHide = render;

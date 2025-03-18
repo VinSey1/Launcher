@@ -1,11 +1,8 @@
-package fr.pixelmonworld.launcher.top_panel.buttons;
+package fr.pixelmonworld.launcher.top_panel.buttons.news;
 
-import fr.pixelmonworld.utils.Launcher;
-import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherButton;
 import fr.pixelmonworld.domain.News;
-import fr.pixelmonworld.launcher.top_panel.news.ShowNewsPanel;
-import fr.pixelmonworld.utils.SiteUtils;
+import fr.pixelmonworld.utils.Launcher;
 import fr.theshark34.swinger.event.SwingerEvent;
 
 import java.awt.*;
@@ -19,8 +16,6 @@ public class NewsButton extends DefaultLauncherButton {
     private Collection<News> news;
     // Permet de savoir si le bouton a été cliqué²
     private boolean clicked;
-    // Panneau permettant d'afficher les actualités
-    private ShowNewsPanel showNewsPanel;
 
     /**
      * Constructeur par défaut.
@@ -28,15 +23,7 @@ public class NewsButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public NewsButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_bar/news_button.png"));
-
-        news = SiteUtils.getNewsFromSite();
-
-        if (news.isEmpty()) {
-            MainFrame.getSaver().set("news", "false");
-        }
-
-        this.add(showNewsPanel = new ShowNewsPanel(parent, 500, 200, news));
+        super(parent, x, y, getBufferedImage("top_panel/news_button.png"));
     }
 
     /**
@@ -49,6 +36,6 @@ public class NewsButton extends DefaultLauncherButton {
             this.clicked = true;
             Launcher.removeNewsAlert();
         }
-        showNewsPanel.setVisible(!showNewsPanel.isVisible());
+        Launcher.showNews();
     }
 }

@@ -21,7 +21,7 @@ public class TwitterButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public TwitterButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_bar/twitter_button.png"));
+        super(parent, x, y, getBufferedImage("top_panel/twitter_button.png"));
     }
 
     /**

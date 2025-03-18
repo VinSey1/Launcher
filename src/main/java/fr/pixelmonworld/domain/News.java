@@ -69,6 +69,9 @@ public class News implements Serializable {
      * @return La news sous forme de message affichable dans le launcher.
      */
     public String toMessage() {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/YY")) + " - " + title;
+        if (title.length() > 80) {
+            title = title.substring(0, 80) + "...";
+        }
+        return "<html><p>" + date.format(DateTimeFormatter.ofPattern("dd/MM/YY")) + " - " + title + "</p></html>";
     }
 }

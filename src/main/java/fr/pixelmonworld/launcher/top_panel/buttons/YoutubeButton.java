@@ -21,7 +21,7 @@ public class YoutubeButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public YoutubeButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_bar/youtube_button.png"));
+        super(parent, x, y, getBufferedImage("top_panel/youtube_button.png"));
     }
 
     /**

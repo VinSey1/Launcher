@@ -2,8 +2,9 @@ package fr.pixelmonworld.launcher.top_panel;
 
 import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
+import fr.pixelmonworld.launcher.top_panel.buttons.news.NewsAlert;
 import fr.pixelmonworld.launcher.top_panel.buttons.*;
-import fr.pixelmonworld.launcher.top_panel.news.NewsAlert;
+import fr.pixelmonworld.launcher.top_panel.buttons.news.NewsButton;
 import fr.pixelmonworld.utils.Launcher;
 
 import javax.swing.*;
@@ -18,18 +19,19 @@ public class TopPanel extends DefaultLauncherPanel {
     private NewsAlert newsAlert;
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_bar/background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_panel/background.png")));
 
     // Structure de la fenêtre
-    private ImageIcon serverIconIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_bar/server_icon.png")));
+    private ImageIcon serverIconIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_panel/server_icon.png")));
 
     public TopPanel(Component parent) {
-        super(parent, parent.getWidth(), parent.getHeight());
+        super(parent);
+        this.setSize(backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
 
         Launcher.setTopPanel(this);
 
         // Ajout de l'alerte de news
-        newsAlert = new NewsAlert(this, 1186, 12);
+        newsAlert = new NewsAlert(this, 1172, 14);
         String isNews = MainFrame.getSaver().get("news");
         newsAlert.setVisible(isNews != null && isNews.equals("true"));
         this.add(newsAlert);

@@ -42,6 +42,10 @@ public class DefaultLauncherPanel extends JPanel {
         this.parent = parent;
     }
 
+    public DefaultLauncherPanel(Component parent) {
+        this(parent, 0, 0);
+    }
+
     /**
      * Constructeur par défaut permettant de définir la taille du panneau.
      * @param width La largeur du panneau.
