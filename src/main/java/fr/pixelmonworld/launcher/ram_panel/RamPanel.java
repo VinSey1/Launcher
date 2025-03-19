@@ -1,4 +1,4 @@
-package fr.pixelmonworld.launcher.ram;
+package fr.pixelmonworld.launcher.ram_panel;
 
 import fr.pixelmonworld.utils.Launcher;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;

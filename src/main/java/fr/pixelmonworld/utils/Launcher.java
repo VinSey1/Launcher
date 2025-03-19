@@ -12,6 +12,8 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.MainFrame;
+import fr.pixelmonworld.MainPanel;
+import fr.pixelmonworld.crash.LauncherCrashReporter;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.launcher.LauncherPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
@@ -92,6 +94,12 @@ public class Launcher {
     // Renders du serveur
     private static ArrayList<BufferedImage> renders;
 
+    public static void setMainPanel(MainPanel mainPanel) {
+        Launcher.mainPanel = mainPanel;
+    }
+
+    private static MainPanel mainPanel;
+
     /**
      * Permet de se connecter automatiquement à Microsoft sans action utilisateur avec le token sauvegardé.
      * @return Vrai si l'utilisateur est connecté, faux sinon.
@@ -128,8 +136,13 @@ public class Launcher {
      */
     private static void getFilesFromSite() {
         try {
-            preLauncherPanel.updateTextAndValue("Vérification de la version du launcher...", 20);
-            JsonObject launcherFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld");
+            preLauncherPanel.updateText("Vérification de la version du launcher...");
+            JsonObject launcherFromSite = null;
+            try {
+                launcherFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld");
+            } catch (Exception e) {
+                erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
+            }
             if (launcherFromSite == null) {
                 erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
             }
@@ -138,27 +151,27 @@ public class Launcher {
                 Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
-            preLauncherPanel.updateTextAndValue("Récupération du logo...", 50);
+            preLauncherPanel.updateText("Récupération du logo...");
             connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
             if (connexionPanel == null) {
                 erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
-            preLauncherPanel.updateTextAndValue("Récupération de l'icône...", 70);
+            preLauncherPanel.updateText("Récupération de l'icône...");
             icon = SiteUtils.getAssetFromSite("icon");
             if (icon == null) {
                 erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
             }
             mainFrame.setIconImage(Launcher.getIcon());
-            preLauncherPanel.updateTextAndValue("Récupération des renders...", 80);
+            preLauncherPanel.updateText("Récupération des renders...");
             renders = SiteUtils.getRendersFromSite();
             if (renders.isEmpty()) {
                 erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
             }
-            preLauncherPanel.updateTextAndValue("Vérification des news...", 95);
+            preLauncherPanel.updateText("Vérification des news...");
             File newsSaved = new File(String.valueOf(path), "news");
             Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
             if (!newsSaved.exists()) {
-                preLauncherPanel.updateTextAndValue("Récupération des news...", 98);
+                preLauncherPanel.updateText("Récupération des news...");
                 FileOutputStream newsFile = new FileOutputStream(newsSaved);
                 ObjectOutputStream oos = new ObjectOutputStream(newsFile);
                 oos.writeObject(newsFromSite);
@@ -179,7 +192,8 @@ public class Launcher {
                     MainFrame.getSaver().set("news", "false");
                 }
             }
-            preLauncherPanel.updateTextAndValue("Lancement du launcher...", 100);
+            preLauncherPanel.updateText("Lancement du launcher...");
+            mainPanel.initLauncher();
             preLauncherPanel.setVisible(false);
         } catch (IOException | ClassNotFoundException e) {
             erreurInterne(e);

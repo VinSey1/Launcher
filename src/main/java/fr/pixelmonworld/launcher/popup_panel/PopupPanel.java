@@ -110,12 +110,4 @@ public class PopupPanel extends DefaultLauncherPanel {
         this.text.setText(text);
         this.progressBar.setValue(value);
     }
-
-    /**
-     * Met à jour le titre du panneau.
-     * @param title Le titre à afficher.
-     */
-    public void updateTitle(String title) {
-        this.text.setText(title);
-    }
 }

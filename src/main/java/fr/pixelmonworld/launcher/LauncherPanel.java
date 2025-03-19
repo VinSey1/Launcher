@@ -7,7 +7,7 @@ import fr.pixelmonworld.domain.OpacityJLabel;
 import fr.pixelmonworld.launcher.connexion_panel.ConnexionPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
 import fr.pixelmonworld.launcher.popup_panel.PopupPanel;
-import fr.pixelmonworld.launcher.ram.RamPanel;
+import fr.pixelmonworld.launcher.ram_panel.RamPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.utils.Launcher;
 import fr.pixelmonworld.utils.SiteUtils;
@@ -71,7 +71,11 @@ public class LauncherPanel extends DefaultLauncherPanel {
         // Ajout du panel de ram
         this.add(new RamPanel(this, 683, 106, 25, 584));
 
-        news = SiteUtils.getNewsFromSite();
+        try {
+            news = SiteUtils.getNewsFromSite();
+        } catch (Exception e) {
+            Launcher.erreurInterne(new Exception("Impossible de récupérer les news."));
+        }
 
         if (news.isEmpty()) {
             MainFrame.getSaver().set("news", "false");
@@ -105,6 +109,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
                 }
             }
         }).start();
+
+        System.out.println("fin launcher");
     }
 
     /**

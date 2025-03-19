@@ -35,7 +35,6 @@ public class MainFrame extends JFrame {
         this.setUndecorated(true);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
-        this.setIconImage(Launcher.getIcon());
 
         Launcher.setMainFrame(this);
 
@@ -77,6 +76,8 @@ public class MainFrame extends JFrame {
         Launcher.initDiscord();
 
         instance = new MainFrame();
+
+        Launcher.init();
     }
 
     /**

@@ -75,7 +75,7 @@ public class SiteUtils {
      * Permet de récupérer les news stockées sur le site.
      * @return Les news récupérées.
      */
-    public static Collection<News> getNewsFromSite() {
+    public static Collection<News> getNewsFromSite() throws IOException {
         Collection<News> news = new ArrayList<>();
         JsonObject json = getJsonFromSite();
         json.get("news").getAsJsonArray().forEach(jsonElement -> {
@@ -95,14 +95,11 @@ public class SiteUtils {
      * Permet de récupérer le JSON du site.
      * @return Le JSON récupéré.
      */
-    private static JsonObject getJsonFromSite() {
+    private static JsonObject getJsonFromSite() throws IOException {
         if (json == null) {
-            try (InputStream is = new URL(url + "assets").openStream()) {
-                json = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
-                return json;
-            } catch (IOException e) {
-                Launcher.erreurInterne(e);
-            }
+            InputStream is = new URL(url + "assets").openStream();
+            json = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
+            return json;
         }
         return json;
     }
@@ -112,7 +109,7 @@ public class SiteUtils {
      * @param fichier Le nom du fichier à récupérer.
      * @return Le fichier récupéré.
      */
-    public static JsonObject getFileFromSiteAsJsonObject(String fichier) {
+    public static JsonObject getFileFromSiteAsJsonObject(String fichier) throws IOException {
         JsonObject json = getJsonFromSite();
         JsonArray jsonArray = json.get("files").getAsJsonArray();
         for (JsonElement jsonObject : jsonArray) {
