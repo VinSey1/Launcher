@@ -6,6 +6,7 @@ import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.domain.OpacityJLabel;
 import fr.pixelmonworld.launcher.connexion_panel.ConnexionPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
+import fr.pixelmonworld.launcher.ram.RamPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.utils.Launcher;
 import fr.pixelmonworld.utils.SiteUtils;
@@ -66,8 +67,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
         // Ajout du panel de connexion
         this.add(new ConnexionPanel(this, 359, 430, 25, 93));
 
-//        // Ajout du panel de ram
-//        this.add(new RamPanel(this, rendersWindow.width, 150, (int) rendersWindow.getX(), (int) (rendersWindow.getHeight() + rendersWindow.getY() - 150)));
+        // Ajout du panel de ram
+        this.add(new RamPanel(this, 683, 106, 25, 584));
 
         news = SiteUtils.getNewsFromSite();
 

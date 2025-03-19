@@ -36,16 +36,16 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
         super(parent, width, height, x, y);
 
         // Bouton permettant de baisser la ram
-        moins = new STexturedButton(getBufferedImage("ram/ram_left.png"), getBufferedImage("ram/ram_left.png"));
-        moins.setBounds(this.getWidth() / 2 - 70, 10, 40, 40);
+        moins = new STexturedButton(getBufferedImage("other/fill.png"), getBufferedImage("other/fill.png"));
+        moins.setBounds(this.getWidth() / 2 - 52, 8, 20, 20);
         moins.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         moins.addEventListener(this);
         this.setOpaque(true);
         this.add(moins);
 
         // Bouton permettant d'augmenter la ram
-        plus = new STexturedButton(getBufferedImage("ram/ram_right.png"), getBufferedImage("ram/ram_right.png"));
-        plus.setBounds(this.getWidth() / 2 + 30, 10, 40, 40);
+        plus = new STexturedButton(getBufferedImage("other/fill.png"), getBufferedImage("other/fill.png"));
+        plus.setBounds(this.getWidth() / 2 + 37, 8, 20, 20);
         plus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         plus.addEventListener(this);
         this.setOpaque(true);
