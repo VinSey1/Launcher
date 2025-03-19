@@ -143,9 +143,6 @@ public class Launcher {
             } catch (Exception e) {
                 erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
             }
-            if (launcherFromSite == null) {
-                erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
-            }
             String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
             if (!versionFromSite.equals(LAUNCHER_VERSION)) {
                 Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));

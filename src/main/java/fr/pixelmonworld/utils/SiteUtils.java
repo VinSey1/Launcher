@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.pixelmonworld.domain.News;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,21 +37,19 @@ public class SiteUtils {
      * @return L'image récupérée.
      */
     public static BufferedImage getAssetFromSite(String fichier) {
-        if (fichier.equals("connexion_panel")) {
-            return ResourcesUtils.getBufferedImage("connexion_panel/background.png");
+        try {
+            JsonObject jsonObject = getJsonFromSite();
+            String imageUrl = jsonObject.get("assets").getAsJsonObject().get(fichier).getAsString();
+            return ImageIO.read(new URL(imageUrl));
+        } catch (IOException | NullPointerException e) {
+            if (fichier.equals("connexion_panel")) {
+                return ResourcesUtils.getBufferedImage("connexion_panel/default_background");
+            }
+            if (fichier.equals("icon")) {
+                return ResourcesUtils.getBufferedImage("other/default_icon.png");
+            }
         }
-        if (fichier.equals("icon")) {
-            return ResourcesUtils.getBufferedImage("other/icon.png");
-        }
-        return null;
-//        JsonObject jsonObject = getJsonFromSite();
-//        String imageUrl = jsonObject.get("assets").getAsJsonObject().get(fichier).getAsString();
-//        try {
-//            return ImageIO.read(new URL(imageUrl));
-//        } catch (IOException e) {
-//            Launcher.erreurInterne(e);
-//        }
-//        return null;
+        throw new NullPointerException("Impossible de récupérer " + fichier + ".");
     }
 
     /**
@@ -59,15 +58,14 @@ public class SiteUtils {
      */
     public static ArrayList<BufferedImage> getRendersFromSite() {
         ArrayList<BufferedImage> renders = new ArrayList<>();
-        renders.add(ResourcesUtils.getBufferedImage("renders/render_1.png"));
-//        JsonObject jsonObject = getJsonFromSite();
-//        jsonObject.get("slides").getAsJsonArray().forEach(jsonElement -> {
-//            try {
-//                renders.add(ImageIO.read(new URL(jsonElement.getAsString())));
-//            } catch (IOException e) {
-//                Launcher.erreurInterne(e);
-//            }
-//        });
+        try {
+            JsonObject jsonObject = getJsonFromSite();
+            for (JsonElement jsonElement : jsonObject.get("slides").getAsJsonArray()) {
+                renders.add(ImageIO.read(new URL(jsonElement.getAsString())));
+            }
+        } catch (IOException | NullPointerException e) {
+            renders.add(ResourcesUtils.getBufferedImage("other/default_render.png"));
+        }
         return renders;
     }
 
@@ -75,19 +73,23 @@ public class SiteUtils {
      * Permet de récupérer les news stockées sur le site.
      * @return Les news récupérées.
      */
-    public static Collection<News> getNewsFromSite() throws IOException {
+    public static Collection<News> getNewsFromSite() {
         Collection<News> news = new ArrayList<>();
-        JsonObject json = getJsonFromSite();
-        json.get("news").getAsJsonArray().forEach(jsonElement -> {
-            try {
-                JsonObject newsObject = jsonElement.getAsJsonObject();
-                URL url = new URL(newsObject.get("url").getAsString());
-                LocalDateTime date = LocalDateTime.parse(newsObject.get("date_posted").getAsString(), formatter);
-                news.add(new News(newsObject.get("title").getAsString(), url, date));
-            } catch (MalformedURLException e) {
-                Launcher.erreurInterne(e);
-            }
-        });
+        try {
+            JsonObject json = getJsonFromSite();
+            json.get("news").getAsJsonArray().forEach(jsonElement -> {
+                try {
+                    JsonObject newsObject = jsonElement.getAsJsonObject();
+                    URL url = new URL(newsObject.get("url").getAsString());
+                    LocalDateTime date = LocalDateTime.parse(newsObject.get("date_posted").getAsString(), formatter);
+                    news.add(new News(newsObject.get("title").getAsString(), url, date));
+                } catch (MalformedURLException e) {
+                    Launcher.erreurInterne(e);
+                }
+            });
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
         return news;
     }
 
@@ -117,6 +119,6 @@ public class SiteUtils {
                 return jsonObject.getAsJsonObject();
             }
         }
-        return null;
+        throw new NullPointerException("Le JSON récupéré est vide.");
     }
 }

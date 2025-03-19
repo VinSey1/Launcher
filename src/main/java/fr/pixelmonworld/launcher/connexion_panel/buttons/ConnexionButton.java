@@ -67,9 +67,9 @@ public class ConnexionButton extends DefaultLauncherButton {
         isClicked = clicked;
         if (isClicked) {
             if (parent.isMicrosoftAuth()) {
-                this.setTexture(getBufferedImage("connexion_panel/disabled_connect_button.png"));
-            } else {
                 this.setTexture(getBufferedImage("connexion_panel/disabled_play_button.png"));
+            } else {
+                this.setTexture(getBufferedImage("connexion_panel/disabled_connect_button.png"));
             }
             this.setCursor(Cursor.getDefaultCursor());
         } else {

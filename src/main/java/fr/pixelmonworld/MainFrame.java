@@ -8,7 +8,6 @@ import org.pushingpixels.radiance.animation.api.Timeline;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Coeur de l'application graphique.
@@ -62,22 +61,25 @@ public class MainFrame extends JFrame {
     /**
      * Classe de lancement de l'application.
      * @param args Arguments de l'application.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public static void main(String[] args) throws IOException {
-        // Permet de créer le fichier de sauvegarde s'il n'existe pas
-        if (!saverFile.exists()) {
-            saverFile.createNewFile();
+    public static void main(String[] args) {
+        try {
+            // Permet de créer le fichier de sauvegarde s'il n'existe pas
+            if (!saverFile.exists()) {
+                saverFile.createNewFile();
+            }
+
+            // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
+            Launcher.getCrashFile().mkdirs();
+            // Permet de mettre en place le Discord Rich Presence
+            Launcher.initDiscord();
+
+            instance = new MainFrame();
+
+            Launcher.init();
+        } catch (Exception e) {
+            Launcher.erreurInterne(e);
         }
-
-        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
-        Launcher.getCrashFile().mkdirs();
-        // Permet de mettre en place le Discord Rich Presence
-        Launcher.initDiscord();
-
-        instance = new MainFrame();
-
-        Launcher.init();
     }
 
     /**
