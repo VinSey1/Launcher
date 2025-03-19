@@ -6,6 +6,7 @@ import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.domain.OpacityJLabel;
 import fr.pixelmonworld.launcher.connexion_panel.ConnexionPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
+import fr.pixelmonworld.launcher.popup_panel.PopupPanel;
 import fr.pixelmonworld.launcher.ram.RamPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.utils.Launcher;
@@ -37,7 +38,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
     private OpacityJLabel render2;
     // Panel de mise à jour
-    private UpdatePanel updatePanel;
+    private PopupPanel popupPanel;
     // Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background
     private boolean isLoading;
 
@@ -47,7 +48,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
      */
     public void setLoading(boolean isLoading) {
         this.isLoading = isLoading;
-        this.updatePanel.setVisible(isLoading);
+        this.popupPanel.setVisible(isLoading);
     }
 
     /**
@@ -59,8 +60,8 @@ public class LauncherPanel extends DefaultLauncherPanel {
 
         Launcher.setLauncherPanel(this);
 
-//        this.add(updatePanel = new UpdatePanel(this, 300, 200));
-//        updatePanel.setVisible(false);
+        this.add(popupPanel = new PopupPanel(this, 358, 226));
+        popupPanel.setVisible(false);
 
         this.add(new TopPanel(this));
 
@@ -140,6 +141,6 @@ public class LauncherPanel extends DefaultLauncherPanel {
      * @param newText Le nouveau texte à afficher.
      */
     public void updateLog(String newText, int i) {
-        updatePanel.updateTextAndValue(newText, i);
+        popupPanel.updateTextAndValue(newText, i);
     }
 }

@@ -329,7 +329,7 @@ public class Launcher {
      */
     public static int getRam() {
         if (ram == null) {
-            String savedRam = MainFrame.getSaver().get("ram");
+            String savedRam = MainFrame.getSaver().get("ram_panel");
             if (savedRam != null && !savedRam.isEmpty()) {
                 ram = Integer.valueOf(savedRam);
             } else {
@@ -345,7 +345,7 @@ public class Launcher {
     public static void addRam() {
         if (ram < 16) {
             ram++;
-            MainFrame.getSaver().set("ram", String.valueOf(ram));
+            MainFrame.getSaver().set("ram_panel", String.valueOf(ram));
         }
     }
 
@@ -355,7 +355,7 @@ public class Launcher {
     public static void removeRam() {
         if (ram > 2) {
             ram--;
-            MainFrame.getSaver().set("ram", String.valueOf(ram));
+            MainFrame.getSaver().set("ram_panel", String.valueOf(ram));
         }
     }
 

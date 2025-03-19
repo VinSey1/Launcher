@@ -60,7 +60,7 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
      */
     private void genererBackground() {
         // Permet de récupérer le background associé à l'endroit de la flèche attendu
-        ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("ram/ram_" + Launcher.getRam() + ".png")));
+        ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("ram_panel/ram_" + Launcher.getRam() + ".png")));
         background = new JLabel(backgroundIcon);
         background.setBounds((this.getWidth() - backgroundIcon.getIconWidth()) / 2, (this.getHeight() - backgroundIcon.getIconHeight()) / 2, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
         this.add(background);

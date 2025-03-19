@@ -95,7 +95,7 @@ public class DefaultLauncherPanel extends JPanel {
      */
     protected JLabel genererTexte(int y, String message, int fontSize) {
         JLabel result = new JLabel(message);
-        result.setBounds((this.getWidth() - (this.getWidth() - 20)) / 2, y - 50 / 2, this.getWidth() - 20, fontSize + 2);
+        result.setBounds((this.getWidth() - (this.getWidth() - 20)) / 2, y - 50 / 2, this.getWidth() - 20, fontSize + 5);
         result.setHorizontalAlignment(SwingConstants.CENTER);
         result.setVerticalAlignment(SwingConstants.CENTER);
         result.setForeground(Color.WHITE);
