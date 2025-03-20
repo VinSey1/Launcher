@@ -16,6 +16,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
  */
 public class ConnexionButton extends DefaultLauncherButton {
 
+    // Parent du composant, nécessaire pour prendre en compte les mises à jour graphiques en cascade
     ConnexionPanel parent;
 
     // Est-ce que l'event du bouton est déjà en cours d'exécution ?

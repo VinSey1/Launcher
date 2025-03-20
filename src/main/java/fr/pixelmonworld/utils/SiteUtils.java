@@ -26,13 +26,15 @@ public class SiteUtils {
 
     // URL du site
     private static String url = "https://nacou.pixelmonworld.fr/launcher/";
+
     // JSON récupéré depuis le site
     private static JsonObject json;
+
     // Formateur de date pour les news
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d'T'H:mm:ss'Z'", Locale.FRENCH);
 
     /**
-     * Permet de récupérer un asset depuis le site.
+     * Permet de récupérer un asset depuis le site. Si jamais on ne peut pas, le récupère de manière statique dans les ressources.
      * @param fichier Le fichier à récupérer.
      * @return L'image récupérée.
      */
@@ -53,7 +55,7 @@ public class SiteUtils {
     }
 
     /**
-     * Permet de récupérer les rendus ingame stockés sur le site.
+     * Permet de récupérer les rendus ingame stockés sur le site. Si jamais on ne peut pas, les récupères de manière statique dans les ressources.
      * @return Les rendus récupérés.
      */
     public static ArrayList<BufferedImage> getRendersFromSite() {

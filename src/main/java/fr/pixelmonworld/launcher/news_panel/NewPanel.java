@@ -14,13 +14,14 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Permet d'afficher une actualité.
+ * Panneau d'une actualité.
  */
 public class NewPanel extends DefaultLauncherButton {
 
-    // Structure de la fenêtre
+    // Background du panneau
     private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/news_panel/new_background.png")));
 
+    // L'actualité à afficher
     private News news;
 
     /**
@@ -38,6 +39,10 @@ public class NewPanel extends DefaultLauncherButton {
         this.add(new NewLabel(this, news));
     }
 
+    /**
+     * Permet d'ouvrir le lien de l'actualité quand le panneau est appuyé.
+     * @param swingerEvent L'événement à traiter.
+     */
     @Override
     public void onEvent(SwingerEvent swingerEvent) {
         try {

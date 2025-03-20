@@ -13,11 +13,11 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Panneau permettant d'afficher des informations dans un pop-up.
+ * Panneau des actualités.
  */
 public class NewsPanel extends DefaultLauncherPanel {
 
-    // Structure de la fenêtre
+    // Background du panneau
     private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/news_panel/background.png")));
 
     /**

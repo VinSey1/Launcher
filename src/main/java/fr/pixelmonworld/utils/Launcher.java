@@ -43,65 +43,84 @@ public class Launcher {
 
     // Version du launcher
     private static final String LAUNCHER_VERSION = "0.0.1";
+
     // Version de Minecraft
     private static final String MINECRAFT_VERSION = "1.16.5";
+
     // Version de Forge
     private static final String FORGE_VERSION = "36.2.39";
+
     // Path à partir duquel récupérer la bonne version des mods
     public static final String MODPACKS_URL = "https://nacou.pixelmonworld.fr/launcher/modpack";
+
     // IP du serveur
     private static final String SERVER_NAME = "play.pixelmonworld.fr";
+
     // Port du serveur
     private static final String SERVER_PORT = "25564";
+
+    // ID de l'application Discord
     public static final String DISCORD_APPLICATION_ID = "1297976065121325076";
+
     // Informations globales sur Minecraft
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
             new GameVersion(MINECRAFT_VERSION, GameType.V1_13_HIGHER_FORGE),
             new GameTweak[]{GameTweak.FORGE}
     );
+
     // Path de l'application (%APPDATA%/.PixelmonWorld/)
     private static Path path = gameInfos.getGameDir();
 
-    // Fichier de crash de l'application
-    public static File getCrashFile() {
-        return crashFile;
-    }
-
-    // Fichier de crash de l'application
+    // Dossier de crash de l'application
     private static File crashFile = new File(String.valueOf(path), "crashs");
+
+    // Fichier d'options de Minecraft
     private static File optionsFile = new File(String.valueOf(path), "options.txt");
+
     // Objet permettant de log les erreurs
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
+
     // Auth Microsoft
     private static AuthInfos authInfos;
+
     // Fenêtre principale de l'application permettant de définir les éléments graphiques
     private static MainFrame mainFrame;
+
     // Le prélauncher de l'application
     private static PreLauncherPanel preLauncherPanel;
-    // Le panneau principal de l'application
+
+    // Le launcher de l'application
     private static LauncherPanel launcherPanel;
+
+    // La barre du haut de l'application
     private static TopPanel topPanel;
+
+    // Le panneau des actualités de l'application
     private static NewsPanel newsPanel;
+
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
+
     // Fichier contenant la liste des serveurs
     private static File serversFile =  new File(String.valueOf(path), "servers.dat");
+
     // Zip du texturepack du serveur
     private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
-    // Logo du serveur
+
+    // Background du panneau de connexion
     private static BufferedImage connexionPanel;
+
     // Icône du serveur
     private static BufferedImage icon;
+
     // Renders du serveur
     private static ArrayList<BufferedImage> renders;
 
-    public static void setMainPanel(MainPanel mainPanel) {
-        Launcher.mainPanel = mainPanel;
-    }
-
+    // Panneau principal de l'application permettant d'afficher le prélauncher et le launcher
     private static MainPanel mainPanel;
 
+    // Fichiers à garder lors de la suppression de l'ensemble des données du launcher
     private static List<String> filesToKeep = Arrays.asList("user.stock", "options.txt.old", "servers.dat", "resourcepacks", "PixelmonWorld.zip", "crashs", ".PixelmonWorld");
 
     /**
@@ -131,6 +150,9 @@ public class Launcher {
         return false;
     }
 
+    /**
+     * Permet d'initialiser le launcher.
+     */
     public static void init() {
         Launcher.getFilesFromSite();
     }
@@ -244,6 +266,9 @@ public class Launcher {
         }
     }
 
+    /**
+     * Permet de se déconnecter de Microsoft et de supprimer le token associé.
+     */
     public static void disconnect() {
         MainFrame.getSaver().set("refresh_token", "");
         authInfos = null;
@@ -301,6 +326,9 @@ public class Launcher {
         launcherPanel.updateMaxLogs();
     }
 
+    /**
+     * Permet de supprimer l'ensemble des données du launcher sauf certains fichiers spécifiques.
+     */
     private static void clearDirectory() {
         try {
             if (optionsFile.exists()) {
@@ -318,6 +346,10 @@ public class Launcher {
         }
     }
 
+    /**
+     * Permet de modifier les options de Minecraft pour forcer certains paramètres.
+     * @throws IOException Si jamais il y a une erreur lors de la lecture des options.
+     */
     private static void optionsModifier() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> defaultOptions = mapper.readValue(
@@ -382,12 +414,19 @@ public class Launcher {
     }
 
     /**
+     * Permet de montrer ou cacher les news.
+     */
+    public static void showNews() {
+        newsPanel.setVisible(!newsPanel.isVisible());
+    }
+
+    /**
      * Permet de récupérer la ram actuelle. Si jamais il n'y en a pas de définie, la met à 2 et la sauvegarde.
      * @return La ram actuelle allouée à Minecraft.
      */
     public static int getRam() {
         if (ram == null) {
-            String savedRam = MainFrame.getSaver().get("launcher/ram_panel");
+            String savedRam = MainFrame.getSaver().get("ram");
             if (savedRam != null && !savedRam.isEmpty()) {
                 ram = Integer.valueOf(savedRam);
             } else {
@@ -403,7 +442,7 @@ public class Launcher {
     public static void addRam() {
         if (ram < 16) {
             ram++;
-            MainFrame.getSaver().set("launcher/ram_panel", String.valueOf(ram));
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
         }
     }
 
@@ -413,51 +452,105 @@ public class Launcher {
     public static void removeRam() {
         if (ram > 2) {
             ram--;
-            MainFrame.getSaver().set("launcher/ram_panel", String.valueOf(ram));
+            MainFrame.getSaver().set("ram", String.valueOf(ram));
         }
     }
 
-    public static CrashReporter getReporter() {
-        return reporter;
-    }
 
-    public static Path getPath() {
-        return path;
-    }
-
-    public static void setLauncherPanel(LauncherPanel launcherPanel) {
-        Launcher.launcherPanel = launcherPanel;
-    }
-
-    public static void setTopPanel(TopPanel topPanel) {
-        Launcher.topPanel = topPanel;
-    }
-
-    public static void setPreLauncherPanel(PreLauncherPanel preLauncherPanel) {
-        Launcher.preLauncherPanel = preLauncherPanel;
-    }
-
+    /**
+     * Permet de définir la fenêtre principale de l'application.
+     * @param mainFrame
+     */
     public static void setMainFrame(MainFrame mainFrame) {
         Launcher.mainFrame = mainFrame;
     }
 
+    /**
+     * Permet de définir le panneau principal de l'application.
+     * @param mainPanel
+     */
+    public static void setMainPanel(MainPanel mainPanel) {
+        Launcher.mainPanel = mainPanel;
+    }
+
+    /**
+     * Permet de définir le prélauncher de l'application.
+     * @param preLauncherPanel
+     */
+    public static void setPreLauncherPanel(PreLauncherPanel preLauncherPanel) {
+        Launcher.preLauncherPanel = preLauncherPanel;
+    }
+
+    /**
+     * Permet de définir le launcher de l'application.
+     * @param launcherPanel
+     */
+    public static void setLauncherPanel(LauncherPanel launcherPanel) {
+        Launcher.launcherPanel = launcherPanel;
+    }
+
+    /**
+     * Permet de définir la barre du haut de l'application.
+     * @param topPanel La barre du haut de l'application.
+     */
+    public static void setTopPanel(TopPanel topPanel) {
+        Launcher.topPanel = topPanel;
+    }
+
+    /**
+     * Permet de définir le panneau des actualités de l'application.
+     * @param newsPanel Le panneau des actualités de l'application.
+     */
+    public static void setNewsPanel(NewsPanel newsPanel) {
+        Launcher.newsPanel = newsPanel;
+    }
+
+    /**
+     * Permet de récupérer le panneau de connexion.
+     * @return Le panneau de connexion.
+     */
     public static BufferedImage getConnexionPanel() {
         return connexionPanel;
     }
 
+    /**
+     * Permet de récupérer l'icône de l'application.
+     * @return L'icône de l'application.
+     */
     public static BufferedImage getIcon() {
         return icon;
     }
 
+    /**
+     * Permet de récupérer les renders du serveur.
+     * @return Les renders du serveur.
+     */
     public static ArrayList<BufferedImage> getRenders() {
         return renders;
     }
 
-    public static void showNews() {
-        newsPanel.setVisible(!newsPanel.isVisible());
+    /**
+     * Permet de récupérer le fichier de crashs de l'application.
+     * @return Le fichier de crashs de l'application.
+     */
+    public static File getCrashFile() {
+        return crashFile;
     }
 
-    public static void setNewsPanel(NewsPanel newsPanel) {
-        Launcher.newsPanel = newsPanel;
+    /**
+     * Permet de récupérer le reporter de l'application.
+     * @return Le reporter de l'application.
+     */
+    public static CrashReporter getReporter() {
+        return reporter;
     }
+
+    /**
+     * Permet de récupérer le path de l'application.
+     * @return Le path de l'application.
+     */
+    public static Path getPath() {
+        return path;
+    }
+
 }

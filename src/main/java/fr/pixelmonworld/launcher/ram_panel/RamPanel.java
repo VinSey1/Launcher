@@ -19,9 +19,11 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
 
     // Le bouton pour baisser la ram
     private STexturedButton moins;
+
     // Le bouton pour augmenter la ram
     private STexturedButton plus;
-    // Le background (la barre de ram) à afficher
+
+    // Background du panneau (la barre de ram)
     private JLabel background;
 
     /**

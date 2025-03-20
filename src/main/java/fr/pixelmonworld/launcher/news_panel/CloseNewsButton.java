@@ -8,7 +8,7 @@ import java.awt.*;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Bouton de fermeture du panel de news.
+ * Bouton de fermeture du panneau de news.
  */
 public class CloseNewsButton extends DefaultLauncherButton {
 
@@ -22,7 +22,7 @@ public class CloseNewsButton extends DefaultLauncherButton {
     }
 
     /**
-     * Permet de fermer l'application quand le bouton est appuyé.
+     * Permet de fermer le panneau de news quand le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override

@@ -8,22 +8,26 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Panneau permettant d'afficher le bouton de connexion.
+ * Panneau de connexion de l'application contenant également les boutons d'aide, de tutoriel et d'accès à Java.
  */
 public class ConnexionPanel extends DefaultLauncherPanel {
 
-    // Structure de la fenêtre
+    // Background du panneau
     private ImageIcon backgroundIcon = new ImageIcon(Launcher.getConnexionPanel());
 
     // Est-ce que l'utilisateur est connecté à Microsoft ?
     private boolean microsoftAuth = false;
 
+    // Bouton de connexion
     private ConnexionButton connexionButton;
 
+    // Bouton de tutoriel
     private TutoButton tutoButton;
 
+    // Bouton d'aide
     private HelpButton helpButton;
 
+    // Bouton de déconnexion
     private DisconnectButton disconnectButton;
 
     /**
@@ -37,18 +41,11 @@ public class ConnexionPanel extends DefaultLauncherPanel {
     public ConnexionPanel(Component parent, int width, int height, int x, int y) {
         super(parent, width, height, x, y);
 
-        // Ajout du bouton de connexion
         this.add(connexionButton = new ConnexionButton(this, 13, 261));
-
         this.add(tutoButton = new TutoButton(this, 25, 359));
-
         this.add(helpButton = new HelpButton(this, 137, 359));
-
         this.add(disconnectButton = new DisconnectButton(this, 13, 359));
-
         this.add(new JavaButton(this, 253, 356));
-
-//        this.setBackground(Color.RED);
 
         // Ajout du background du panel
         JLabel background = new JLabel(backgroundIcon);
@@ -59,14 +56,25 @@ public class ConnexionPanel extends DefaultLauncherPanel {
         this.setTexture();
     }
 
+    /**
+     * Permet de savoir si l'utilisateur est connecté à Microsoft.
+     * @return Vrai si l'utilisateur est connecté à Microsoft, faux sinon.
+     */
     public boolean isMicrosoftAuth() {
         return microsoftAuth;
     }
 
+    /**
+     * Permet de définir si l'utilisateur est connecté à Microsoft.
+     * @param microsoftAuth Vrai si l'utilisateur est connecté à Microsoft, faux sinon.
+     */
     public void setMicrosoftAuth(boolean microsoftAuth) {
         this.microsoftAuth = microsoftAuth;
     }
 
+    /**
+     * Permet de définir la texture des boutons en fonction de l'authentification de l'utilisateur.
+     */
     public void setTexture() {
         tutoButton.setVisible(!microsoftAuth);
         helpButton.setVisible(!microsoftAuth);

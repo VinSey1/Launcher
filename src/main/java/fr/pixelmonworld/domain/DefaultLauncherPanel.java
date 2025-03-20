@@ -42,6 +42,10 @@ public class DefaultLauncherPanel extends JPanel {
         this.parent = parent;
     }
 
+    /**
+     * Constructeur par défaut permettant de définir le parent du panneau.
+     * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
+     */
     public DefaultLauncherPanel(Component parent) {
         this(parent, 0, 0);
     }
@@ -62,29 +66,6 @@ public class DefaultLauncherPanel extends JPanel {
      */
     public DefaultLauncherPanel(Component parent, int width, int height) {
         this(parent, width, height, 0, 0);
-    }
-
-    /**
-     * Permet de générer une image centrée horizontalement de manière dynamique.
-     * @param y L'axe Y sur lequel afficher l'image.
-     * @param image L'image à afficher.
-     * @return Le JLabel contenant l'image à afficher.
-     */
-    protected JLabel genererImage(int y, ImageIcon image) {
-        return genererImage(this.getWidth() / 2, y, image);
-    }
-
-    /**
-     * Permet de générer une image.
-     * @param x L'axe X sur lequel afficher l'image.
-     * @param y L'axe Y sur lequel afficher l'image.
-     * @param image L'image à afficher.
-     * @return Le JLabel contenant l'image à afficher.
-     */
-    protected JLabel genererImage(int x, int y, ImageIcon image) {
-        JLabel result = new JLabel(image);
-        result.setBounds(x - image.getIconWidth() / 2, y - image.getIconHeight() / 2, image.getIconWidth(), image.getIconHeight());
-        return result;
     }
 
     /**

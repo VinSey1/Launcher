@@ -16,8 +16,10 @@ public class MainFrame extends JFrame {
 
     // Instance de l'application (singleton)
     private static MainFrame instance;
+
     // Fichier de sauvegarde des options (ram + token d'authentification Microsoft)
     private static File saverFile = new File(String.valueOf(Launcher.getPath()), "user.stock");
+
     // Objet permettant de sauvegarder les options dans le fichier comme les news ou le token d'authentification Microsoft
     private static Saver saver = new Saver(saverFile);
 
@@ -59,6 +61,22 @@ public class MainFrame extends JFrame {
     }
 
     /**
+     * Permet de récupérer l'instance de l'application.
+     * @return L'instance de l'application.
+     */
+    public static MainFrame getInstance() {
+        return instance;
+    }
+
+    /**
+     * Permet de récupérer l'objet de sauvegarde des options.
+     * @return L'objet de sauvegarde des options.
+     */
+    public static Saver getSaver() {
+        return saver;
+    }
+
+    /**
      * Classe de lancement de l'application.
      * @param args Arguments de l'application.
      */
@@ -80,21 +98,5 @@ public class MainFrame extends JFrame {
         } catch (Exception e) {
             Launcher.erreurInterne(e);
         }
-    }
-
-    /**
-     * Permet de récupérer l'instance de l'application.
-     * @return L'instance de l'application.
-     */
-    public static MainFrame getInstance() {
-        return instance;
-    }
-
-    /**
-     * Permet de récupérer l'objet de sauvegarde des options.
-     * @return L'objet de sauvegarde des options.
-     */
-    public static Saver getSaver() {
-        return saver;
     }
 }

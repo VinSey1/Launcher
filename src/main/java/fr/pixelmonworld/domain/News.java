@@ -10,11 +10,11 @@ import java.time.format.DateTimeFormatter;
  */
 public class News implements Serializable {
 
-    // Le titre de la news.
+    // Le titre de la news
     private String title;
-    // L'URL de la news.
+    // L'URL de la news
     private URL url;
-    // La date de la news.
+    // La date de la news
     private LocalDateTime date;
 
     /**

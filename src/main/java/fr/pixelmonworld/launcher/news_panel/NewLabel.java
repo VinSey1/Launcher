@@ -11,6 +11,9 @@ import java.io.IOException;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getResourceAsStream;
 
+/**
+ * Label pour afficher une actualité.
+ */
 public class NewLabel extends JLabel {
 
     /**
@@ -22,6 +25,7 @@ public class NewLabel extends JLabel {
         super(news.toMessage());
         this.setBounds(0, 0, parent.getWidth(), parent.getHeight());
 
+        // Nécessaire pour avoir une marge autour du texte et éviter que le texte touche les bords du background.
         Border border = this.getBorder();
         Border margin = new EmptyBorder(2,20,10,10);
         this.setBorder(new CompoundBorder(border, margin));

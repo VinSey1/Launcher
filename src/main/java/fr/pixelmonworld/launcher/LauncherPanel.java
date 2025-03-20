@@ -29,27 +29,23 @@ public class LauncherPanel extends DefaultLauncherPanel {
     // Les actualités à afficher
     private Collection<News> news;
 
+    // Panneau des actualités
     private NewsPanel newsPanel;
 
     // Image transparente
     private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("utils/fill.png")));
+
     // JLabel contenant le premier render ingame du serveur
     private OpacityJLabel render;
+
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)
     private OpacityJLabel render2;
-    // Panel de mise à jour
+
+    // Panneau de popup
     private PopupPanel popupPanel;
+
     // Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background
     private boolean isLoading;
-
-    /**
-     * Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background.
-     * @param isLoading Le nouveau statut de chargement.
-     */
-    public void setLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-        this.popupPanel.setVisible(isLoading);
-    }
 
     /**
      * Constructeur par défaut.
@@ -65,12 +61,11 @@ public class LauncherPanel extends DefaultLauncherPanel {
 
         this.add(new TopPanel(this));
 
-        // Ajout du panel de connexion
         this.add(new ConnexionPanel(this, 359, 430, 25, 93));
 
-        // Ajout du panel de ram
         this.add(new RamPanel(this, 683, 106, 25, 584));
 
+        // Récupération des news depuis le site
         try {
             news = SiteUtils.getNewsFromSite();
         } catch (Exception e) {
@@ -141,14 +136,26 @@ public class LauncherPanel extends DefaultLauncherPanel {
     }
 
     /**
-     * Permet de mettre à jour le texte affiché par le JLabel visible.
+     * Permet de mettre à jour le texte affiché par le popup et de faire avancer la barre de progression.
      * @param newText Le nouveau texte à afficher.
      */
     public void updateLog(String newText) {
         popupPanel.updateTextAndValue(newText);
     }
 
+    /**
+     * Permet de mettre à jour la valeur maximale de la barre de progression du popup.
+     */
     public void updateMaxLogs() {
         popupPanel.setMaxLogs();
+    }
+
+    /**
+     * Permet de savoir si le launcher est en train de charger et de désactiver la mise à jour du background.
+     * @param isLoading Le nouveau statut de chargement.
+     */
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+        this.popupPanel.setVisible(isLoading);
     }
 }

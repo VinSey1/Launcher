@@ -13,8 +13,6 @@ import java.util.Locale;
  */
 public class LauncherLogger extends Logger {
 
-    // Compteur pour la progressbar des logs
-    int i = 0;
     // Le panneau d'informations à mettre à jour avec les messages de log
     private final LauncherPanel launcherPanel;
 

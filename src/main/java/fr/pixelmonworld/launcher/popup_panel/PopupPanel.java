@@ -14,19 +14,22 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ResourcesUtils.*;
 
 /**
- * Panneau permettant d'afficher des informations dans un pop-up.
+ * Panneau permettant d'afficher des informations dans un pop-up. Utilisé lors du lancement de Minecraft.
  */
 public class PopupPanel extends DefaultLauncherPanel {
 
-    // Structure de la fenêtre
+    // Background du panneau
     private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/popup_panel/background.png")));
 
     // JLabel contenant le texte à afficher
     private JLabel text;
+
     // Barre de progression de la mise à jour
     private JProgressBar progressBar;
+
     // Valeur maximale de la barre de progression lorsqu'il y a des mods à installer
     private int maximumValueWithMods = 2611;
+
     // Valeur maximale de la barre de progression lorsqu'il n'y a pas de mods à installer
     private int maximumValueWithoutMods = 12;
 
@@ -64,6 +67,7 @@ public class PopupPanel extends DefaultLauncherPanel {
         progressBar = new JProgressBar();
         progressBar.setBounds((this.getWidth() - (this.getWidth() - 50)) / 2, this.getHeight() - 35, this.getWidth() - 50, 20);
 
+        // Permet de savoir si les mods ont été précédemment installés, et définir la taille de la barre de progression en fonction
         String modsInstalled = MainFrame.getSaver().get("mods_installed");
         progressBar.setMaximum(modsInstalled != null && modsInstalled.equals("true") ? maximumValueWithoutMods : maximumValueWithMods);
 
@@ -78,7 +82,7 @@ public class PopupPanel extends DefaultLauncherPanel {
         loadingLabel.setBounds((this.getWidth() / 2) - (loadingIcon.getIconWidth() / 2), (this.getHeight() / 2) - (loadingIcon.getIconHeight() / 2) - 20, loadingIcon.getIconWidth(), loadingIcon.getIconHeight());
         this.add(loadingLabel, 0);
 
-        // Permet de changer le render toutes les 10 secondes
+        // Permet de faire clignoter le logo de chargement
         new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -112,10 +116,16 @@ public class PopupPanel extends DefaultLauncherPanel {
         this.progressBar.setValue(this.progressBar.getValue() + 1);
     }
 
+    /**
+     * Permet de définir la valeur maximale de la barre de progression.
+     */
     public void setMaxLogs() {
         this.progressBar.setMaximum(maximumValueWithoutMods);
     }
 
+    /**
+     * Permet de régler la visibilité du panneau et reset la valeur de la barre de progression.
+     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);

@@ -10,6 +10,9 @@ import java.net.URI;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Bouton de tutoriel pour accéder au tutoriel sur le site.
+ */
 public class TutoButton extends DefaultLauncherButton {
 
     /**

@@ -10,7 +10,7 @@ import java.util.Objects;
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
 /**
- * Permet de gérer les crashs du launcher. Etent la classe "CrashReporter" de OpenLauncherLib pour pouvoir gérer le tout
+ * Permet de gérer les crashs du launcher. Etend la classe "CrashReporter" de OpenLauncherLib pour pouvoir gérer le tout
  * de manière spécifique.
  */
 public class LauncherCrashReporter extends CrashReporter {

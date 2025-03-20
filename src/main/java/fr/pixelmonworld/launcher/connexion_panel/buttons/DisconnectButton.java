@@ -7,8 +7,12 @@ import fr.theshark34.swinger.event.SwingerEvent;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Bouton de déconnexion de Microsoft.
+ */
 public class DisconnectButton extends DefaultLauncherButton {
 
+    // Parent du composant, nécessaire pour prendre en compte les mises à jour graphiques en cascade
     ConnexionPanel parent;
 
     /**
@@ -22,7 +26,7 @@ public class DisconnectButton extends DefaultLauncherButton {
     }
 
     /**
-     * Permet de fermer l'application quand le bouton est appuyé.
+     * Permet de supprimer l'authentification Microsoft si le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override

@@ -10,6 +10,9 @@ import java.net.URI;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Bouton d'aide pour accéder au salon d'aide sur Discord.
+ */
 public class HelpButton extends DefaultLauncherButton {
 
     /**

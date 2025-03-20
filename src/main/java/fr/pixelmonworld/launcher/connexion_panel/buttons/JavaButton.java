@@ -10,6 +10,9 @@ import java.net.URI;
 
 import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 
+/**
+ * Bouton Java pour accéder au site permettant de télécharger la bonne version de Java.
+ */
 public class JavaButton extends DefaultLauncherButton {
 
     /**
@@ -22,7 +25,7 @@ public class JavaButton extends DefaultLauncherButton {
     }
 
     /**
-     * Permet de fermer l'application quand le bouton est appuyé.
+     * Permet de rediriger vers le site de Java quand le bouton est appuyé.
      * @param swingerEvent L'événement à traiter.
      */
     @Override

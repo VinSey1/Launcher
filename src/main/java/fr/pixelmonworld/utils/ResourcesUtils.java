@@ -16,6 +16,7 @@ import java.util.Random;
  */
 public class ResourcesUtils {
 
+    // Dernière image aléatoire récupérée
     private static int lastRandomImage = Integer.MAX_VALUE;
 
     /**

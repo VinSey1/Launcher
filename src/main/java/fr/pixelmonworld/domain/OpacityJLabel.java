@@ -7,6 +7,8 @@ import java.awt.*;
  * JLabel spécifique permettant de gérer l'opacité de l'image affichée.
  */
 public class OpacityJLabel extends JLabel {
+
+    // L'opacité de l'image par défaut à visible
     private float opacity = 1.0f;
 
     /**
@@ -29,6 +31,10 @@ public class OpacityJLabel extends JLabel {
         g2d.dispose();
     }
 
+    /**
+     * Permet de définir l'opacité de l'image.
+     * @param opacity L'opacité de l'image.
+     */
     public void setOpacity(float opacity) {
         this.opacity = opacity;
         repaint();
