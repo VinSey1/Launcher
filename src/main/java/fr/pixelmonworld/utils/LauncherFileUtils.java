@@ -1,9 +1,6 @@
 package fr.pixelmonworld.utils;
 
-import fr.pixelmonworld.Launcher;
-
 import java.io.*;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

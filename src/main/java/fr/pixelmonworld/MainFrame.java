@@ -1,6 +1,6 @@
 package fr.pixelmonworld;
 
-import fr.pixelmonworld.panels.MainPanel;
+import fr.pixelmonworld.utils.Launcher;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
 import org.pushingpixels.radiance.animation.api.Timeline;
@@ -8,7 +8,6 @@ import org.pushingpixels.radiance.animation.api.Timeline;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Coeur de l'application graphique.
@@ -31,11 +30,12 @@ public class MainFrame extends JFrame {
         // Définit les éléments basique de l'application (taille, titre, icône...)
         this.setTitle("Launcher PixelmonWorld");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(1600, 1075);
+        this.setSize(1280, 720);
         this.setUndecorated(true);
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
-        this.setIconImage(Launcher.getIcon());
+
+        Launcher.setMainFrame(this);
 
         // Permet d'ajouter le panneau principal à l'application
         this.setContentPane(new MainPanel(this.getWidth(), this.getHeight()));
@@ -61,20 +61,25 @@ public class MainFrame extends JFrame {
     /**
      * Classe de lancement de l'application.
      * @param args Arguments de l'application.
-     * @throws IOException Problème lors d'une mise à jour graphique.
      */
-    public static void main(String[] args) throws IOException {
-        // Permet de créer le fichier de sauvegarde s'il n'existe pas
-        if (!saverFile.exists()) {
-            saverFile.createNewFile();
+    public static void main(String[] args) {
+        try {
+            // Permet de créer le fichier de sauvegarde s'il n'existe pas
+            if (!saverFile.exists()) {
+                saverFile.createNewFile();
+            }
+
+            // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
+            Launcher.getCrashFile().mkdirs();
+            // Permet de mettre en place le Discord Rich Presence
+            Launcher.initDiscord();
+
+            instance = new MainFrame();
+
+            Launcher.init();
+        } catch (Exception e) {
+            Launcher.erreurInterne(e);
         }
-
-        // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
-        Launcher.getCrashFile().mkdirs();
-        // Permet de mettre en place le Discord Rich Presence
-        Launcher.initDiscord();
-
-        instance = new MainFrame();
     }
 
     /**

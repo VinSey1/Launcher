@@ -42,6 +42,10 @@ public class DefaultLauncherPanel extends JPanel {
         this.parent = parent;
     }
 
+    public DefaultLauncherPanel(Component parent) {
+        this(parent, 0, 0);
+    }
+
     /**
      * Constructeur par défaut permettant de définir la taille du panneau.
      * @param width La largeur du panneau.
@@ -91,7 +95,7 @@ public class DefaultLauncherPanel extends JPanel {
      */
     protected JLabel genererTexte(int y, String message, int fontSize) {
         JLabel result = new JLabel(message);
-        result.setBounds((this.getWidth() - (this.getWidth() - 20)) / 2, y - 50 / 2, this.getWidth() - 20, fontSize + 2);
+        result.setBounds((this.getWidth() - (this.getWidth() - 20)) / 2, y - 50 / 2, this.getWidth() - 20, fontSize + 5);
         result.setHorizontalAlignment(SwingConstants.CENTER);
         result.setVerticalAlignment(SwingConstants.CENTER);
         result.setForeground(Color.WHITE);

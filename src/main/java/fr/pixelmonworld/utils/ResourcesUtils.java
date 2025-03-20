@@ -1,6 +1,5 @@
 package fr.pixelmonworld.utils;
 
-import fr.pixelmonworld.Launcher;
 import fr.pixelmonworld.MainFrame;
 
 import javax.imageio.ImageIO;

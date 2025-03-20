@@ -15,16 +15,20 @@ public class DefaultLauncherButton extends STexturedButton implements SwingerEve
     // Parent du composant, nécessaire pour prendre en compte les mises à jour graphiques en cascade
     Component parent;
 
+    public DefaultLauncherButton(Component parent, int y, BufferedImage image) {
+        this(parent, 0, y, image);
+    }
+
     /**
      * Constructeur par défaut permettant de créer un bouton centré horizontalement de manière dynamique.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
      * @param y L'axe Y sur lequel afficher l'image.
      * @param image L'image à afficher.
      */
-    public DefaultLauncherButton(Component parent, int y, BufferedImage image) {
+    public DefaultLauncherButton(Component parent, int x, int y, BufferedImage image) {
         super(image, image);
         this.parent = parent;
-        this.setBounds((parent.getWidth() - image.getWidth()) / 2, y - image.getHeight() / 2, image.getWidth(), image.getHeight());
+        this.setBounds(x, y, image.getWidth(), image.getHeight());
         this.addEventListener(this);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
