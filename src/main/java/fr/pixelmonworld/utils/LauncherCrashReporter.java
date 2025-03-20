@@ -37,7 +37,7 @@ public class LauncherCrashReporter extends CrashReporter {
         } catch (IOException err) {
             msg = "Impossible de créer le log de crash : " + err;
         }
-        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Objects.requireNonNull(getBufferedImage("popup_panel/icon.png"))));
+        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/popup_panel/icon.png"))));
         System.exit(1);
     }
 }

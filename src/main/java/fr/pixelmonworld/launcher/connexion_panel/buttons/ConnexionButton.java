@@ -27,7 +27,7 @@ public class ConnexionButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du panneau.
      */
     public ConnexionButton(ConnexionPanel parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("connexion_panel/connect_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/connexion_panel/connect_button.png"));
         this.parent = parent;
         // Vérification de la connexion par défaut
         parent.setMicrosoftAuth(Launcher.defaultAuth());
@@ -67,9 +67,9 @@ public class ConnexionButton extends DefaultLauncherButton {
         isClicked = clicked;
         if (isClicked) {
             if (parent.isMicrosoftAuth()) {
-                this.setTexture(getBufferedImage("connexion_panel/disabled_play_button.png"));
+                this.setTexture(getBufferedImage("launcher/connexion_panel/disabled_play_button.png"));
             } else {
-                this.setTexture(getBufferedImage("connexion_panel/disabled_connect_button.png"));
+                this.setTexture(getBufferedImage("launcher/connexion_panel/disabled_connect_button.png"));
             }
             this.setCursor(Cursor.getDefaultCursor());
         } else {
@@ -82,9 +82,9 @@ public class ConnexionButton extends DefaultLauncherButton {
      */
     public void setTexture() {
         if (parent.isMicrosoftAuth()) {
-            this.setTexture(getBufferedImage("connexion_panel/play_button.png"));
+            this.setTexture(getBufferedImage("launcher/connexion_panel/play_button.png"));
         } else {
-            this.setTexture(getBufferedImage("connexion_panel/connect_button.png"));
+            this.setTexture(getBufferedImage("launcher/connexion_panel/connect_button.png"));
         }
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }

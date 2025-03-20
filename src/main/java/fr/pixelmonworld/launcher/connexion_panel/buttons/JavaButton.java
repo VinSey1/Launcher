@@ -18,7 +18,7 @@ public class JavaButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public JavaButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("connexion_panel/java_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/connexion_panel/java_button.png"));
     }
 
     /**

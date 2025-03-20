@@ -18,7 +18,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 public class NewsPanel extends DefaultLauncherPanel {
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("news_panel/background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/news_panel/background.png")));
 
     /**
      * Constructeur par défaut.

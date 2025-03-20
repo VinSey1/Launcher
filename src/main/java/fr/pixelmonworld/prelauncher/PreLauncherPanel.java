@@ -32,7 +32,7 @@ public class PreLauncherPanel extends DefaultLauncherPanel {
 
         Font robotoBold = null;
         try {
-            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Bold.ttf")).deriveFont(20f);
+            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("utils/fonts/Roboto-Bold.ttf")).deriveFont(20f);
         } catch (FontFormatException | IOException e) {
             Launcher.erreurInterne(e);
         }
@@ -45,7 +45,7 @@ public class PreLauncherPanel extends DefaultLauncherPanel {
         text.setOpaque(true);
         this.add(text);
 
-        ImageIcon serverIconIcon = new ImageIcon(getResource("prelauncher_panel/server_logo.png"));
+        ImageIcon serverIconIcon = new ImageIcon(getResource("prelauncher/server_logo.png"));
         OpacityJLabel loadingLabel = new OpacityJLabel(serverIconIcon);
         loadingLabel.setBounds((this.getWidth() / 2) - (serverIconIcon.getIconWidth() / 2), (this.getHeight() / 2) - (serverIconIcon.getIconHeight() / 2) - 20, serverIconIcon.getIconWidth(), serverIconIcon.getIconHeight());
         this.add(loadingLabel, 0);

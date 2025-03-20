@@ -18,7 +18,7 @@ public class HelpButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public HelpButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("connexion_panel/help_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/connexion_panel/help_button.png"));
     }
 
     /**

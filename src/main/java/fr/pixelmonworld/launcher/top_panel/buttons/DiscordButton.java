@@ -21,7 +21,7 @@ public class DiscordButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public DiscordButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_panel/discord_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/top_panel/discord_button.png"));
     }
 
     /**

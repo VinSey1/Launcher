@@ -18,7 +18,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.*;
 public class PopupPanel extends DefaultLauncherPanel {
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("popup_panel/background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/popup_panel/background.png")));
 
     // JLabel contenant le texte à afficher
     private JLabel text;
@@ -41,8 +41,8 @@ public class PopupPanel extends DefaultLauncherPanel {
         Font robotoBlack = null;
         Font robotoBold = null;
         try {
-            robotoBlack = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Black.ttf")).deriveFont(20f);
-            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/Roboto-Bold.ttf")).deriveFont(12f);
+            robotoBlack = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("utils/fonts/Roboto-Black.ttf")).deriveFont(20f);
+            robotoBold = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("utils/fonts/Roboto-Bold.ttf")).deriveFont(12f);
         } catch (FontFormatException | IOException e) {
             Launcher.erreurInterne(e);
         }
@@ -69,7 +69,7 @@ public class PopupPanel extends DefaultLauncherPanel {
         progressBar.setForeground(new Color(186, 255, 143));
         this.add(progressBar);
 
-        ImageIcon loadingIcon = new ImageIcon(getResource("popup_panel/icon.png"));
+        ImageIcon loadingIcon = new ImageIcon(getResource("launcher/popup_panel/icon.png"));
         OpacityJLabel loadingLabel = new OpacityJLabel(loadingIcon);
         loadingLabel.setBounds((this.getWidth() / 2) - (loadingIcon.getIconWidth() / 2), (this.getHeight() / 2) - (loadingIcon.getIconHeight() / 2) - 20, loadingIcon.getIconWidth(), loadingIcon.getIconHeight());
         this.add(loadingLabel, 0);

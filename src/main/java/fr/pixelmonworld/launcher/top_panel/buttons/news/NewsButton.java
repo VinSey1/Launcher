@@ -23,7 +23,7 @@ public class NewsButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public NewsButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_panel/news_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/top_panel/news_button.png"));
     }
 
     /**

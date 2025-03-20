@@ -28,7 +28,7 @@ public class NewLabel extends JLabel {
 
         this.setHorizontalTextPosition(JLabel.CENTER);
         this.setVerticalTextPosition(JLabel.CENTER);
-        this.setFont(Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("fonts/AkzidenzGroteskBQ-MedExt.ttf")).deriveFont(18f));
+        this.setFont(Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("utils/fonts/AkzidenzGroteskBQ-MedExt.ttf")).deriveFont(18f));
         this.setForeground(new Color(24, 71, 8));
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }

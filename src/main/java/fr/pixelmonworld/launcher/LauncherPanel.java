@@ -32,7 +32,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
     private NewsPanel newsPanel;
 
     // Image transparente
-    private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("other/fill.png")));
+    private ImageIcon fill = new ImageIcon(Objects.requireNonNull(getBufferedImage("utils/fill.png")));
     // JLabel contenant le premier render ingame du serveur
     private OpacityJLabel render;
     // JLabel contenant le second render ingame du serveur (permet de faire un effet de fade)

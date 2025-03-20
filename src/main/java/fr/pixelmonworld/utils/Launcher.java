@@ -154,7 +154,7 @@ public class Launcher {
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
             preLauncherPanel.updateText("Récupération du logo...");
-            connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
+            connexionPanel = SiteUtils.getAssetFromSite("launcher/connexion_panel");
             if (connexionPanel == null) {
                 erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
@@ -318,7 +318,7 @@ public class Launcher {
     private static void optionsModifier() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> defaultOptions = mapper.readValue(
-            ResourcesUtils.getResource("other/default_options.json"),
+            ResourcesUtils.getResource("utils/default_options.json"),
             new TypeReference<>() {}
         );
 
@@ -384,7 +384,7 @@ public class Launcher {
      */
     public static int getRam() {
         if (ram == null) {
-            String savedRam = MainFrame.getSaver().get("ram_panel");
+            String savedRam = MainFrame.getSaver().get("launcher/ram_panel");
             if (savedRam != null && !savedRam.isEmpty()) {
                 ram = Integer.valueOf(savedRam);
             } else {
@@ -400,7 +400,7 @@ public class Launcher {
     public static void addRam() {
         if (ram < 16) {
             ram++;
-            MainFrame.getSaver().set("ram_panel", String.valueOf(ram));
+            MainFrame.getSaver().set("launcher/ram_panel", String.valueOf(ram));
         }
     }
 
@@ -410,7 +410,7 @@ public class Launcher {
     public static void removeRam() {
         if (ram > 2) {
             ram--;
-            MainFrame.getSaver().set("ram_panel", String.valueOf(ram));
+            MainFrame.getSaver().set("launcher/ram_panel", String.valueOf(ram));
         }
     }
 

@@ -23,7 +23,7 @@ public class NewsAlert extends OpacityJLabel {
      * @param y Les coordonnées Y du panneau.
      */
     public NewsAlert(Component parent, int x, int y) {
-        super(new ImageIcon(getResource("top_panel/notification.png")));
+        super(new ImageIcon(getResource("launcher/top_panel/notification.png")));
         this.parent = parent;
         this.setBounds(x, y, this.getIcon().getIconWidth(), this.getIcon().getIconHeight());
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -18,7 +18,7 @@ public class CloseNewsButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public CloseNewsButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("news_panel/close_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/news_panel/close_button.png"));
     }
 
     /**

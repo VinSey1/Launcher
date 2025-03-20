@@ -19,7 +19,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
 public class NewPanel extends DefaultLauncherButton {
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("news_panel/new_background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/news_panel/new_background.png")));
 
     private News news;
 
@@ -30,7 +30,7 @@ public class NewPanel extends DefaultLauncherButton {
      * @param news L'actualité à afficher.
      */
     public NewPanel(Component parent, int y, News news) throws IOException, FontFormatException {
-        super(parent, 0, getBufferedImage("news_panel/new_background.png"));
+        super(parent, 0, getBufferedImage("launcher/news_panel/new_background.png"));
         this.setBounds((parent.getWidth() / 2) - (backgroundIcon.getIconWidth() / 2) - 5, y);
 
         this.news = news;

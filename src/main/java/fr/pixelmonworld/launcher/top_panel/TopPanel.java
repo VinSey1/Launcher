@@ -19,10 +19,10 @@ public class TopPanel extends DefaultLauncherPanel {
     private NewsAlert newsAlert;
 
     // Structure de la fenêtre
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_panel/background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/top_panel/background.png")));
 
     // Structure de la fenêtre
-    private ImageIcon serverIconIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("top_panel/server_icon.png")));
+    private ImageIcon serverIconIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/top_panel/server_icon.png")));
 
     public TopPanel(Component parent) {
         super(parent);

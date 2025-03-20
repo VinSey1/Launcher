@@ -17,7 +17,7 @@ public class DisconnectButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public DisconnectButton(ConnexionPanel parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("connexion_panel/disconnect_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/connexion_panel/disconnect_button.png"));
         this.parent = parent;
     }
 

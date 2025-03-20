@@ -42,11 +42,11 @@ public class SiteUtils {
             String imageUrl = jsonObject.get("assets").getAsJsonObject().get(fichier).getAsString();
             return ImageIO.read(new URL(imageUrl));
         } catch (IOException | NullPointerException e) {
-            if (fichier.equals("connexion_panel")) {
-                return ResourcesUtils.getBufferedImage("connexion_panel/default_background");
+            if (fichier.equals("launcher/connexion_panel")) {
+                return ResourcesUtils.getBufferedImage("launcher/connexion_panel/default_background");
             }
             if (fichier.equals("icon")) {
-                return ResourcesUtils.getBufferedImage("other/default_icon.png");
+                return ResourcesUtils.getBufferedImage("utils/default_icon.png");
             }
         }
         throw new NullPointerException("Impossible de récupérer " + fichier + ".");
@@ -64,7 +64,7 @@ public class SiteUtils {
                 renders.add(ImageIO.read(new URL(jsonElement.getAsString())));
             }
         } catch (IOException | NullPointerException e) {
-            renders.add(ResourcesUtils.getBufferedImage("other/default_render.png"));
+            renders.add(ResourcesUtils.getBufferedImage("utils/default_render.png"));
         }
         return renders;
     }

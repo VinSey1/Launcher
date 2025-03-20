@@ -18,7 +18,7 @@ public class TutoButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public TutoButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("connexion_panel/tuto_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/connexion_panel/tuto_button.png"));
     }
 
     /**

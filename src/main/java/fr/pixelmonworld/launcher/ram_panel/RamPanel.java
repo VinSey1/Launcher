@@ -36,7 +36,7 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
         super(parent, width, height, x, y);
 
         // Bouton permettant de baisser la ram
-        moins = new STexturedButton(getBufferedImage("other/fill.png"), getBufferedImage("other/fill.png"));
+        moins = new STexturedButton(getBufferedImage("utils/fill.png"), getBufferedImage("utils/fill.png"));
         moins.setBounds(this.getWidth() / 2 - 52, 8, 20, 20);
         moins.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         moins.addEventListener(this);
@@ -44,7 +44,7 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
         this.add(moins);
 
         // Bouton permettant d'augmenter la ram
-        plus = new STexturedButton(getBufferedImage("other/fill.png"), getBufferedImage("other/fill.png"));
+        plus = new STexturedButton(getBufferedImage("utils/fill.png"), getBufferedImage("utils/fill.png"));
         plus.setBounds(this.getWidth() / 2 + 37, 8, 20, 20);
         plus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         plus.addEventListener(this);
@@ -60,7 +60,7 @@ public class RamPanel extends DefaultLauncherPanel implements SwingerEventListen
      */
     private void genererBackground() {
         // Permet de récupérer le background associé à l'endroit de la flèche attendu
-        ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("ram_panel/ram_" + Launcher.getRam() + ".png")));
+        ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/ram_panel/ram_" + Launcher.getRam() + ".png")));
         background = new JLabel(backgroundIcon);
         background.setBounds((this.getWidth() - backgroundIcon.getIconWidth()) / 2, (this.getHeight() - backgroundIcon.getIconHeight()) / 2, backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
         this.add(background);

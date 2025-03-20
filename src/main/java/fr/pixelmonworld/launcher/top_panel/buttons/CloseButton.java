@@ -18,7 +18,7 @@ public class CloseButton extends DefaultLauncherButton {
      * @param y Les coordonnées Y du bouton.
      */
     public CloseButton(Component parent, int x, int y) {
-        super(parent, x, y, getBufferedImage("top_panel/close_button.png"));
+        super(parent, x, y, getBufferedImage("launcher/top_panel/close_button.png"));
     }
 
     /**
