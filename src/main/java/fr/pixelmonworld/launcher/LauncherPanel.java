@@ -109,8 +109,6 @@ public class LauncherPanel extends DefaultLauncherPanel {
                 }
             }
         }).start();
-
-        System.out.println("fin launcher");
     }
 
     /**

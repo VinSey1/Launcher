@@ -1,5 +1,7 @@
 package fr.pixelmonworld.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
@@ -25,14 +27,14 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -69,6 +71,7 @@ public class Launcher {
 
     // Fichier de crash de l'application
     private static File crashFile = new File(String.valueOf(path), "crashs");
+    private static File optionsFile = new File(String.valueOf(path), "options.txt");
     // Objet permettant de log les erreurs
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
     // Auth Microsoft
@@ -99,6 +102,8 @@ public class Launcher {
     }
 
     private static MainPanel mainPanel;
+
+    private static List<String> filesToKeep = Arrays.asList("user.stock", "options.txt.old", "servers.dat", "resourcepacks", "PixelmonWorld.zip", "crashs", ".PixelmonWorld");
 
     /**
      * Permet de se connecter automatiquement à Microsoft sans action utilisateur avec le token sauvegardé.
@@ -145,6 +150,7 @@ public class Launcher {
             }
             String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
             if (!versionFromSite.equals(LAUNCHER_VERSION)) {
+                clearDirectory();
                 Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
@@ -275,32 +281,71 @@ public class Launcher {
 
             launcherPanel.updateLog("Récupération de la liste des serveurs...", 0);
             JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
-            if (serversFileFromSite == null) {
-                erreurInterne(new Exception("Impossible de récupérer la liste des serveurs."));
-            }
             if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
                 launcherPanel.updateLog("Téléchargement de la liste des serveurs...", 25);
                 FileUtils.copyURLToFile(new URI(serversFileFromSite.get("url").getAsString()).toURL(), serversFile);
             }
             launcherPanel.updateLog("Récupération du pack de textures...", 50);
             JsonObject resourcepackFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("resourcepack.zip");
-            if (resourcepackFileFromSite == null) {
-                erreurInterne(new Exception("Impossible de récupérer le pack de textures."));
-            }
             if (!resourcepackFile.exists() || !LauncherFileUtils.areFilesIdentical(resourcepackFile, resourcepackFileFromSite.get("sha1").getAsString())) {
                 resourcepackFile.mkdirs();
                 launcherPanel.updateLog("Téléchargement du pack de textures...", 75);
                 FileUtils.copyURLToFile(new URI(resourcepackFileFromSite.get("url").getAsString()).toURL(), resourcepackFile);
             }
+//            throw new IOException("");
+            optionsModifier();
         } catch (Exception e) {
-            try {
-                FileUtils.cleanDirectory(path.toFile());
-            } catch (IOException e1) {
-                getReporter().catchError(e1, "Impossible de supprimer le dossier " + path + ".");
-            }
+            clearDirectory();
             getReporter().catchError(e, "Impossible de mettre à jour Minecraft. Relancez le Launcher.");
         }
         launcherPanel.setLoading(false);
+    }
+
+    private static void clearDirectory() {
+        try {
+            if (optionsFile.exists()) {
+                FileUtils.copyFile(optionsFile, new File(String.valueOf(path), "options.txt.old"));
+            }
+            for (File file : FileUtils.listFilesAndDirs(path.toFile(), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
+                if (!filesToKeep.contains(file.getName())) {
+                    FileUtils.delete(file);
+                }
+            }
+        } catch (IOException e1) {
+            getReporter().catchError(e1, "Impossible de supprimer le dossier " + path + ".");
+        }
+    }
+
+    private static void optionsModifier() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> defaultOptions = mapper.readValue(
+            ResourcesUtils.getResource("other/default_options.json"),
+            new TypeReference<>() {}
+        );
+
+        List<String> optionsModified = new ArrayList<>();
+
+        File oldOptionsFile = new File(String.valueOf(path), "options.txt.old");
+        File optionsFile = new File(String.valueOf(path), "options.txt");
+        if (oldOptionsFile.exists()) {
+            List<String> options = FileUtils.readLines(oldOptionsFile);
+            options.forEach(o -> {
+                String[] option = o.split(":", 2);
+                if (!defaultOptions.get(option[0]).equals(option[1])) {
+                    // Endroit pour FORCER les options des utilisateurs, même après leur save
+                    if (option[0].equals("resourcePacks")) {
+                        option[1] = "[\"vanilla\",\"mod_resources\",\"file/PixelmonWorld.zip\"]";
+                    }
+                    if (option[0].equals("lastServer")) {
+                        option[1] = SERVER_NAME + ":" + SERVER_PORT;
+                    }
+                }
+                optionsModified.add(String.join(":", option));
+            });
+        } else {
+            defaultOptions.forEach((k, e) -> optionsModified.add(e != null ? k + ":" + e : k));
+        }
+        FileUtils.writeLines(optionsFile, optionsModified);
     }
 
     /**

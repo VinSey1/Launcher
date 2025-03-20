@@ -119,6 +119,6 @@ public class SiteUtils {
                 return jsonObject.getAsJsonObject();
             }
         }
-        throw new NullPointerException("Le JSON récupéré est vide.");
+        throw new NullPointerException("Impossible de récupérer " + fichier + ".");
     }
 }
