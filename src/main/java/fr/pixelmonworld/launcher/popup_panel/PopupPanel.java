@@ -1,5 +1,6 @@
 package fr.pixelmonworld.launcher.popup_panel;
 
+import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
 import fr.pixelmonworld.domain.OpacityJLabel;
 import fr.pixelmonworld.utils.Launcher;
@@ -25,9 +26,9 @@ public class PopupPanel extends DefaultLauncherPanel {
     // Barre de progression de la mise à jour
     private JProgressBar progressBar;
     // Valeur maximale de la barre de progression lorsqu'il y a des mods à installer
-    private int maximumValueWithMods = 2658;
+    private int maximumValueWithMods = 2611;
     // Valeur maximale de la barre de progression lorsqu'il n'y a pas de mods à installer
-    private int maximumValueWithoutMods = 10;
+    private int maximumValueWithoutMods = 12;
 
     /**
      * Constructeur par défaut.
@@ -62,7 +63,10 @@ public class PopupPanel extends DefaultLauncherPanel {
         // Ajout de la barre de progression
         progressBar = new JProgressBar();
         progressBar.setBounds((this.getWidth() - (this.getWidth() - 50)) / 2, this.getHeight() - 35, this.getWidth() - 50, 20);
-        progressBar.setMaximum(maximumValueWithoutMods);
+
+        String modsInstalled = MainFrame.getSaver().get("mods_installed");
+        progressBar.setMaximum(modsInstalled != null && modsInstalled.equals("true") ? maximumValueWithoutMods : maximumValueWithMods);
+
         progressBar.setMinimum(0);
         progressBar.setBorderPainted(false);
         progressBar.setBackground(new Color(24, 71, 8));
@@ -103,11 +107,20 @@ public class PopupPanel extends DefaultLauncherPanel {
      * Met à jour le texte du panneau.
      * @param text Le texte à afficher.
      */
-    public void updateTextAndValue(String text, int value) {
-        if (value == 5 && !text.contains("Checking assets..."))  {
-            progressBar.setMaximum(maximumValueWithMods);
-        }
+    public void updateTextAndValue(String text) {
         this.text.setText(text);
-        this.progressBar.setValue(value);
+        this.progressBar.setValue(this.progressBar.getValue() + 1);
+    }
+
+    public void setMaxLogs() {
+        this.progressBar.setMaximum(maximumValueWithoutMods);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (!visible) {
+            this.progressBar.setValue(0);
+        }
     }
 }

@@ -33,8 +33,7 @@ public class LauncherLogger extends Logger {
      */
     @Override
     public void writeToTheLogFile(String toLog) {
-        i++;
-        launcherPanel.updateLog(toLog.split("]  ")[1], i);
+        launcherPanel.updateLog(toLog.split("]  ")[1]);
     }
 
     /**

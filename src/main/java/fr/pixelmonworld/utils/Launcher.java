@@ -154,7 +154,7 @@ public class Launcher {
                 erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
             }
             preLauncherPanel.updateText("Récupération du logo...");
-            connexionPanel = SiteUtils.getAssetFromSite("launcher/connexion_panel");
+            connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
             if (connexionPanel == null) {
                 erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
@@ -278,26 +278,27 @@ public class Launcher {
         try {
             flowUpdater.update(path);
 
-            launcherPanel.updateLog("Récupération de la liste des serveurs...", 0);
+            launcherPanel.updateLog("Récupération de la liste des serveurs...");
             JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
             if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
-                launcherPanel.updateLog("Téléchargement de la liste des serveurs...", 25);
+                launcherPanel.updateLog("Téléchargement de la liste des serveurs...");
                 FileUtils.copyURLToFile(new URI(serversFileFromSite.get("url").getAsString()).toURL(), serversFile);
             }
-            launcherPanel.updateLog("Récupération du pack de textures...", 50);
+            launcherPanel.updateLog("Récupération du pack de textures...");
             JsonObject resourcepackFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("resourcepack.zip");
             if (!resourcepackFile.exists() || !LauncherFileUtils.areFilesIdentical(resourcepackFile, resourcepackFileFromSite.get("sha1").getAsString())) {
                 resourcepackFile.mkdirs();
-                launcherPanel.updateLog("Téléchargement du pack de textures...", 75);
+                launcherPanel.updateLog("Téléchargement du pack de textures...");
                 FileUtils.copyURLToFile(new URI(resourcepackFileFromSite.get("url").getAsString()).toURL(), resourcepackFile);
             }
-//            throw new IOException("");
             optionsModifier();
         } catch (Exception e) {
             clearDirectory();
             getReporter().catchError(e, "Impossible de mettre à jour Minecraft. Relancez le Launcher.");
         }
         launcherPanel.setLoading(false);
+        MainFrame.getSaver().set("mods_installed", "true");
+        launcherPanel.updateMaxLogs();
     }
 
     private static void clearDirectory() {
@@ -310,6 +311,8 @@ public class Launcher {
                     FileUtils.delete(file);
                 }
             }
+            MainFrame.getSaver().set("mods_installed", "false");
+
         } catch (IOException e1) {
             getReporter().catchError(e1, "Impossible de supprimer le dossier " + path + ".");
         }

@@ -144,7 +144,11 @@ public class LauncherPanel extends DefaultLauncherPanel {
      * Permet de mettre à jour le texte affiché par le JLabel visible.
      * @param newText Le nouveau texte à afficher.
      */
-    public void updateLog(String newText, int i) {
-        popupPanel.updateTextAndValue(newText, i);
+    public void updateLog(String newText) {
+        popupPanel.updateTextAndValue(newText);
+    }
+
+    public void updateMaxLogs() {
+        popupPanel.setMaxLogs();
     }
 }

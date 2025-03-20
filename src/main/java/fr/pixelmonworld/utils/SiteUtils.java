@@ -42,7 +42,7 @@ public class SiteUtils {
             String imageUrl = jsonObject.get("assets").getAsJsonObject().get(fichier).getAsString();
             return ImageIO.read(new URL(imageUrl));
         } catch (IOException | NullPointerException e) {
-            if (fichier.equals("launcher/connexion_panel")) {
+            if (fichier.equals("connexion_panel")) {
                 return ResourcesUtils.getBufferedImage("launcher/connexion_panel/default_background");
             }
             if (fichier.equals("icon")) {
