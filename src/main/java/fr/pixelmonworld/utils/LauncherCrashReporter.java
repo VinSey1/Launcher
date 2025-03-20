@@ -1,4 +1,4 @@
-package fr.pixelmonworld.crash;
+package fr.pixelmonworld.utils;
 
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 

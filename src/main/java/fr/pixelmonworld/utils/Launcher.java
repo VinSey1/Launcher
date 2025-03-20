@@ -15,7 +15,6 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.MainFrame;
 import fr.pixelmonworld.MainPanel;
-import fr.pixelmonworld.crash.LauncherCrashReporter;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.launcher.LauncherPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
