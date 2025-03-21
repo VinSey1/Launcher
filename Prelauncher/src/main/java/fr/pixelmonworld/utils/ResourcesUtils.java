@@ -14,9 +14,6 @@ import java.net.URL;
  */
 public class ResourcesUtils {
 
-    // Dernière image aléatoire récupérée
-    private static int lastRandomImage = Integer.MAX_VALUE;
-
     /**
      * Permet de récupérer une image depuis le dossier de ressources.
      * @param fichier Le fichier à récupérer.
@@ -39,21 +36,6 @@ public class ResourcesUtils {
     public static BufferedImage getBufferedImage(String fichier) {
         return (BufferedImage) getImage(fichier);
     }
-
-    /**
-     * Permet de récupérer une image aléatoire ingame dans le dossier de ressources.
-     * @return BufferedImage récupérée depuis les ressources.
-     */
-//    public static BufferedImage getRandomRenderImage() {
-//        ArrayList<BufferedImage> renders = Prelauncher.getRenders();
-//        Random random = new Random();
-//        int number;
-//        do {
-//            number = random.nextInt(renders.size());
-//        } while (number == lastRandomImage);
-//        lastRandomImage = number;
-//        return renders.get(number);
-//    }
 
     /**
      * Permet de récupérer un fichier dans le dossier de ressources.

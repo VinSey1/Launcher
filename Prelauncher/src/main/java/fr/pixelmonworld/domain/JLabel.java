@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * JLabel spécifique permettant de gérer l'opacité de l'image affichée.
  */
-public class OpacityJLabel extends JLabel {
+public class JLabel extends javax.swing.JLabel {
 
     // L'opacité de l'image par défaut à visible
     private float opacity = 1.0f;
@@ -15,7 +15,7 @@ public class OpacityJLabel extends JLabel {
      * Constructeur prenant une ImageIcon.
      * @param imageIcon L'image à afficher dans le JLabel.
      */
-    public OpacityJLabel(ImageIcon imageIcon) {
+    public JLabel(ImageIcon imageIcon) {
         super(imageIcon);
     }
 

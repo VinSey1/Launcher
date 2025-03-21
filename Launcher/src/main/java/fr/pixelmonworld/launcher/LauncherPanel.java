@@ -10,7 +10,6 @@ import fr.pixelmonworld.launcher.popup_panel.PopupPanel;
 import fr.pixelmonworld.launcher.ram_panel.RamPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.pixelmonworld.utils.Launcher;
-import fr.pixelmonworld.utils.SiteUtils;
 import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.swing.*;
@@ -66,11 +65,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
         this.add(new RamPanel(this, 683, 106, 25, 584));
 
         // Récupération des news depuis le site
-        try {
-            news = SiteUtils.getNewsFromSite();
-        } catch (Exception e) {
-            Launcher.erreurInterne(new Exception("Impossible de récupérer les news."));
-        }
+        news = Launcher.getNews();
 
         if (news.isEmpty()) {
             MainFrame.getSaver().set("news", "false");
