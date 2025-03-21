@@ -94,10 +94,10 @@ public class Prelauncher extends JFrame {
     }
 
     public static void doUpdate() throws Exception {
-        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson("")).build();
+        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson("https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json?token=GHSAT0AAAAAADAXE2QFTJW6OBIV3EK64UU6Z65TBQA")).build();
         flowUpdater.update(Paths.get(path + "/launchers"));
     }
-n b
+
     public static void launch() throws LaunchException {
         ClasspathConstructor classpathConstructor = new ClasspathConstructor();
 
