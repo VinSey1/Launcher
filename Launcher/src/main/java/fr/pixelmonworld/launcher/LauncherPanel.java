@@ -79,13 +79,11 @@ public class LauncherPanel extends DefaultLauncherPanel {
 
         // Ajout du screen ingame
         render.setBounds(0, this.getHeight() - render.getIcon().getIconHeight(), render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
-        render.setVisible(true);
         this.add(render);
 
         // Ajout du screen ingame 2
         render2 = new OpacityJLabel(fill);
         render2.setBounds(0, this.getHeight() - render.getIcon().getIconHeight(), render.getIcon().getIconWidth(), render.getIcon().getIconHeight());
-        render2.setVisible(false);
         this.add(render2);
 
         // Permet de changer le render toutes les 10 secondes
@@ -111,7 +109,7 @@ public class LauncherPanel extends DefaultLauncherPanel {
         // Définit quel render afficher et lequel cacher
         OpacityJLabel renderToShow;
         OpacityJLabel renderToHide;
-        if (render.isVisible()) {
+        if (render.isShowed()) {
             renderToShow = render2;
             renderToHide = render;
         } else {
@@ -121,13 +119,14 @@ public class LauncherPanel extends DefaultLauncherPanel {
         // Animation de fade
         renderToShow.setOpacity(0f);
         renderToShow.setIcon(newRenderIcon);
-        renderToShow.setVisible(true);
         Timeline.builder(renderToShow)
                 .addPropertyToInterpolate("opacity", 0.0f, 1.0f)
                 .setDuration(2000)
                 .play();
-        renderToHide.setVisible(false);
-        renderToHide.setIcon(fill);
+        Timeline.builder(renderToHide)
+                .addPropertyToInterpolate("opacity", 1.0f, 0.0f)
+                .setDuration(2000)
+                .play();
     }
 
     /**

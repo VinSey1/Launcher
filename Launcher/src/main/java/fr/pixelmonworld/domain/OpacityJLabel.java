@@ -39,4 +39,12 @@ public class OpacityJLabel extends JLabel {
         this.opacity = opacity;
         repaint();
     }
+
+    /**
+     * Permet de savoir si l'image est affichée.
+     * @return Vrai si l'image est affichée, faux sinon.
+     */
+    public boolean isShowed() {
+        return opacity == 1.0f;
+    }
 }
