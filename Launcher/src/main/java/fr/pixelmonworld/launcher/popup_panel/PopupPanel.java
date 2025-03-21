@@ -19,7 +19,7 @@ import static fr.pixelmonworld.utils.ResourcesUtils.*;
 public class PopupPanel extends DefaultLauncherPanel {
 
     // Background du panneau
-    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/popup_panel/background.png")));
+    private ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getResource("launcher/popup_panel/background.png")));
 
     // JLabel contenant le texte à afficher
     private JLabel text;

@@ -128,6 +128,7 @@ public class Prelauncher extends JFrame {
         ExternalLauncher launcher = new ExternalLauncher(profile);
 
         launcher.launch();
+        System.exit(0);
     }
 
     /**

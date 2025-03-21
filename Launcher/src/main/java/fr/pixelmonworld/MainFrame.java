@@ -38,6 +38,8 @@ public class MainFrame extends JFrame {
         this.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         this.setLocationRelativeTo(null);
 
+        this.setIconImage(Launcher.getIcon());
+
         Launcher.setMainFrame(this);
 
         // Permet d'ajouter le panneau principal à l'application
@@ -82,12 +84,9 @@ public class MainFrame extends JFrame {
      * @param args Arguments de l'application.
      */
     public static void main(String[] args) {
-        try {
-            instance = new MainFrame();
+        Launcher.init();
+        instance = new MainFrame();
 
-            Launcher.init();
-        } catch (Exception e) {
-            Launcher.erreurInterne(e);
-        }
+
     }
 }

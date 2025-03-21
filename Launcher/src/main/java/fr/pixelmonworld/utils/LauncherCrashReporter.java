@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static fr.pixelmonworld.utils.ResourcesUtils.getBufferedImage;
-
 /**
  * Permet de gérer les crashs du launcher. Etend la classe "CrashReporter" de OpenLauncherLib pour pouvoir gérer le tout
  * de manière spécifique.
@@ -37,7 +35,7 @@ public class LauncherCrashReporter extends CrashReporter {
         } catch (IOException err) {
             msg = "Impossible de créer le log de crash : " + err;
         }
-        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Objects.requireNonNull(getBufferedImage("launcher/popup_panel/icon.png"))));
+        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Objects.requireNonNull(ResourcesUtils.getResource("launcher/popup_panel/icon.png"))));
         System.exit(1);
     }
 }

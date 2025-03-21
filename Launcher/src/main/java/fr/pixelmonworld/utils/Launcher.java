@@ -114,7 +114,7 @@ public class Launcher {
     private static BufferedImage icon;
 
     // Renders du serveur
-    private static ArrayList<BufferedImage> renders;
+    private static ArrayList<BufferedImage> renders = new ArrayList<>();;
 
     // Fichiers à garder lors de la suppression de l'ensemble des données du launcher
     private static List<String> filesToKeep = Arrays.asList("user.stock", "options.txt.old", "servers.dat", "resourcepacks", "PixelmonWorld.zip", "crashs", ".PixelmonWorld");
@@ -159,7 +159,6 @@ public class Launcher {
             if (icon == null) {
                 erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
             }
-            mainFrame.setIconImage(Launcher.getIcon());
             for (File file : rendersDir.listFiles()) {
                 renders.add(ImageIO.read(file));
             }
