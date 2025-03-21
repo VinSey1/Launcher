@@ -84,9 +84,11 @@ public class MainFrame extends JFrame {
      * @param args Arguments de l'application.
      */
     public static void main(String[] args) {
-        Launcher.init();
-        instance = new MainFrame();
-
-
+        try {
+            Launcher.init();
+            instance = new MainFrame();
+        } catch (Exception e) {
+            Launcher.erreurInterne(e);
+        }
     }
 }

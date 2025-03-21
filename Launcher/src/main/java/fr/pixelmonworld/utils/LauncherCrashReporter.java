@@ -5,7 +5,6 @@ import fr.theshark34.openlauncherlib.util.CrashReporter;
 import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * Permet de gérer les crashs du launcher. Etend la classe "CrashReporter" de OpenLauncherLib pour pouvoir gérer le tout
@@ -35,7 +34,7 @@ public class LauncherCrashReporter extends CrashReporter {
         } catch (IOException err) {
             msg = "Impossible de créer le log de crash : " + err;
         }
-        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Objects.requireNonNull(ResourcesUtils.getResource("launcher/popup_panel/icon.png"))));
+        JOptionPane.showMessageDialog(null, e + "\n" + msg, "Erreur interne :", JOptionPane.INFORMATION_MESSAGE);
         System.exit(1);
     }
 }
