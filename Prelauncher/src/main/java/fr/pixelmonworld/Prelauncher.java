@@ -3,7 +3,7 @@ package fr.pixelmonworld;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.json.ExternalFile;
 import fr.pixelmonworld.domain.News;
-import fr.pixelmonworld.prelauncher.PreLauncherPanel;
+import fr.pixelmonworld.prelauncher.PrelauncherPanel;
 import fr.pixelmonworld.utils.LauncherCrashReporter;
 import fr.pixelmonworld.utils.SiteUtils;
 import fr.theshark34.openlauncherlib.LaunchException;
@@ -17,9 +17,6 @@ import fr.theshark34.openlauncherlib.minecraft.GameVersion;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.explorer.FileList;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
-import net.arikia.dev.drpc.DiscordRichPresence;
 import org.pushingpixels.radiance.animation.api.Timeline;
 
 import javax.imageio.ImageIO;
@@ -71,7 +68,7 @@ public class Prelauncher extends JFrame {
     // Objet permettant de sauvegarder les options dans le fichier comme les news ou le token d'authentification Microsoft
     private static Saver saver = new Saver(saverFile);
 
-    private static PreLauncherPanel preLauncherPanel;
+    private static PrelauncherPanel preLauncherPanel;
 
     // IP du serveur
     private static final String SERVER_NAME = "play.pixelmonworld.fr";
@@ -97,7 +94,7 @@ public class Prelauncher extends JFrame {
         this.setLocationRelativeTo(null);
 
         // Permet d'ajouter le panneau principal à l'application
-        this.setContentPane(preLauncherPanel = new PreLauncherPanel(this, 770, 420));
+        this.setContentPane(preLauncherPanel = new PrelauncherPanel(this, 770, 420));
 
         // Permet de définir l'opacité de l'application
         this.setOpacity(0);
@@ -139,17 +136,8 @@ public class Prelauncher extends JFrame {
         return instance;
     }
 
-    /**
-     * Permet de récupérer l'objet de sauvegarde des options.
-     * @return L'objet de sauvegarde des options.
-     */
-    public static Saver getSaver() {
-        return saver;
-    }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
-
             launcherDir.mkdirs();
             rendersDir.mkdirs();
 
@@ -166,8 +154,6 @@ public class Prelauncher extends JFrame {
             getFilesFromSite();
             doUpdate();
             launch();
-
-            initDiscord();
         } catch (Exception e) {
             erreurInterne(e);
         }
@@ -239,28 +225,6 @@ public class Prelauncher extends JFrame {
      * @param e L'exception à renvoyer.
      */
     public static void erreurInterne(Exception e) {
-        reporter.catchError(e, "Erreur interne du launcher.");
-    }
-
-    /**
-     * Permet d'initialiser Discord Rich Presence.
-     */
-    public static void initDiscord() {
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
-            DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder(SERVER_NAME);
-            DiscordRPC.discordUpdatePresence(presence.build());
-        }).build();
-        DiscordRPC.discordInitialize(DISCORD_APPLICATION_ID, handlers, false);
-        DiscordRPC.discordRegister(DISCORD_APPLICATION_ID, "");
-        new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                DiscordRPC.discordRunCallbacks();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "RPC-Callback-Handler").start();
+        reporter.catchError(e, "Erreur interne du prélauncher.");
     }
 }

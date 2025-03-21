@@ -40,8 +40,6 @@ public class MainFrame extends JFrame {
 
         this.setIconImage(Launcher.getIcon());
 
-        Launcher.setMainFrame(this);
-
         // Permet d'ajouter le panneau principal à l'application
         this.setContentPane(new LauncherPanel(this));
 

@@ -14,32 +14,29 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.MainFrame;
+import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.launcher.LauncherPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Coeur technique de l'application.
  */
 public class Launcher {
-
-    // Version du launcher
-    private static final String LAUNCHER_VERSION = "0.0.1";
 
     // Version de Minecraft
     private static final String MINECRAFT_VERSION = "1.16.5";
@@ -86,9 +83,6 @@ public class Launcher {
     // Auth Microsoft
     private static AuthInfos authInfos;
 
-    // Fenêtre principale de l'application permettant de définir les éléments graphiques
-    private static MainFrame mainFrame;
-
     // Le launcher de l'application
     private static LauncherPanel launcherPanel;
 
@@ -118,6 +112,8 @@ public class Launcher {
 
     // Fichiers à garder lors de la suppression de l'ensemble des données du launcher
     private static List<String> filesToKeep = Arrays.asList("user.stock", "options.txt.old", "servers.dat", "resourcepacks", "PixelmonWorld.zip", "crashs", ".PixelmonWorld");
+
+    private static Collection<News> news = new ArrayList<>();
 
     /**
      * Permet de se connecter automatiquement à Microsoft sans action utilisateur avec le token sauvegardé.
@@ -165,7 +161,12 @@ public class Launcher {
             if (renders.isEmpty()) {
                 erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
             }
-        } catch (IOException e) {
+            FileInputStream newsFile = new FileInputStream(new File(String.valueOf(path), "news"));
+            ObjectInputStream ois = new ObjectInputStream(newsFile);
+            news = (Collection<News>) ois.readObject();
+            ois.close();
+            initDiscord();
+        } catch (IOException | ClassNotFoundException e) {
             erreurInterne(e);
         }
     }
@@ -227,6 +228,7 @@ public class Launcher {
         try {
             flowUpdater.update(path);
 
+            // TODO Faire depuis le prélauncher
             launcherPanel.updateLog("Récupération de la liste des serveurs...");
             JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
             if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
@@ -248,6 +250,28 @@ public class Launcher {
         launcherPanel.setLoading(false);
         MainFrame.getSaver().set("mods_installed", "true");
         launcherPanel.updateMaxLogs();
+    }
+
+    /**
+     * Permet d'initialiser Discord Rich Presence.
+     */
+    public static void initDiscord() {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+            DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder(SERVER_NAME);
+            DiscordRPC.discordUpdatePresence(presence.build());
+        }).build();
+        DiscordRPC.discordInitialize(DISCORD_APPLICATION_ID, handlers, false);
+        DiscordRPC.discordRegister(DISCORD_APPLICATION_ID, "");
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                DiscordRPC.discordRunCallbacks();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "RPC-Callback-Handler").start();
     }
 
     /**
@@ -380,15 +404,6 @@ public class Launcher {
         }
     }
 
-
-    /**
-     * Permet de définir la fenêtre principale de l'application.
-     * @param mainFrame
-     */
-    public static void setMainFrame(MainFrame mainFrame) {
-        Launcher.mainFrame = mainFrame;
-    }
-
     /**
      * Permet de définir le launcher de l'application.
      * @param launcherPanel
@@ -461,4 +476,7 @@ public class Launcher {
         return path;
     }
 
+    public static Collection<News> getNews() {
+        return news;
+    }
 }
