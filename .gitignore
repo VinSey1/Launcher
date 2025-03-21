@@ -39,3 +39,4 @@ build/
 forge-installer-patched.jar.log
 src/main/resources/resourcepack.zip
 .idea/
+/out/
