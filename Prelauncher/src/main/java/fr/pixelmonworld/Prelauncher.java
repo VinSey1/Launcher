@@ -17,13 +17,19 @@ import fr.theshark34.openlauncherlib.minecraft.GameVersion;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.explorer.FileList;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
 import org.pushingpixels.radiance.animation.api.Timeline;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Prelauncher extends JFrame {
@@ -44,7 +50,11 @@ public class Prelauncher extends JFrame {
     // Dossier de crash de l'application
     private static File crashFile = new File(String.valueOf(path), "crashs");
 
-    private static File launcherFile = new File(String.valueOf(path), "launchers");
+    private static File launcherDir = new File(String.valueOf(path), "launcher");
+
+    private static File assetsDir = new File(String.valueOf(path), "assets/");
+
+    private static File rendersDir = new File(String.valueOf(assetsDir), "renders/");
 
     // Fichier d'options de Minecraft
     private static File optionsFile = new File(String.valueOf(path), "options.txt");
@@ -62,6 +72,15 @@ public class Prelauncher extends JFrame {
     private static Saver saver = new Saver(saverFile);
 
     private static PreLauncherPanel preLauncherPanel;
+
+    // IP du serveur
+    private static final String SERVER_NAME = "play.pixelmonworld.fr";
+
+    // Port du serveur
+    private static final String SERVER_PORT = "25564";
+
+    // ID de l'application Discord
+    public static final String DISCORD_APPLICATION_ID = "1297976065121325076";
 
     /**
      * Constructeur par défaut.
@@ -94,18 +113,18 @@ public class Prelauncher extends JFrame {
     }
 
     public static void doUpdate() throws Exception {
-        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson("https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json?token=GHSAT0AAAAAADAXE2QFTJW6OBIV3EK64UU6Z65TBQA")).build();
-        flowUpdater.update(Paths.get(path + "/launchers"));
+        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson("https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json")).build();
+        flowUpdater.update(Paths.get(launcherDir.toURI()));
     }
 
     public static void launch() throws LaunchException {
         ClasspathConstructor classpathConstructor = new ClasspathConstructor();
 
         FileList fileList = new FileList();
-        fileList.add(new File(launcherFile, "PixelmonWorld.jar").toPath());
+        fileList.add(new File(launcherDir, "PixelmonWorld.jar").toPath());
         classpathConstructor.add(fileList);
 
-        ExternalLaunchProfile profile = new ExternalLaunchProfile("fr.pixelmonworld.launcher.LauncherFrame", classpathConstructor.make());
+        ExternalLaunchProfile profile = new ExternalLaunchProfile("fr.pixelmonworld.MainFrame", classpathConstructor.make());
         ExternalLauncher launcher = new ExternalLauncher(profile);
 
         launcher.launch();
@@ -130,7 +149,9 @@ public class Prelauncher extends JFrame {
     public static void main(String[] args) throws Exception {
         try {
 
-            launcherFile.mkdirs();
+            launcherDir.mkdirs();
+            rendersDir.mkdirs();
+
             // Permet de créer le fichier de sauvegarde s'il n'existe pas
             if (!saverFile.exists()) {
                 saverFile.createNewFile();
@@ -141,46 +162,45 @@ public class Prelauncher extends JFrame {
 
             instance = new Prelauncher();
 
-            init();
+            getFilesFromSite();
             doUpdate();
             launch();
+
+            initDiscord();
         } catch (Exception e) {
             erreurInterne(e);
         }
 
     }
 
-    public static void init() {
+    public static void getFilesFromSite() {
         try {
             preLauncherPanel.updateText("Vérification de la version du launcher...");
-//            JsonObject launcherFromSite = null;
-//            try {
-//                launcherFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld");
-//            } catch (Exception e) {
-//                erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
-//            }
-//            String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
-//            if (!versionFromSite.equals(LAUNCHER_VERSION)) {
-//                clearDirectory();
-//                Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
-//                erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
-//            }
-//            preLauncherPanel.updateText("Récupération du logo...");
-//            connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
-//            if (connexionPanel == null) {
-//                erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
-//            }
-//            preLauncherPanel.updateText("Récupération de l'icône...");
-//            icon = SiteUtils.getAssetFromSite("icon");
-//            if (icon == null) {
-//                erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
-//            }
-//            this.setIconImage(icon);
-//            preLauncherPanel.updateText("Récupération des renders...");
-//            renders = SiteUtils.getRendersFromSite();
-//            if (renders.isEmpty()) {
-//                erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
-//            }
+            preLauncherPanel.updateText("Récupération du logo...");
+            BufferedImage logo = SiteUtils.getAssetFromSite("connexion_panel");
+            if (logo == null) {
+                erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
+            }
+            ImageIO.write(logo, "png", new File(String.valueOf(assetsDir), "/logo.png"));
+            preLauncherPanel.updateText("Récupération de l'icône...");
+            BufferedImage icon = SiteUtils.getAssetFromSite("icon");
+            if (icon == null) {
+                erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
+            }
+            ImageIO.write(icon, "png", new File(String.valueOf(assetsDir), "/icon.png"));
+            Prelauncher.getInstance().setIconImage(icon);
+            preLauncherPanel.updateText("Récupération des renders...");
+            ArrayList<BufferedImage> renders = SiteUtils.getRendersFromSite();
+            if (renders.isEmpty()) {
+                erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
+            }
+            renders.forEach(render -> {
+                try {
+                    ImageIO.write(render, "png", new File(String.valueOf(assetsDir), "render_" + renders.indexOf(render) + ".png"));
+                } catch (IOException e) {
+                    erreurInterne(e);
+                }
+            });
             preLauncherPanel.updateText("Vérification des news...");
             File newsSaved = new File(String.valueOf(path), "news");
             Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
@@ -219,5 +239,27 @@ public class Prelauncher extends JFrame {
      */
     public static void erreurInterne(Exception e) {
         reporter.catchError(e, "Erreur interne du launcher.");
+    }
+
+    /**
+     * Permet d'initialiser Discord Rich Presence.
+     */
+    public static void initDiscord() {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+            DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder(SERVER_NAME);
+            DiscordRPC.discordUpdatePresence(presence.build());
+        }).build();
+        DiscordRPC.discordInitialize(DISCORD_APPLICATION_ID, handlers, false);
+        DiscordRPC.discordRegister(DISCORD_APPLICATION_ID, "");
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                DiscordRPC.discordRunCallbacks();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "RPC-Callback-Handler").start();
     }
 }

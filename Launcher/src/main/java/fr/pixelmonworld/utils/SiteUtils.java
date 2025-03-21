@@ -45,7 +45,7 @@ public class SiteUtils {
             return ImageIO.read(new URL(imageUrl));
         } catch (IOException | NullPointerException e) {
             if (fichier.equals("connexion_panel")) {
-                return ResourcesUtils.getBufferedImage("launcher/connexion_panel/default_background");
+                return ResourcesUtils.getBufferedImage("launcher/connexion_panel/default_background.png");
             }
             if (fichier.equals("icon")) {
                 return ResourcesUtils.getBufferedImage("utils/default_icon.png");
