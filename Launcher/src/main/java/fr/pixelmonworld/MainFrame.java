@@ -1,5 +1,6 @@
 package fr.pixelmonworld;
 
+import fr.pixelmonworld.launcher.LauncherPanel;
 import fr.pixelmonworld.utils.Launcher;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.swinger.util.WindowMover;
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame {
         Launcher.setMainFrame(this);
 
         // Permet d'ajouter le panneau principal à l'application
-        this.setContentPane(new MainPanel(this.getWidth(), this.getHeight()));
+        this.setContentPane(new LauncherPanel(this));
 
         // Permet à l'utilisateur de pouvoir bouger la fenêtre
         WindowMover mover = new WindowMover(this);
@@ -82,16 +83,6 @@ public class MainFrame extends JFrame {
      */
     public static void main(String[] args) {
         try {
-            // Permet de créer le fichier de sauvegarde s'il n'existe pas
-            if (!saverFile.exists()) {
-                saverFile.createNewFile();
-            }
-
-            // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
-            Launcher.getCrashFile().mkdirs();
-            // Permet de mettre en place le Discord Rich Presence
-            Launcher.initDiscord();
-
             instance = new MainFrame();
 
             Launcher.init();

@@ -14,27 +14,24 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.pixelmonworld.MainFrame;
-import fr.pixelmonworld.MainPanel;
-import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.launcher.LauncherPanel;
 import fr.pixelmonworld.launcher.news_panel.NewsPanel;
 import fr.pixelmonworld.launcher.top_panel.TopPanel;
-import fr.pixelmonworld.prelauncher.PreLauncherPanel;
 import fr.theshark34.openlauncherlib.minecraft.*;
 import fr.theshark34.openlauncherlib.util.CrashReporter;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
-import net.arikia.dev.drpc.DiscordRichPresence;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Coeur technique de l'application.
@@ -78,6 +75,11 @@ public class Launcher {
     // Fichier d'options de Minecraft
     private static File optionsFile = new File(String.valueOf(path), "options.txt");
 
+    // Dossier des assets de l'application
+    private static File assetsDir = new File(String.valueOf(path), "assets/");
+
+    private static File rendersDir = new File(String.valueOf(assetsDir), "renders/");
+
     // Objet permettant de log les erreurs
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
 
@@ -86,9 +88,6 @@ public class Launcher {
 
     // Fenêtre principale de l'application permettant de définir les éléments graphiques
     private static MainFrame mainFrame;
-
-    // Le prélauncher de l'application
-    private static PreLauncherPanel preLauncherPanel;
 
     // Le launcher de l'application
     private static LauncherPanel launcherPanel;
@@ -116,9 +115,6 @@ public class Launcher {
 
     // Renders du serveur
     private static ArrayList<BufferedImage> renders;
-
-    // Panneau principal de l'application permettant d'afficher le prélauncher et le launcher
-    private static MainPanel mainPanel;
 
     // Fichiers à garder lors de la suppression de l'ensemble des données du launcher
     private static List<String> filesToKeep = Arrays.asList("user.stock", "options.txt.old", "servers.dat", "resourcepacks", "PixelmonWorld.zip", "crashs", ".PixelmonWorld");
@@ -154,96 +150,25 @@ public class Launcher {
      * Permet d'initialiser le launcher.
      */
     public static void init() {
-        Launcher.getFilesFromSite();
-    }
-
-    /**
-     * Permet de récupérer les fichiers associés au lancement du launcher depuis le site (logo, icon, renders, news).
-     */
-    private static void getFilesFromSite() {
         try {
-            preLauncherPanel.updateText("Vérification de la version du launcher...");
-            JsonObject launcherFromSite = null;
-            try {
-                launcherFromSite = SiteUtils.getFileFromSiteAsJsonObject("PixelmonWorld");
-            } catch (Exception e) {
-                erreurInterne(new Exception("Impossible de récupérer la version du launcher. Veuillez vérifier votre connexion internet."));
-            }
-            String versionFromSite = launcherFromSite.get("name").getAsString().split("-")[1].replace(".exe", "");
-            if (!versionFromSite.equals(LAUNCHER_VERSION)) {
-                clearDirectory();
-                Desktop.getDesktop().browse(URI.create(launcherFromSite.get("url").getAsString()));
-                erreurInterne(new Exception("La version du launcher n'est pas à jour (" + LAUNCHER_VERSION + "). Veuillez installer la version " + versionFromSite + "."));
-            }
-            preLauncherPanel.updateText("Récupération du logo...");
-            connexionPanel = SiteUtils.getAssetFromSite("connexion_panel");
+            connexionPanel = ImageIO.read(new File(String.valueOf(assetsDir), "/logo.png"));
             if (connexionPanel == null) {
                 erreurInterne(new Exception("Impossible de récupérer le logo du serveur."));
             }
-            preLauncherPanel.updateText("Récupération de l'icône...");
-            icon = SiteUtils.getAssetFromSite("icon");
+            icon = ImageIO.read(new File(String.valueOf(assetsDir), "/icon.png"));
             if (icon == null) {
                 erreurInterne(new Exception("Impossible de récupérer l'icône du serveur."));
             }
             mainFrame.setIconImage(Launcher.getIcon());
-            preLauncherPanel.updateText("Récupération des renders...");
-            renders = SiteUtils.getRendersFromSite();
+            for (File file : rendersDir.listFiles()) {
+                renders.add(ImageIO.read(file));
+            }
             if (renders.isEmpty()) {
                 erreurInterne(new Exception("Impossible de récupérer les renders du serveur."));
             }
-            preLauncherPanel.updateText("Vérification des news...");
-            File newsSaved = new File(String.valueOf(path), "news");
-            Collection<News> newsFromSite = SiteUtils.getNewsFromSite();
-            if (!newsSaved.exists()) {
-                preLauncherPanel.updateText("Récupération des news...");
-                FileOutputStream newsFile = new FileOutputStream(newsSaved);
-                ObjectOutputStream oos = new ObjectOutputStream(newsFile);
-                oos.writeObject(newsFromSite);
-                oos.close();
-                MainFrame.getSaver().set("news", "true");
-            } else {
-                FileInputStream newsFile = new FileInputStream(newsSaved);
-                ObjectInputStream ois = new ObjectInputStream(newsFile);
-                Collection<News> newsFromAssets = (Collection<News>) ois.readObject();
-                ois.close();
-                if (!newsFromAssets.equals(newsFromSite)) {
-                    FileOutputStream newsFileUpdated = new FileOutputStream(newsSaved);
-                    ObjectOutputStream oos = new ObjectOutputStream(newsFileUpdated);
-                    oos.writeObject(newsFromSite);
-                    oos.close();
-                    MainFrame.getSaver().set("news", "true");
-                } else if (MainFrame.getSaver().get("news") == null || !MainFrame.getSaver().get("news").equals("true")) {
-                    MainFrame.getSaver().set("news", "false");
-                }
-            }
-            preLauncherPanel.updateText("Lancement du launcher...");
-            mainPanel.initLauncher();
-            preLauncherPanel.setVisible(false);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             erreurInterne(e);
         }
-    }
-
-    /**
-     * Permet d'initialiser Discord Rich Presence.
-     */
-    public static void initDiscord() {
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
-            DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder(SERVER_NAME);
-            DiscordRPC.discordUpdatePresence(presence.build());
-        }).build();
-        DiscordRPC.discordInitialize(DISCORD_APPLICATION_ID, handlers, false);
-        DiscordRPC.discordRegister(DISCORD_APPLICATION_ID, "");
-        new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                DiscordRPC.discordRunCallbacks();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "RPC-Callback-Handler").start();
     }
 
     /**
@@ -463,22 +388,6 @@ public class Launcher {
      */
     public static void setMainFrame(MainFrame mainFrame) {
         Launcher.mainFrame = mainFrame;
-    }
-
-    /**
-     * Permet de définir le panneau principal de l'application.
-     * @param mainPanel
-     */
-    public static void setMainPanel(MainPanel mainPanel) {
-        Launcher.mainPanel = mainPanel;
-    }
-
-    /**
-     * Permet de définir le prélauncher de l'application.
-     * @param preLauncherPanel
-     */
-    public static void setPreLauncherPanel(PreLauncherPanel preLauncherPanel) {
-        Launcher.preLauncherPanel = preLauncherPanel;
     }
 
     /**
