@@ -29,6 +29,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Coeur du prélauncher, permettant de télécharger la bonne version du .JAR, de télécharger les assets et de lancer le launcher.
+ */
 public class Prelauncher extends JFrame {
 
     // Version de Minecraft
@@ -50,10 +53,13 @@ public class Prelauncher extends JFrame {
     // Dossier de crash de l'application
     private static File crashFile = new File(String.valueOf(path), "crashs");
 
+    // Dossier du launcher
     private static File launcherDir = new File(String.valueOf(path), "launcher");
 
+    // Dossier des assets
     private static File assetsDir = new File(String.valueOf(path), "assets/");
 
+    // Dossier des renders
     private static File rendersDir = new File(String.valueOf(assetsDir), "renders/");
 
     // Objet permettant de log les erreurs
@@ -68,7 +74,36 @@ public class Prelauncher extends JFrame {
     // Objet permettant de sauvegarder les options dans le fichier comme les news ou le token d'authentification Microsoft
     private static Saver saver = new Saver(saverFile);
 
+    // Panneau principal de l'application
     private static PrelauncherPanel preLauncherPanel;
+
+    /**
+     * Classe de lancement de l'application.
+     * @param args Arguments de l'application.
+     */
+    public static void main(String[] args) {
+        try {
+            launcherDir.mkdirs();
+            rendersDir.mkdirs();
+
+            // Permet de créer le fichier de sauvegarde s'il n'existe pas
+            if (!saverFile.exists()) {
+                saverFile.createNewFile();
+            }
+
+            // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
+            crashFile.mkdirs();
+
+            instance = new Prelauncher();
+
+            getFilesFromSite();
+            doUpdate();
+            launch();
+        } catch (Exception e) {
+            erreurInterne(e);
+        }
+
+    }
 
     /**
      * Constructeur par défaut.
@@ -100,11 +135,19 @@ public class Prelauncher extends JFrame {
                 .play();
     }
 
+    /**
+     * Permet de récupérer la version à jour du launcher si besoin.
+     * @throws Exception Si une erreur survient lors de la mise à jour.
+     */
     public static void doUpdate() throws Exception {
         FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson(JSON_URL)).build();
         flowUpdater.update(Paths.get(launcherDir.toURI()));
     }
 
+    /**
+     * Permet de lancer le launcher.
+     * @throws LaunchException Si une erreur survient lors du lancement.
+     */
     public static void launch() throws LaunchException {
         ClasspathConstructor classpathConstructor = new ClasspathConstructor();
 
@@ -120,37 +163,8 @@ public class Prelauncher extends JFrame {
     }
 
     /**
-     * Permet de récupérer l'instance de l'application.
-     * @return L'instance de l'application.
+     * Permet de récupérer les fichiers du site.
      */
-    public static Prelauncher getInstance() {
-        return instance;
-    }
-
-    public static void main(String[] args) {
-        try {
-            launcherDir.mkdirs();
-            rendersDir.mkdirs();
-
-            // Permet de créer le fichier de sauvegarde s'il n'existe pas
-            if (!saverFile.exists()) {
-                saverFile.createNewFile();
-            }
-
-            // Permet de créer le dossier %APPDATA%/.PixelmonWorld/ s'il n'existe pas
-            crashFile.mkdirs();
-
-            instance = new Prelauncher();
-
-            getFilesFromSite();
-            doUpdate();
-            launch();
-        } catch (Exception e) {
-            erreurInterne(e);
-        }
-
-    }
-
     public static void getFilesFromSite() {
         try {
             preLauncherPanel.updateText("Vérification de la version du launcher...");
@@ -217,5 +231,13 @@ public class Prelauncher extends JFrame {
      */
     public static void erreurInterne(Exception e) {
         reporter.catchError(e, "Erreur interne du prélauncher.");
+    }
+
+    /**
+     * Permet de récupérer l'instance de l'application.
+     * @return L'instance de l'application.
+     */
+    public static Prelauncher getInstance() {
+        return instance;
     }
 }
