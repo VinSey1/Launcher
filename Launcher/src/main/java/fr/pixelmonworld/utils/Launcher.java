@@ -2,7 +2,6 @@ package fr.pixelmonworld.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
@@ -28,8 +27,10 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URI;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -94,12 +95,6 @@ public class Launcher {
 
     // La ram allouée à Minecraft via le RamPanel
     private static Integer ram;
-
-    // Fichier contenant la liste des serveurs
-    private static File serversFile =  new File(String.valueOf(path), "servers.dat");
-
-    // Zip du texturepack du serveur
-    private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
 
     // Background du panneau de connexion
     private static BufferedImage connexionPanel;
@@ -228,20 +223,6 @@ public class Launcher {
         try {
             flowUpdater.update(path);
 
-            // TODO Faire depuis le prélauncher
-            launcherPanel.updateLog("Récupération de la liste des serveurs...");
-            JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
-            if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
-                launcherPanel.updateLog("Téléchargement de la liste des serveurs...");
-                FileUtils.copyURLToFile(new URI(serversFileFromSite.get("url").getAsString()).toURL(), serversFile);
-            }
-            launcherPanel.updateLog("Récupération du pack de textures...");
-            JsonObject resourcepackFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("resourcepack.zip");
-            if (!resourcepackFile.exists() || !LauncherFileUtils.areFilesIdentical(resourcepackFile, resourcepackFileFromSite.get("sha1").getAsString())) {
-                resourcepackFile.mkdirs();
-                launcherPanel.updateLog("Téléchargement du pack de textures...");
-                FileUtils.copyURLToFile(new URI(resourcepackFileFromSite.get("url").getAsString()).toURL(), resourcepackFile);
-            }
             optionsModifier();
         } catch (Exception e) {
             clearDirectory();
