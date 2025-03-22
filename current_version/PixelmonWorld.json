@@ -2,7 +2,7 @@
   "extfiles": [
     {
       "path": "PixelmonWorld.jar",
-      "downloadURL": "https://github.com/VinSey1/Launcher/raw/refs/heads/bootstrap/current_version/PixelmonWorld.jar",
+      "downloadURL": "https://github.com/VinSey1/Launcher/raw/refs/heads/develop/current_version/PixelmonWorld.jar",
       "sha1": "40ff6252051ffba63e6f45daa55cb282ac20bc35",
       "size": 48353128
     }

@@ -2,7 +2,6 @@ package fr.pixelmonworld;
 
 import com.google.gson.JsonObject;
 import fr.flowarg.flowupdater.FlowUpdater;
-import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.json.ExternalFile;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.prelauncher.PrelauncherPanel;
@@ -44,7 +43,7 @@ public class Prelauncher extends JFrame {
     private static final String MINECRAFT_VERSION = "1.16.5";
 
     // URL du JSON pour récupérer la version du launcher
-    public static final String JSON_URL = "https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json";
+    public static final String JSON_URL = "https://github.com/VinSey1/Launcher/raw/refs/heads/develop/current_version/PixelmonWorld.json";
 
     // Informations globales sur Minecraft
     private static GameInfos gameInfos = new GameInfos(
