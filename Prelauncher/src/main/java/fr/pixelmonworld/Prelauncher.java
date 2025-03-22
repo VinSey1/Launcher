@@ -1,10 +1,13 @@
 package fr.pixelmonworld;
 
+import com.google.gson.JsonObject;
 import fr.flowarg.flowupdater.FlowUpdater;
+import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.json.ExternalFile;
 import fr.pixelmonworld.domain.News;
 import fr.pixelmonworld.prelauncher.PrelauncherPanel;
 import fr.pixelmonworld.utils.LauncherCrashReporter;
+import fr.pixelmonworld.utils.LauncherFileUtils;
 import fr.pixelmonworld.utils.SiteUtils;
 import fr.theshark34.openlauncherlib.LaunchException;
 import fr.theshark34.openlauncherlib.external.ClasspathConstructor;
@@ -24,8 +27,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,6 +67,12 @@ public class Prelauncher extends JFrame {
 
     // Dossier des renders
     private static File rendersDir = new File(String.valueOf(assetsDir), "renders/");
+
+    // Fichier contenant la liste des serveurs
+    private static File serversFile =  new File(String.valueOf(path), "servers.dat");
+
+    // Zip du texturepack du serveur
+    private static File resourcepackFile =  new File(String.valueOf(path), File.separator + "resourcepacks" + File.separator + "PixelmonWorld.zip");
 
     // Objet permettant de log les erreurs
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
@@ -188,7 +200,7 @@ public class Prelauncher extends JFrame {
             }
             renders.forEach(render -> {
                 try {
-                    ImageIO.write(render, "png", new File(String.valueOf(assetsDir), "render_" + renders.indexOf(render) + ".png"));
+                    ImageIO.write(render, "png", new File(String.valueOf(rendersDir), "render_" + renders.indexOf(render) + ".png"));
                 } catch (IOException e) {
                     erreurInterne(e);
                 }
@@ -218,9 +230,21 @@ public class Prelauncher extends JFrame {
                     saver.set("news", "false");
                 }
             }
+            preLauncherPanel.updateText("Récupération de la liste des serveurs...");
+            JsonObject serversFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("servers.dat");
+            if (!serversFile.exists() || !LauncherFileUtils.areFilesIdentical(serversFile, serversFileFromSite.get("sha1").getAsString())) {
+                preLauncherPanel.updateText("Téléchargement de la liste des serveurs...");
+                LauncherFileUtils.copyURLToFile(new URI(serversFileFromSite.get("url").getAsString()).toURL(), serversFile);
+            }
+            preLauncherPanel.updateText("Récupération du pack de textures...");
+            JsonObject resourcepackFileFromSite = SiteUtils.getFileFromSiteAsJsonObject("resourcepack.zip");
+            if (!resourcepackFile.exists() || !LauncherFileUtils.areFilesIdentical(resourcepackFile, resourcepackFileFromSite.get("sha1").getAsString())) {
+                resourcepackFile.mkdirs();
+                preLauncherPanel.updateText("Téléchargement du pack de textures...");
+                LauncherFileUtils.copyURLToFile(new URI(resourcepackFileFromSite.get("url").getAsString()).toURL(), resourcepackFile);
+            }
             preLauncherPanel.updateText("Lancement du launcher...");
-            preLauncherPanel.setVisible(false);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException | URISyntaxException e) {
             erreurInterne(e);
         }
     }

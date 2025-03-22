@@ -1,5 +1,6 @@
 package fr.pixelmonworld.utils;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -32,6 +33,22 @@ public class SiteUtils {
 
     // Formateur de date pour les news
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d'T'H:mm:ss'Z'", Locale.FRENCH);
+
+    /**
+     * Permet de récupérer un fichier depuis le site sous le format d'un JsonObject.
+     * @param fichier Le nom du fichier à récupérer.
+     * @return Le fichier récupéré.
+     */
+    public static JsonObject getFileFromSiteAsJsonObject(String fichier) throws IOException {
+        JsonObject json = getJsonFromSite();
+        JsonArray jsonArray = json.get("files").getAsJsonArray();
+        for (JsonElement jsonObject : jsonArray) {
+            if (jsonObject.getAsJsonObject().get("name").getAsString().startsWith(fichier)) {
+                return jsonObject.getAsJsonObject();
+            }
+        }
+        throw new NullPointerException("Impossible de récupérer " + fichier + ".");
+    }
 
     /**
      * Permet de récupérer un asset depuis le site. Si jamais on ne peut pas, le récupère de manière statique dans les ressources.

@@ -1,13 +1,17 @@
 package fr.pixelmonworld.utils;
 
-import java.io.*;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Utilitaire concernant les fichiers.
  */
-public class LauncherFileUtils {
+public class LauncherFileUtils extends FileUtils {
 
     /**
      * Permet de calculer le SHA-1 d'un fichier.
