@@ -25,6 +25,19 @@ public class MainFrame extends JFrame {
     private static Saver saver = new Saver(saverFile);
 
     /**
+     * Classe de lancement de l'application.
+     * @param args Arguments de l'application.
+     */
+    public static void main(String[] args) {
+        try {
+            Launcher.init();
+            instance = new MainFrame();
+        } catch (Exception e) {
+            Launcher.erreurInterne(e);
+        }
+    }
+
+    /**
      * Constructeur par défaut.
      */
     public MainFrame() {
@@ -75,18 +88,5 @@ public class MainFrame extends JFrame {
      */
     public static Saver getSaver() {
         return saver;
-    }
-
-    /**
-     * Classe de lancement de l'application.
-     * @param args Arguments de l'application.
-     */
-    public static void main(String[] args) {
-        try {
-            Launcher.init();
-            instance = new MainFrame();
-        } catch (Exception e) {
-            Launcher.erreurInterne(e);
-        }
     }
 }
