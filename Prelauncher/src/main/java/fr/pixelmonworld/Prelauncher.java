@@ -34,6 +34,9 @@ public class Prelauncher extends JFrame {
     // Version de Minecraft
     private static final String MINECRAFT_VERSION = "1.16.5";
 
+    // URL du JSON pour récupérer la version du launcher
+    public static final String JSON_URL = "https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json";
+
     // Informations globales sur Minecraft
     private static GameInfos gameInfos = new GameInfos(
             "PixelmonWorld",
@@ -53,9 +56,6 @@ public class Prelauncher extends JFrame {
 
     private static File rendersDir = new File(String.valueOf(assetsDir), "renders/");
 
-    // Fichier d'options de Minecraft
-    private static File optionsFile = new File(String.valueOf(path), "options.txt");
-
     // Objet permettant de log les erreurs
     private static CrashReporter reporter = new LauncherCrashReporter(String.valueOf(crashFile), crashFile.toPath());
 
@@ -69,15 +69,6 @@ public class Prelauncher extends JFrame {
     private static Saver saver = new Saver(saverFile);
 
     private static PrelauncherPanel preLauncherPanel;
-
-    // IP du serveur
-    private static final String SERVER_NAME = "play.pixelmonworld.fr";
-
-    // Port du serveur
-    private static final String SERVER_PORT = "25564";
-
-    // ID de l'application Discord
-    public static final String DISCORD_APPLICATION_ID = "1297976065121325076";
 
     /**
      * Constructeur par défaut.
@@ -110,7 +101,7 @@ public class Prelauncher extends JFrame {
     }
 
     public static void doUpdate() throws Exception {
-        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson("https://raw.githubusercontent.com/VinSey1/Launcher/refs/heads/bootstrap/current_version/PixelmonWorld.json")).build();
+        FlowUpdater flowUpdater = new FlowUpdater.FlowUpdaterBuilder().withExternalFiles(ExternalFile.getExternalFilesFromJson(JSON_URL)).build();
         flowUpdater.update(Paths.get(launcherDir.toURI()));
     }
 

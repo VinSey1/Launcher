@@ -2,7 +2,6 @@ package fr.pixelmonworld.prelauncher;
 
 import fr.pixelmonworld.Prelauncher;
 import fr.pixelmonworld.domain.DefaultLauncherPanel;
-import fr.pixelmonworld.domain.JLabel;
 import fr.pixelmonworld.utils.ResourcesUtils;
 
 import javax.swing.*;
@@ -21,33 +20,32 @@ public class PrelauncherPanel extends DefaultLauncherPanel {
     /**
      * Constructeur par défaut.
      * @param parent Le parent à appeler pour repaint lors d'une mise à jour graphique.
-     * @param width La largeur du panneau.
-     * @param height La hauteur du panneau.
      */
     public PrelauncherPanel(Component parent, int width, int height) {
         super(parent, width, height, (parent.getWidth() - width) / 2, (parent.getHeight() - height) / 2);
+        this.setOpaque(false);
 
         Font robotoBold = null;
         try {
-            robotoBold = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ResourcesUtils.getResourceAsStream("utils/fonts/Roboto-Bold.ttf"))).deriveFont(20f);
+            robotoBold = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ResourcesUtils.getResourceAsStream("utils/fonts/Roboto-Bold.ttf"))).deriveFont(25f);
         } catch (FontFormatException | IOException e) {
             Prelauncher.erreurInterne(e);
         }
 
-        // Ajout d'un JLabel visible
-        text = genererTexte(this.getHeight() - 25, "", 25);
-        text.setFont(robotoBold);
-        text.setBackground(new Color(24, 71, 8));
-        text.setForeground(new Color(186, 255, 143));
-        text.setOpaque(true);
-        this.add(text);
-
         ImageIcon serverLogoIcon = new ImageIcon(Objects.requireNonNull(ResourcesUtils.getResource("prelauncher/logo.png")));
         JLabel serverLogo = new JLabel(serverLogoIcon);
-        serverLogo.setBounds((this.getWidth() / 2) - (serverLogoIcon.getIconWidth() / 2), (this.getHeight() / 2) - (serverLogoIcon.getIconHeight() / 2) - 20, serverLogoIcon.getIconWidth(), serverLogoIcon.getIconHeight());
-        this.add(serverLogo, 0);
+        serverLogo.setBounds((parent.getWidth() / 2) - (serverLogoIcon.getIconWidth() / 2), (parent.getHeight() / 2) - (serverLogoIcon.getIconHeight() / 2) - 20, serverLogoIcon.getIconWidth(), serverLogoIcon.getIconHeight());
+        this.add(serverLogo);
 
-        this.setOpaque(true);
+        // Ajout d'un JLabel visible
+        text = new JLabel("");
+        text.setBounds((parent.getWidth() - (parent.getWidth() - 20)) / 2, (parent.getHeight() / 2) + (serverLogoIcon.getIconHeight() / 2) - 20, parent.getWidth() - 20, 30);
+        text.setHorizontalAlignment(SwingConstants.CENTER);
+        text.setVerticalAlignment(SwingConstants.CENTER);
+        text.setFont(robotoBold);
+        text.setForeground(new Color(186, 255, 143));
+        text.setOpaque(false);
+        this.add(text);
     }
 
     /**
